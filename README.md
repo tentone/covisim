@@ -6,6 +6,7 @@
 ### Data sources
  - Updated daily basis
  - https://github.com/CSSEGISandData/COVID-19
+ - https://github.com/dssg-pt/covid19pt-data
 
 ### Build and Run
  - TODO
