@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="017e81d9-606a-453b-bb7f-2b4cc53173f3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/tasks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/COVID-19-geographic-disbtribution-worldwide-2020-03-17.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/kaggle/COVID19_line_list_data.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/kaggle/COVID19_open_line_list.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/kaggle/covid_19_data.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/kaggle/time_series_covid_19_confirmed.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/kaggle/time_series_covid_19_deaths.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/kaggle/time_series_covid_19_recovered.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/database.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/install.sh" beforeDir="false" afterPath="$PROJECT_DIR$/install.sh" afterDir="false" />
-    </list>
+    <list default="true" id="017e81d9-606a-453b-bb7f-2b4cc53173f3" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -141,7 +127,7 @@
       <workItem from="1584522313805" duration="4893000" />
       <workItem from="1584532646443" duration="2518000" />
       <workItem from="1584541822558" duration="3103000" />
-      <workItem from="1584633686339" duration="720000" />
+      <workItem from="1584633686339" duration="797000" />
     </task>
     <servers />
   </component>
@@ -168,22 +154,22 @@
       <screen x="0" y="30" width="3440" height="1410" />
     </state>
     <state x="816" y="416" key="FileChooserDialogImpl/0.30.3440.1410@0.30.3440.1410" timestamp="1584489275143" />
-    <state width="1883" height="287" key="GridCell.Tab.0.bottom" timestamp="1584634247809">
+    <state width="1883" height="287" key="GridCell.Tab.0.bottom" timestamp="1584634484282">
       <screen x="0" y="30" width="3440" height="1410" />
     </state>
-    <state width="1883" height="287" key="GridCell.Tab.0.bottom/0.30.3440.1410@0.30.3440.1410" timestamp="1584634247809" />
-    <state width="1883" height="287" key="GridCell.Tab.0.center" timestamp="1584634247808">
+    <state width="1883" height="287" key="GridCell.Tab.0.bottom/0.30.3440.1410@0.30.3440.1410" timestamp="1584634484282" />
+    <state width="1883" height="287" key="GridCell.Tab.0.center" timestamp="1584634484282">
       <screen x="0" y="30" width="3440" height="1410" />
     </state>
-    <state width="1883" height="287" key="GridCell.Tab.0.center/0.30.3440.1410@0.30.3440.1410" timestamp="1584634247808" />
-    <state width="1883" height="287" key="GridCell.Tab.0.left" timestamp="1584634247808">
+    <state width="1883" height="287" key="GridCell.Tab.0.center/0.30.3440.1410@0.30.3440.1410" timestamp="1584634484282" />
+    <state width="1883" height="287" key="GridCell.Tab.0.left" timestamp="1584634484282">
       <screen x="0" y="30" width="3440" height="1410" />
     </state>
-    <state width="1883" height="287" key="GridCell.Tab.0.left/0.30.3440.1410@0.30.3440.1410" timestamp="1584634247808" />
-    <state width="1883" height="287" key="GridCell.Tab.0.right" timestamp="1584634247808">
+    <state width="1883" height="287" key="GridCell.Tab.0.left/0.30.3440.1410@0.30.3440.1410" timestamp="1584634484282" />
+    <state width="1883" height="287" key="GridCell.Tab.0.right" timestamp="1584634484282">
       <screen x="0" y="30" width="3440" height="1410" />
     </state>
-    <state width="1883" height="287" key="GridCell.Tab.0.right/0.30.3440.1410@0.30.3440.1410" timestamp="1584634247808" />
+    <state width="1883" height="287" key="GridCell.Tab.0.right/0.30.3440.1410@0.30.3440.1410" timestamp="1584634484282" />
     <state width="196" height="457" key="HiddenNamespacesPopup" timestamp="1584543119686">
       <screen x="0" y="30" width="3440" height="1410" />
     </state>
