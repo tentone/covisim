@@ -1,2 +1,2 @@
 # Install dependencies
-pip install flask timeloop peewee
+pip install flask timeloop peewee requests

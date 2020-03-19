@@ -1,25 +1,25 @@
-from peewee import *
+import peewee
 import datetime
 
 # SQLite database
-db = SqliteDatabase("database.db")
+db = peewee.SqliteDatabase("database.db")
 
 # Base database model
-class BaseModel(Model):
+class BaseModel(peewee.Model):
     class Meta:
         database = db
 
 # Countries data
 class Country(BaseModel):
-    name = CharField(unique=True)
-    code = CharField(unique=True)
-    population = IntegerField()
+    name = peewee.CharField(unique=True)
+    code = peewee.CharField(unique=True)
+    population = peewee.IntegerField()
 
 # Daily data
 class DailyData(BaseModel):
-    country = ForeignKeyField(Country)
-    date = DateTimeField(default=datetime.datetime.now)
+    country = peewee.ForeignKeyField(Country)
+    date = peewee.DateTimeField(default=datetime.datetime.now)
 
-def connectDB():
+def connect():
     db.connect()
     db.create_tables([Country, DailyData])

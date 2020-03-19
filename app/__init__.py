@@ -1,22 +1,18 @@
-from flask import Flask
-from app.database import *
+import flask
+import app.database
+import app.tasks
 
-app = Flask(__name__)
+app = flask.Flask(__name__)
 
 @app.route('/')
 @app.route('/index')
 def index():
-    charlie = User.create(username='charlie')
-    huey = User(username='huey')
-    huey.save()
-
-    # No need to set `is_published` or `created_date` since they
-    # will just use the default values we specified.
-    Tweet.create(user=charlie, message='My first tweet')
-
+    t = database.Country.create(name='charlie')
+    t.save()
     return "Hello, World!"
 
-connectDB()
+database.connect()
+tasks.start()
 
 # WorldWide cases
 # https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide-2020-03-17.xlsx
