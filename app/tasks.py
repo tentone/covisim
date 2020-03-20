@@ -1,3 +1,5 @@
+import csv
+import io
 import requests
 import timeloop
 import datetime
@@ -11,10 +13,10 @@ def dssg_pt():
 	url = "https://raw.githubusercontent.com/dssg-pt/covid19pt-data/master/data.csv"
 	request = requests.get(url)
 	if request.status_code == 200:
-		rows = request.text.split("\n")
-		for row in rows:
-			cols = row.split(",")
-			# print(cols)
+		file = io.StringIO(request.text)
+		reader = csv.reader(file, delimiter=',')
+		for row in reader:
+			print(row)
 
 
 # Start task timer
