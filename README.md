@@ -16,7 +16,6 @@
 - Data is aggregated into single database with the duplicated information being discarded. This database can be used as basis for other Covid19 related projects.
     - [Novel Coronavirus (COVID-19) Cases, provided by JHU CSSE (GitHub)](https://github.com/CSSEGISandData/COVID-19) 
     - [DSSG-PT Covid19 Portugal Data (GitHub)](https://github.com/dssg-pt/covid19pt-data)
-    - [List of all countries with their 2 digit codes (ISO 3166-1)  (datahub.io)](https://datahub.io/core/country-list)
     - [Comprehensive country codes: ISO 3166, ITU, ISO 4217  (datahub.io)](https://datahub.io/core/country-codes)
     - [GPS Coordinates of all countries (Google)](https://developers.google.com/public-data/docs/canonical/countries_csv)
     - [Population Figures By Country (datahub.io)](https://datahub.io/JohnSnowLabs/population-figures-by-country)

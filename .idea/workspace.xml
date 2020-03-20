@@ -4,11 +4,9 @@
     <list default="true" id="017e81d9-606a-453b-bb7f-2b4cc53173f3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/data.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tasks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/population.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/database.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -145,7 +143,7 @@
       <workItem from="1584541822558" duration="3103000" />
       <workItem from="1584633686339" duration="797000" />
       <workItem from="1584704850615" duration="816000" />
-      <workItem from="1584707356702" duration="6666000" />
+      <workItem from="1584707356702" duration="15398000" />
     </task>
     <servers />
   </component>
@@ -187,22 +185,22 @@
       <screen x="0" y="30" width="3440" height="1410" />
     </state>
     <state x="816" y="416" key="FileChooserDialogImpl/0.30.3440.1410@0.30.3440.1410" timestamp="1584489275143" />
-    <state width="2016" height="289" key="GridCell.Tab.0.bottom" timestamp="1584716874999">
+    <state width="1674" height="528" key="GridCell.Tab.0.bottom" timestamp="1584728987543">
       <screen x="0" y="30" width="3440" height="1410" />
     </state>
-    <state width="2016" height="289" key="GridCell.Tab.0.bottom/0.30.3440.1410@0.30.3440.1410" timestamp="1584716874999" />
-    <state width="2016" height="289" key="GridCell.Tab.0.center" timestamp="1584716874998">
+    <state width="1674" height="528" key="GridCell.Tab.0.bottom/0.30.3440.1410@0.30.3440.1410" timestamp="1584728987543" />
+    <state width="1674" height="528" key="GridCell.Tab.0.center" timestamp="1584728987543">
       <screen x="0" y="30" width="3440" height="1410" />
     </state>
-    <state width="2016" height="289" key="GridCell.Tab.0.center/0.30.3440.1410@0.30.3440.1410" timestamp="1584716874998" />
-    <state width="2016" height="289" key="GridCell.Tab.0.left" timestamp="1584716874998">
+    <state width="1674" height="528" key="GridCell.Tab.0.center/0.30.3440.1410@0.30.3440.1410" timestamp="1584728987543" />
+    <state width="1674" height="528" key="GridCell.Tab.0.left" timestamp="1584728987543">
       <screen x="0" y="30" width="3440" height="1410" />
     </state>
-    <state width="2016" height="289" key="GridCell.Tab.0.left/0.30.3440.1410@0.30.3440.1410" timestamp="1584716874998" />
-    <state width="2016" height="289" key="GridCell.Tab.0.right" timestamp="1584716874999">
+    <state width="1674" height="528" key="GridCell.Tab.0.left/0.30.3440.1410@0.30.3440.1410" timestamp="1584728987543" />
+    <state width="1674" height="528" key="GridCell.Tab.0.right" timestamp="1584728987543">
       <screen x="0" y="30" width="3440" height="1410" />
     </state>
-    <state width="2016" height="289" key="GridCell.Tab.0.right/0.30.3440.1410@0.30.3440.1410" timestamp="1584716874999" />
+    <state width="1674" height="528" key="GridCell.Tab.0.right/0.30.3440.1410@0.30.3440.1410" timestamp="1584728987543" />
     <state width="196" height="457" key="HiddenNamespacesPopup" timestamp="1584543119686">
       <screen x="0" y="30" width="3440" height="1410" />
     </state>
@@ -211,10 +209,14 @@
       <screen x="0" y="30" width="3440" height="1410" />
     </state>
     <state x="537" y="296" key="SettingsEditor/0.30.3440.1410@0.30.3440.1410" timestamp="1584489393269" />
+    <state x="1713" y="30" width="1734" height="1417" key="dock-window-1" timestamp="1584728155221">
+      <screen x="0" y="30" width="3440" height="1410" />
+    </state>
+    <state x="1713" y="30" width="1734" height="1417" key="dock-window-1/0.30.3440.1410@0.30.3440.1410" timestamp="1584728155221" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/covid19$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1584540085140" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.." />
-    <SUITE FILE_PATH="coverage/covid19$Flask.coverage" NAME="Flask Coverage Results" MODIFIED="1584716874988" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/covid19$Flask.coverage" NAME="Flask Coverage Results" MODIFIED="1584728987536" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/covid19$main.coverage" NAME="main Coverage Results" MODIFIED="1584489384880" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.." />
   </component>
 </project>

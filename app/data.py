@@ -3,10 +3,7 @@ import requests
 import io
 import app.database as database
 
-
-# Load country list from DataHub
-#
-# Gets a list with the country name and its code.
+# Country names and identification list.
 def country_list():
 	url = "https://datahub.io/core/country-codes/r/country-codes.csv"
 	request = requests.get(url)
@@ -16,12 +13,11 @@ def country_list():
 		line = 0
 		for row in reader:
 			if line > 1:
-				country = database.Country(name=row[0], code=row[1])
-				country.update()
+				print(row)
+				c = database.Country(id=row[7], name=row[2], code=row[6], currency=row[9], continent=row[29], capital=row[28])
+				c.create()
 			line += 1
-
-# Load average age and population
-
+		print("Loaded country list.")
 
 # Load metadata into the database, this data is only loaded once on the startup.
 #

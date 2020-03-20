@@ -1,31 +1,41 @@
 import peewee
-import datetime
 
-# SQLite database
+# SQLite database stored in a file
+#
+# All data gets stored here and uploaded periodically to git.
 db = peewee.SqliteDatabase("database.db")
 
 
-# Base database model used as a base for all the other tables.
-#
-# Common attributes should be placed here.
-class BaseModel(peewee.Model):
+# Countries data include metadata about the country.
+class Country(peewee.Model):
 	class Meta:
 		database = db
-
-
-# Countries data include metadata about the country.
-class Country(BaseModel):
-	# Country name as used in the english language.
-	name = peewee.CharField(unique=True)
-
-	# Country code (UK, PT, ES, etc) as defined in ISO 3166-1 2 characters.
-	code_simple = peewee.CharField(unique=True)
+		table_name = "country"
+		primary_key = False
 
 	# Country code as defined in ISO 3166-1 3 characters.
-	code = peewee.CharField(unique=True)
+	id = peewee.CharField(primary_key=True, max_length=3)
+
+	# Country code (UK, PT, ES, etc) as defined in ISO 3166-1 2 characters.
+	code = peewee.CharField(unique=True, max_length=2)
+
+	# Country name as used in the english language.
+	name = peewee.CharField(null=False)
+
+	# Capital name as used in the english language.
+	capital = peewee.CharField(null=True)
 
 	# Currency of the country
-	currency = peewee.CharField(unique=False, null=True)
+	currency = peewee.CharField(null=True)
+
+	# Continent where the country is situated
+	continent = peewee.CharField(null=True)
+
+	# GPS Latitude
+	latitude = peewee.DoubleField(null=True)
+
+	# GPS longitude
+	longitude = peewee.DoubleField(null=True)
 
 	# Total amount of population of the country
 	population = peewee.IntegerField(null=True)
@@ -37,43 +47,51 @@ class Country(BaseModel):
 # Daily data with the amount of covid cases.
 #
 # Data is associated to a country.
-class CovidCases(BaseModel):
+class Cases(peewee.Model):
+	class Meta:
+		database = db
+		table_name = "cases"
+
 	# Foreign key pointing to the country of this data
 	country = peewee.ForeignKeyField(Country)
 
 	# Date of this data
-	date = peewee.DateTimeField(default=datetime.datetime.now)
+	date = peewee.DateTimeField(unique=True, null=False)
 
 	# Total amount of identified covid cases
-	total = peewee.IntegerField()
-
-	# Active cases of covid
-	identified = peewee.IntegerField()
+	infected = peewee.IntegerField(null=False)
 
 	# Total amount of depath caused by covid
-	deaths = peewee.IntegerField()
+	deaths = peewee.IntegerField(null=False)
 
-	# Ammount of people that recovered from covid
-	recovered = peewee.IntegerField()
+	# Amount of people that recovered from covid
+	recovered = peewee.IntegerField(null=False)
+
+	# Amount of people suspected to have covid
+	suspects = peewee.IntegerField(null=True)
 
 
 # Country event, measures applied change of emergency state in the country.
-class CountryEvent(BaseModel):
+class Events(peewee.Model):
+	class Meta:
+		database = db
+		table_name = "events"
+
 	# Foreign key pointing to the country of this data
 	country = peewee.ForeignKeyField(Country)
 
 	# Type of the event
-	type = peewee.IntegerField()
+	type = peewee.IntegerField(null=False)
 
 	# Estimated impact of the event in the virus evolution
 	#
 	# (e.g -0.1 should prevent 10% of covid cases, 0 means no impact)
-	impact = peewee.FloatField()
+	impact = peewee.FloatField(null=False)
 
 	# Description of the event
-	description = peewee.CharField()
+	description = peewee.CharField(null=True)
 
-
+# Connect to the database and create the tables if necessary
 def connect():
 	db.connect()
-	db.create_tables([Country, CovidCases])
+	db.create_tables([Country, Cases, Events])
