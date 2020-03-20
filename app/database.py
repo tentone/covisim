@@ -5,19 +5,17 @@ import peewee
 # All data gets stored here and uploaded periodically to git.
 db = peewee.SqliteDatabase("database.db")
 
-
 # Countries data include metadata about the country.
 class Country(peewee.Model):
 	class Meta:
 		database = db
 		table_name = "country"
-		primary_key = False
 
 	# Country code as defined in ISO 3166-1 3 characters.
-	id = peewee.CharField(primary_key=True, max_length=3)
+	id = peewee.FixedCharField(primary_key=True, max_length=3)
 
 	# Country code (UK, PT, ES, etc) as defined in ISO 3166-1 2 characters.
-	code = peewee.CharField(unique=True, max_length=2)
+	code = peewee.FixedCharField(unique=True, max_length=2)
 
 	# Country name as used in the english language.
 	name = peewee.CharField(null=False)

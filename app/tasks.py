@@ -20,7 +20,7 @@ def dssg_pt():
 		for row in reader:
 			if line > 1:
 				date = datetime.datetime.strptime(row[0], "%d-%m-%Y")
-				data = database.CovidCases(country="PRT", date=date, infected=int(row[2]), recovered=int(row[12]), deaths=int(row[13]), suspects=int(row[17]))
+				data = database.Cases(country="PRT", date=date, infected=int(row[2]), recovered=int(row[12]), deaths=int(row[13]), suspects=int(row[17]))
 				try:
 					data.save()
 				except:

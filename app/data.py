@@ -13,9 +13,10 @@ def country_list():
 		line = 0
 		for row in reader:
 			if line > 1:
-				print(row)
-				c = database.Country(id=row[7], name=row[2], code=row[6], currency=row[9], continent=row[29], capital=row[28])
-				c.create()
+				try:
+					database.Country.create(id=row[7], name=row[2], code=row[6], currency=row[9], continent=row[29], capital=row[28])
+				except:
+					pass
 			line += 1
 		print("Loaded country list.")
 
