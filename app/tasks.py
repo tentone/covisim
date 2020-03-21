@@ -3,7 +3,7 @@ import io
 import requests
 import timeloop
 import datetime
-import app.database as database
+import database
 
 timer = timeloop.Timeloop()
 

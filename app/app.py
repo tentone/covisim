@@ -1,6 +1,6 @@
-import app.database as database
-import app.tasks as tasks
-import app.data as data
+import database
+import tasks
+import data
 import flask
 
 database.connect()

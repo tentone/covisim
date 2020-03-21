@@ -1,7 +1,7 @@
 import csv
 import requests
 import io
-import app.database as database
+import database
 
 # Country names and identification list.
 def country_list():
