@@ -59,7 +59,7 @@ class Cases(peewee.Model):
 	# Total amount of identified covid cases
 	infected = peewee.IntegerField(null=False)
 
-	# Total amount of depath caused by covid
+	# Total amount of deaths caused by covid
 	deaths = peewee.IntegerField(null=False)
 
 	# Amount of people that recovered from covid
@@ -70,6 +70,8 @@ class Cases(peewee.Model):
 
 
 # Country event, measures applied change of emergency state in the country.
+#
+# These events may have impact in the spread of the virus.
 class Events(peewee.Model):
 	class Meta:
 		database = db
