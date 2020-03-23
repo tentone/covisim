@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * ArraybufferUtils contains methods to convert from and to ArrayBuffer binary format
  */
@@ -37,4 +39,4 @@ ArraybufferUtils.fromBase64 = function(str) {
 	return array;
 };
 
-export {ArraybufferUtils}
+export {ArraybufferUtils};

@@ -202,4 +202,4 @@ FileUtils.getFileExtension = function(file) {
 	return "";
 };
 
-
+export {FileUtils};
