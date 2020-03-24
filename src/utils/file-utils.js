@@ -10,13 +10,12 @@ function FileUtils() {}
  *
  * @param fname File URL.
  * @param sync If set to true or undefined the file is read syncronosly.
- * @param responseType Type of response to be used for the XHR.
  * @param onLoad On load callback.
  * @param onProgress On progress callback.
  * @param onError On error callback.
  * @return Data read if in sync mode.
  */
-FileUtils.readFile = function(fname, sync, responseType, onLoad, onProgress, onError) {
+FileUtils.readFile = function(fname, sync, onLoad, onProgress, onError) {
 	if (sync === undefined) {
 		sync = true;
 	}
@@ -24,10 +23,6 @@ FileUtils.readFile = function(fname, sync, responseType, onLoad, onProgress, onE
 	const file = new XMLHttpRequest();
 	file.overrideMimeType("text/plain");
 	file.open("GET", fname, !sync);
-
-	if (responseType !== undefined) {
-		file.responseType = responseType;
-	}
 
 	if (onLoad !== undefined) {
 		file.onload = function () {
@@ -129,10 +124,9 @@ FileUtils.writeFileArrayBuffer = function(fname, data) {
  *
  * @param onLoad onLoad callback that receives array of files choosen as parameter.
  * @param filter File type filter.
- * @param saveas File format or name to be used, optinonally it can be a boolean value indicating savemode.
- * @param multiFile If true the chooser will accept multiple files.
+ * @param multiple If true the chooser will accept multiple files.
  */
-FileUtils.chooseFile = function(onLoad, filter, multiFile) {
+FileUtils.chooseFile = function(onLoad, filter, multiple) {
 	const chooser = document.createElement("input");
 	chooser.type = "file";
 	chooser.style.display = "none";
@@ -142,7 +136,7 @@ FileUtils.chooseFile = function(onLoad, filter, multiFile) {
 		chooser.accept = filter;
 	}
 
-	if (multiFile === true) {
+	if (multiple === true) {
 		chooser.multiple = true;
 	}
 
@@ -187,7 +181,7 @@ FileUtils.getFileName = function(file) {
  * If input is a/b/c/abc.d output is d.
  *
  * @param file File path
- * @return File extension
+ * @return string extension
  */
 FileUtils.getFileExtension = function(file) {
 	if (file !== undefined) {

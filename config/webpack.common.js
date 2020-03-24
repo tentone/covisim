@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const context = path.resolve(__dirname, "..");
 const src = context + "/src";
+const assets = context + "/assets";
 const dist = context + "/dist";
 
 module.exports = {
@@ -17,32 +18,41 @@ module.exports = {
 			{
 				test: /\.js$/,
 				exclude: /(node_modules)/,
-				use: {
-					loader: "babel-loader",
-					options: {
-						presets: ["env"],
+				use: [
+					{
+						loader: "babel-loader",
+						options: {presets: ["env"],}
 					}
-				}
+				]
 			},
 			{
 				test: /\.css$/,
-				use: ["style-loader", {
-					loader: "css-loader",
-					options: {
-						modules: true
+				use: [
+					{
+						loader: "style-loader"
+					},
+					{
+						loader: "css-loader",
+						options: {modules: true}
 					}
-				}]
+				]
 			},
 			{
-				test: /\.(png|svg|jpg|gif|csv)$/,
+				test: /\.(png|svg|jpg|gif|csv|jpeg|xlsx)$/,
 				use: [
-					"file-loader"
+					{
+						loader: "file-loader",
+						options: {
+							name: "[path][name].[ext]",
+							emitFile: true,
+						}
+					}
 				]
 			}
 		],
 	},
 	resolve: {
-		modules: [src, "node_modules"]
+		modules: [src, assets, "node_modules"]
 	},
 	plugins: [
 		new HtmlWebpackPlugin({

@@ -1,6 +1,5 @@
 function Simulation() {
 
-
 }
 
 export {Simulation};

@@ -13,11 +13,11 @@ module.exports = merge(commonConfig, {
             '/api': 'http://localhost:3000'
         },
         contentBase: path.join(__dirname, 'dist'),
-        compress: false, // enable gzip compression
-        historyApiFallback: true, // true for index.html upon 404, object for multiple paths
-        hot: true, // hot module replacement
-        https: false, // true for self-signed, object for cert authority
-        noInfo: true // only errors & warns on hot reload
+        compress: false,
+        historyApiFallback: true,
+        hot: true,
+        https: false,
+        noInfo: true
     },
     plugins: [
         new webpack.NamedModulesPlugin(),
