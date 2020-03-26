@@ -38,7 +38,11 @@ module.exports = {
 				]
 			},
 			{
-				test: /\.(png|svg|jpg|gif|csv|jpeg|xlsx)$/,
+				test: /\.csv$/,
+				use: 'raw-loader',
+			},
+			{
+				test: /\.(png|svg|jpg|gif|jpeg|xlsx)$/,
 				use: [
 					{
 						loader: "file-loader",

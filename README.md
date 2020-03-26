@@ -20,7 +20,7 @@
     - [Comprehensive country codes: ISO 3166, ITU, ISO 4217  (datahub.io)](https://datahub.io/core/country-codes)
     - [GPS Coordinates of all countries (Google)](https://developers.google.com/public-data/docs/canonical/countries_csv)
     - [Population Figures By Country (datahub.io)](https://datahub.io/JohnSnowLabs/population-figures-by-country)
-    - Population Age By Country (datahub.io) [(0-14)](https://datahub.io/world-bank/sp.pop.0014.to.zs) [(15-64)](https://datahub.io/world-bank/sp.pop.1564.to.zs) [(65+)](https://datahub.io/world-bank/sp.pop.65up.to.zs)
+    - Population Age distribution by Country (datahub.io) [(0-14)](https://datahub.io/world-bank/sp.pop.0014.to.zs) [(15-64)](https://datahub.io/world-bank/sp.pop.1564.to.zs) [(65+)](https://datahub.io/world-bank/sp.pop.65up.to.zs)
 
 
 
