@@ -58,11 +58,10 @@ CovidData.getDSSGPT = function() {
 		data.recovered = Number.parseInt(rows[i][12]);
 		data.deaths = Number.parseInt(rows[i][13]);
 		data.suspects = Number.parseInt(rows[i][17]);
-		rows.push(data);
-
+		cases.push(data);
 	}
 
-	return rows;
+	return cases;
 };
 
 // Italia Covid 19 data (official Italian data)
@@ -79,11 +78,10 @@ CovidData.getPCMDPCITA = function() {
 		data.recovered = Number.parseInt(rows[i][8]);
 		data.deaths = Number.parseInt(rows[i][9]);
 		data.suspects = Number.parseInt(rows[i][11]);
-		rows.push(data);
-
+		cases.push(data);
 	}
 
-	 return rows;
+	 return cases;
 };
 
 export {CovidData};
