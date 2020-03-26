@@ -1,5 +1,5 @@
 # COVID 19+1
- - Predict how the measures implemented to prevent the COVID-19 virus spread are affecting its evolution.
+ - Visualize cases of COVID-19 virus around the world and compare them with simulation data of how the measures implemented to prevent the spread are affecting its evolution.
  - Compare the measures adopted by different countries, and predict how the virus is progressing on a daily basis.
 
 
@@ -20,9 +20,11 @@
     - [Comprehensive country codes: ISO 3166, ITU, ISO 4217  (datahub.io)](https://datahub.io/core/country-codes)
     - [GPS Coordinates of all countries (Google)](https://developers.google.com/public-data/docs/canonical/countries_csv)
     - [Population Figures By Country (datahub.io)](https://datahub.io/JohnSnowLabs/population-figures-by-country)
+    - Population Age By Country (datahub.io) [(0-14)](https://datahub.io/world-bank/sp.pop.0014.to.zs) [(15-64)](https://datahub.io/world-bank/sp.pop.1564.to.zs) [(65+)](https://datahub.io/world-bank/sp.pop.65up.to.zs)
 
 
 
 ### License
 
  - The project is distributed under MIT license available on the github page.
+
