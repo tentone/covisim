@@ -1,12 +1,12 @@
 "use strict";
 
 /**
- * ArraybufferUtils contains methods to convert from and to ArrayBuffer binary format
+ * Array buffer utils contains methods to convert from and to ArrayBuffer binary format
  */
 function ArraybufferUtils() {}
 
 /**
- * Create arraybuffer from base64 string
+ * Create array buffer from base64 string
  *
  * @param str Input string data bas64.
  */
