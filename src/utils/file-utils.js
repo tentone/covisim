@@ -46,7 +46,7 @@ FileUtils.readFile = function(fname, sync, onLoad, onProgress, onError) {
  * Write a file to a blob and download it to the client.
  *
  * @param fname File name.
- * @param data Data to be written into the file.
+ * @param data CovidData to be written into the file.
  */
 FileUtils.writeFile = function(fname, data) {
 	if (typeof data === "object") {
@@ -72,7 +72,7 @@ FileUtils.writeFile = function(fname, data) {
  * Write a base64 encoded file to a blob and download it to the client.
  *
  * @param fname File name.
- * @param data Data to be written into the file.
+ * @param data CovidData to be written into the file.
  */
 FileUtils.writeFileBase64 = function(fname, data) {
 	if (typeof data === "object") {
@@ -98,7 +98,7 @@ FileUtils.writeFileBase64 = function(fname, data) {
  * Write binary file using array buffer data.
  *
  * @param fname File name
- * @param data Data to be written
+ * @param data CovidData to be written
  */
 FileUtils.writeFileArrayBuffer = function(fname, data) {
 	const blob = new Blob([data]);

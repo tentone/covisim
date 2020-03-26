@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Array buffer utils contains methods to convert from and to ArrayBuffer binary format
  */

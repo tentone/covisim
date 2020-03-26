@@ -81,7 +81,7 @@ function PopulationAge(min, max, percentage)
 /**
  * Load country list from data csv files.
  *
- * Data is combined into a single array of country objects.
+ * CovidData is combined into a single array of country objects.
  */
 Country.loadList = function () {
 	var countries = [];

@@ -1,5 +1,3 @@
-"use strict";
-
 function Simulation() {
 	this.districts = 12;
 
