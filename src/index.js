@@ -9,8 +9,8 @@ window.initialize = function() {
 	var pt = CovidData.getDSSGPT();
 	console.log(pt);
 
-	CovidData.getPCMDPCITA();
-
+	var ita = CovidData.getPCMDPCITA();
+	console.log(ita);
 
 	var canvas = document.createElement("canvas");
 	document.body.appendChild(canvas);

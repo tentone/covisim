@@ -52,7 +52,8 @@ CovidData.getDSSGPT = function() {
 
 	for(var i = 1; i < rows.length; i++)
 	{
-		var date = new Date(rows[i][0]);
+		var values = rows[i][0].split("-");
+		var date = new Date(Number.parseInt(values[2]), Number.parseInt(values[1]) - 1, Number.parseInt(values[0]));
 		var data = new CovidData(date, i - 1);
 		data.infected = Number.parseInt(rows[i][2]);
 		data.recovered = Number.parseInt(rows[i][12]);
