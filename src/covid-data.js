@@ -37,6 +37,21 @@ function CovidData(date, day)
 	this.suspects = null;
 }
 
+/**
+ * Multiply data fields by a scalar (useful to compare data from different countries).
+ *
+ * They are rounded to the closest integer.
+ *
+ * @param scalar Scalar value.
+ */
+CovidData.prototype.multiplyScalar = function(scalar)
+{
+	this.infected = Math.round(this.infected * scalar);
+	this.recovered = Math.round(this.recovered * scalar);
+	this.deaths = Math.round(this.deaths * scalar);
+	this.suspects = Math.round(this.suspects * scalar);
+};
+
 // Read covid 19 data from CSSE (Global data)
 CovidData.getCSSE = function() {
 	// https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv

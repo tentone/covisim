@@ -7,7 +7,13 @@
  *
  * @constructor
  */
-function Block() {
+function Block(name) {
+	// Cache of all person in this level and bellow
+	this.peopleCache = [];
+
+	// Block level name (useful for debug purposes)
+	this.name = name ||  "";
+
 	// Parent block
 	this.parent = null;
 
@@ -19,29 +25,63 @@ function Block() {
 }
 
 /**
+ * Add sub block to this block.
+ */
+Block.prototype.addSubBlock = function(block)
+{
+	block.parent = this;
+	this.subBlocks.push(block);
+};
+
+/**
+ * Add person to this block.
+ */
+Block.prototype.addPerson = function(person)
+{
+	person.block = this;
+	this.people.push(person);
+};
+
+/**
+ * Get all people inside of this block.
+ */
+Block.prototype.getAllPeople = function()
+{
+	let people = [];
+
+	this.traverse(function(person) {
+		people.push(person);
+	});
+
+	return people;
+};
+
+/**
  * Traverse block elements and all sub block elements.
  *
  * @param onPeople
- * @param onSubBlock
+ * @param onBlock
  */
-Block.prototype.traverse = function(onPeople, onSubBlock)
+Block.prototype.traverse = function(onPeople, onBlock)
 {
+	// People callback
 	if(onPeople !== undefined)
 	{
-		for(var j = 0; j < this.people.length; j++)
+		for(var i = 0; i < this.people.length; i++)
 		{
-			onPeople(this.people[j]);
+			onPeople(this.people[i]);
 		}
+	}
+
+	// Sub-block callback
+	if(onBlock !== undefined)
+	{
+		onBlock(this);
 	}
 
 	for(var i = 0; i < this.subBlocks.length; i++)
 	{
-		this.subBlocks[i].traverse(onPeople, onSubBlock);
-
-		if(onSubBlock !== undefined)
-		{
-			onSubBlock(this.subBlocks[i]);
-		}
+		this.subBlocks[i].traverse(onPeople, onBlock);
 	}
 };
 

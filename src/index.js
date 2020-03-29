@@ -16,11 +16,23 @@ window.initialize = function() {
 	console.log(ita);
 
 	var simulation = new Simulation();
-	this.simulation.date = new Date(pt.data[0].date);
+	simulation.date = new Date(pt[0].date);
+	simulation.reset();
 
+	for(var i = 0; i < 500; i++)
+	{
+		simulation.step();
+	}
+
+	var ratio = countries.map.get("PRT").population / simulation.population;
+	for(var i = 0; i < simulation.data.length; i++)
+	{
+		simulation.data[i].multiplyScalar(ratio);
+	}
 
 	var chart = createChart();
 	drawCovidData(chart, pt, "PT", false);
+	drawCovidData(chart, simulation.data, "Simulation", true);
 	// drawCovidData(chart, ita, "ITA", true);
 };
 

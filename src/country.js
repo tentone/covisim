@@ -73,18 +73,24 @@ function Country()
  */
 function PopulationAge(min, max, percentage)
 {
+	// Min age range of this entry.
 	this.min = min;
+
+	// Max age range of this entry.
 	this.max = max;
+
+	// Percentage of population in this category
 	this.percentage = percentage;
 }
 
 /**
- * Load country list from data csv files.
+ * Load country list from data csv files. With metadata about these countries.
  *
- * CovidData is combined into a single array of country objects.
+ * Returns a array and a map of countries indexed by their 3 char code.
  */
 Country.loadList = function () {
 	var countries = [];
+	var map = new Map();
 
 	// List of all countries
 	var rows = CSV.parse(Countries);
@@ -97,7 +103,9 @@ Country.loadList = function () {
 		country.currency = rows[i][9];
 		country.continent = rows[i][29];
 		country.capital = rows[i][28];
+
 		countries.push(country);
+		map.set(country.code, country);
 	}
 
 	// Population figure by country as of 2016
@@ -152,7 +160,7 @@ Country.loadList = function () {
 		}
 	}
 
-	return countries;
+	return {list: countries, map: map};
 };
 
 export {Country};
