@@ -95,7 +95,7 @@ Simulation.prototype.step = function()
 			// Contact with random people from the destination district
 			for(var j = 0; j < this.config.foreign.dailyContact; j++)
 			{
-				foreign.contact(RandomUtils.randomElement(district.peopleCache), this);
+				foreign.contact(RandomUtils.randomElement(district.peopleCache), this.config);
 			}
 		}
 	}
