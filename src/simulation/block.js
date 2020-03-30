@@ -25,6 +25,31 @@ function Block(name) {
 }
 
 /**
+ * Represents a cache of a block level, contains data of all blocks bellow.
+ *
+ * @constructor
+ */
+function BlockCache()
+{
+	// People from all levels bellow (including from actual level)
+	this.people = [];
+
+	// All blocks bellow
+	this.blocks = [];
+}
+
+/**
+ * Build caches with reference to all elements in the levels bellow.
+ */
+Block.build.buildCache = function()
+{
+	this.traverse(undefined, function(block)
+	{
+		block.peopleCache = block.getAllPeople();
+	});
+};
+
+/**
  * Add sub block to this block.
  */
 Block.prototype.addSubBlock = function(block)

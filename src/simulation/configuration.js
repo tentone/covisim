@@ -19,7 +19,10 @@ function Configuration() {
 	// Start conditions for the simulation
 	this.start = {
 		// Number of people infected at the beginning of the simulation
-		infectedPeople: 1
+		suspects: 0,
+
+		// Number of people infected at the beginning of the simulation
+		infected: 1
 	};
 
 	// Foreign visit configuration (from outside the country, into a district)
@@ -28,34 +31,34 @@ function Configuration() {
 		dailyVisits: 1000,
 
 		// How many people a foreign person contacts with
-		dailyContact: 20,
+		dailyContact: 50,
 
-		// Probability of person being infected
+		// Probability of person being infected (0.01%)
 		infectedProbability: 0.00001,
 
-		// Probability of person being infected w/o symptoms
+		// Probability of person being infected w/o symptoms (0.1%)
 		infectedNoSymptomsProbability: 0.0001,
 	};
 
 	// Population movement
-	this.district = {
-		// How many people one people contacts with inside the district
-		dailyContact: 50,
+	this.movement = {
+		// How many people one people contacts with per day
+		peopleContact: 100,
 
-		// How many of contact with people outside the district
-		outsideContact: 10,
+		// Percentage of people in contact that are outside of the district.
+		outsideContact: 0.1,
 	};
 
 	// Disease configuration
 	this.disease = {
 		// Transmission configuration
-		transmissionNoSymptoms: 0.005,
+		transmissionNoSymptoms: 0.001,
 
 		// Transmission probability
 		transmission: 0.03,
 
 		// Probability of starting showing symptoms (applied on daily basis)
-		symptomsProbability: 0.065,
+		symptomsProbability: 0.06,
 
 		// Probability of recovery after being infected (applied on daily basis)
 		recoveryProbability: 0.015,
@@ -67,17 +70,28 @@ function Configuration() {
 	// Hospital configuration
 	this.hospital = {
 		// Total hospital capacity
-		capacity: 1000 // TODO <NOT BEING USED>
+		capacity: 1000, // TODO <NOT BEING USED>
 
+		// Hospital treatment ratio (applied to increase recovery probability and reduce death probability)
+		effectivenessRatio: 2.0 // TODO <NOT BEING USED>
 	};
 
 	// Measures adopted to control the disease
 	this.measures = {
-		// Infected people movement restriction (how much movement is removed to these people)
-		infectedMovementRestriction: 0.7,
+		// Limit all kind of movement outside of home // TODO <NOT BEING USED>
+		limitMovement: 0.0,
 
-		// Restrict movement between districts (how much is reduced)
-		districtMovementRestriction: 0.0
+		// Infected people movement restriction (how much is reduced)
+		limitInfectedMovement: 0.0,
+
+		// Restrict movement between districts (how much is reduced) applied to the district percentage
+		limitCrossDistrictMovement: 0.0,
+
+		// Limit foreign visitors
+		limitForeigners: 0.0,
+
+		// Reduce transmission probability (masks, disinfection, etc)
+		reduceTransmission: 0.0 // TODO <NOT BEING USED>
 	};
 }
 

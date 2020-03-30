@@ -17,6 +17,23 @@ function Database()
 }
 
 /**
+ * Store country data on database.
+ */
+Database.prototype.setData = function(code)
+{
+	this.countries.set(country.code, country);
+};
+
+
+/**
+ * Store country data on database.
+ */
+Database.prototype.storeCountry = function(country)
+{
+	this.countries.set(country.code, country);
+};
+
+/**
  * Check if a country exists in the database.
  */
 Database.prototype.hasCountry = function(code)
@@ -35,6 +52,24 @@ Database.prototype.getCountry = function(code)
 	}
 
 	return null;
+};
+
+/**
+ * Load data base from JSON file.
+ */
+Database.prototype.load = function()
+{
+	// TODO <ADD CODE HERE>
+};
+
+/**
+ * Store database data into a JSON object.
+ *
+ * Data is stored into array values.
+ */
+Database.prototype.store = function()
+{
+	// TODO <ADD CODE HERE>
 };
 
 export {Database};

@@ -3,6 +3,7 @@ import {Person, PersonStatus} from "./person";
 import {CovidData} from "../covid-data";
 import {RandomUtils} from "../utils/random-utils";
 import {Configuration} from "./configuration";
+import {MathUtils} from "../utils/math-utils";
 
 /**
  * Structure to run the simulation.
@@ -50,10 +51,8 @@ Simulation.prototype.reset = function() {
 		country.addSubBlock(districts);
 	}
 
-	country.traverse(undefined, function(block)
-	{
-		block.peopleCache = block.getAllPeople();
-	});
+	// Build people cache
+	country.buildCache();
 
 	// Infected people at beginning
 	for(var i = 0; i < this.config.start.infectedPeople; i++)
@@ -79,7 +78,8 @@ Simulation.prototype.step = function()
 	}
 
 	// Foreigners visit
-	for(var i = 0; i < this.config.foreign.dailyVisits; i++)
+	var foreigners = MathUtils.reduction(this.config.foreign.dailyVisits, this.config.measures.limitForeigners);
+	for(var i = 0; i < foreigners; i++)
 	{
 		let foreign = new Person();
 
@@ -93,15 +93,20 @@ Simulation.prototype.step = function()
 			var district = RandomUtils.randomElement(this.country.subBlocks);
 
 			// Contact with random people from the destination district
-			for(var j = 0; j < this.config.foreign.dailyContact; j++)
+			var contact = MathUtils.reduction(this.config.foreign.dailyContact, this.config.measures.limitMovement);
+			for(var j = 0; j < contact; j++)
 			{
 				foreign.contact(RandomUtils.randomElement(district.peopleCache), this.config);
 			}
 		}
 	}
 
-
 	// Traverse all persons from the country
+	/*for(var i = 0; i < this.country.peopleCache.length; i++)
+	{
+		this.country.peopleCache[i].step(this.config);
+	}*/
+
 	this.country.traverse((person) =>
 	{
 		person.step(this.config);

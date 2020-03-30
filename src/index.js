@@ -8,6 +8,7 @@ import {Simulation} from "./simulation/simulation";
 var pt, ita;
 var chart;
 var countries;
+var simulation = null;
 
 window.initialize = function()
 {
@@ -30,19 +31,22 @@ function createButton()
 {
 	var button = document.createElement("button");
 	button.onclick = runSimulation;
-	button.innerText = "Run Simulation";
+	button.innerText = "Run Simulation (10 steps)";
 	document.body.appendChild(button);
 }
 
 function runSimulation()
 {
-	var simulation = new Simulation();
-	simulation.date = new Date(pt[0].date);
-	simulation.reset();
-	console.log("Simulation reset ok.");
+	if(simulation === null)
+	{
+		simulation = new Simulation();
+		simulation.date = new Date(pt[0].date);
+		simulation.reset();
+		console.log("Simulation reset ok.");
+	}
 
 	var last = performance.now();
-	for(var i = 0; i < 30; i++)
+	for(var i = 0; i < 10; i++)
 	{
 		simulation.step();
 
@@ -52,6 +56,7 @@ function runSimulation()
 		last = time;
 	}
 
+	drawCovidData(chart, pt, "PT", false);
 	drawCovidData(chart, simulation.data, "Simulation", true);
 }
 
@@ -60,6 +65,8 @@ function createChart()
 	var canvas = document.createElement("canvas");
 	canvas.width = 1000;
 	canvas.height = 800;
+	canvas.style.width = "1000px";
+	canvas.style.height = "800px";
 	document.body.appendChild(canvas);
 
 	var context = canvas.getContext("2d");
@@ -70,7 +77,7 @@ function createChart()
 			datasets: []
 		},
 		options: {
-			responsive: true,
+			responsive: false,
 			maintainAspectRatio: false,
 			pan: {
 				enabled: true,
@@ -140,7 +147,6 @@ function drawCovidData(chart, data, title, append)
 		deaths.push({t: data[i].date, y: data[i].deaths});
 		suspects.push({t: data[i].date, y: data[i].suspects});
 	}
-
 
 	datasets.push({
 		label: title + " - Suspects",

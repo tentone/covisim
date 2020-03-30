@@ -1,4 +1,5 @@
 import {RandomUtils} from "../utils/random-utils";
+import {MathUtils} from "../utils/math-utils";
 
 /**
  * List of possible person status.
@@ -58,7 +59,7 @@ Person.prototype.contact = function(stranger, config) {
 /**
  * Simulate the daily contact with other people in the simulation world.
  */
-Person.prototype.dailyRoutine = function(config)
+Person.prototype.dailyMovement = function(config)
 {
 	// Only needs to perform if the person is not healthy
 	if(this.isInfected())
@@ -71,25 +72,24 @@ Person.prototype.dailyRoutine = function(config)
 		}
 
 		// Contact with people of the same district
-		var contact = config.district.dailyContact;
+		var contact = MathUtils.reduction(config.movement.peopleContact, config.measures.limitMovement);
+
 		if(this.status === PersonStatus.INFECTED)
 		{
-			contact -= contact * config.measures.infectedMovementRestriction;
-		}
-		for(var i = 0; i < contact; i++)
-		{
-			this.contact(RandomUtils.randomElement(this.block.parent.peopleCache), config);
+			contact = MathUtils.reduction(contact, config.measures.limitInfectedMovement);
 		}
 
-		// Contact with people in the country (in all districts).
-		var contact = config.district.outsideContact;
-		if(this.status === PersonStatus.INFECTED)
-		{
-			contact -= contact * config.measures.infectedMovementRestriction;
-		}
 		for(var i = 0; i < contact; i++)
 		{
-			this.contact(RandomUtils.randomElement(this.block.parent.parent.peopleCache), config);
+			if(RandomUtils.happens(config.movement.outsideContact))
+			{
+				this.contact(RandomUtils.randomElement(this.block.parent.parent.peopleCache), config);
+			}
+			else
+			{
+				this.contact(RandomUtils.randomElement(this.block.parent.peopleCache), config);
+			}
+		
 		}
 	}
 };
@@ -108,7 +108,7 @@ Person.prototype.step = function(config)
 	}
 
 	// Perform daily routine
-	this.dailyRoutine(config);
+	this.dailyMovement(config);
 
 	// Increase people time
 	this.days++;
@@ -116,9 +116,6 @@ Person.prototype.step = function(config)
 	// Increase infection time
 	if(this.status >= PersonStatus.INFECTED_NO_SYMPTOMS)
 	{
-		// Increment days since it was infected
-		this.daysInfected++;
-
 		// Person starts showing symptoms
 		if(this.status === PersonStatus.INFECTED_NO_SYMPTOMS && RandomUtils.happens(config.disease.symptomsProbability))
 		{
@@ -137,6 +134,9 @@ Person.prototype.step = function(config)
 				this.status = PersonStatus.DEATH;
 			}
 		}
+
+		// Increment days since it was infected
+		this.daysInfected++;
 	}
 };
 
