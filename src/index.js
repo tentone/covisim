@@ -13,6 +13,7 @@ var simulation = null;
 window.initialize = function()
 {
 	countries = Country.loadList();
+	console.log(countries);
 
 	pt = CovidData.getDSSGPT();
 	// console.log(pt);

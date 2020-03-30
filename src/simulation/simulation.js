@@ -55,12 +55,16 @@ Simulation.prototype.reset = function() {
 	country.buildCache();
 
 	// Infected people at beginning
-	for(var i = 0; i < this.config.start.infectedPeople; i++)
+	for(var i = 0; i < this.config.start.infected; i++)
 	{
-		var person = RandomUtils.randomElement(country.peopleCache);
-		person.status = PersonStatus.INFECTED_NO_SYMPTOMS;
+		RandomUtils.randomElement(country.peopleCache).status = PersonStatus.INFECTED;
+	}
+	for(var i = 0; i < this.config.start.infectedNoSymptoms; i++)
+	{
+		RandomUtils.randomElement(country.peopleCache).status = PersonStatus.INFECTED_NO_SYMPTOMS;
 	}
 
+	// Reset counters
 	this.day = 0;
 	this.data = [];
 	this.country = country;
@@ -102,15 +106,10 @@ Simulation.prototype.step = function()
 	}
 
 	// Traverse all persons from the country
-	/*for(var i = 0; i < this.country.peopleCache.length; i++)
+	for(var i = 0; i < this.country.peopleCache.length; i++)
 	{
 		this.country.peopleCache[i].step(this.config);
-	}*/
-
-	this.country.traverse((person) =>
-	{
-		person.step(this.config);
-	});
+	}
 
 	// Collect daily data
 	this.data.push(this.getData());

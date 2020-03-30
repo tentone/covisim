@@ -6,6 +6,9 @@
 function Configuration() {
 	// World configuration
 	this.world = {
+		// Start date of simulation
+		startDate: new Date(),
+
 		// Population of the simulation
 		population: 10e6,
 
@@ -19,10 +22,10 @@ function Configuration() {
 	// Start conditions for the simulation
 	this.start = {
 		// Number of people infected at the beginning of the simulation
-		suspects: 0,
+		infectedNoSymptoms: 0, // TODO <NOT BEING USED>
 
 		// Number of people infected at the beginning of the simulation
-		infected: 1
+		infected: 1 // TODO <NOT BEING USED>
 	};
 
 	// Foreign visit configuration (from outside the country, into a district)
@@ -78,7 +81,7 @@ function Configuration() {
 
 	// Measures adopted to control the disease
 	this.measures = {
-		// Limit all kind of movement outside of home // TODO <NOT BEING USED>
+		// Limit all kind of movement outside of home
 		limitMovement: 0.0,
 
 		// Infected people movement restriction (how much is reduced)

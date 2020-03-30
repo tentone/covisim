@@ -41,7 +41,7 @@ function BlockCache()
 /**
  * Build caches with reference to all elements in the levels bellow.
  */
-Block.build.buildCache = function()
+Block.prototype.buildCache = function()
 {
 	this.traverse(undefined, function(block)
 	{
