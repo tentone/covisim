@@ -2,6 +2,7 @@ import {Block} from "./block";
 import {Person, PersonStatus} from "./person";
 import {CovidData} from "../covid-data";
 import {RandomUtils} from "../utils/random-utils";
+import {Configuration} from "./configuration";
 
 /**
  * Structure to run the simulation.
@@ -9,74 +10,8 @@ import {RandomUtils} from "../utils/random-utils";
  * @constructor
  */
 function Simulation() {
-	// Population of the simulation
-	this.population = 10000;
-
-	// Number of districts in the simulation
-	this.districts = 20;
-
-	// Family size
-	this.familySize = 4;
-
-	// Start conditions for the simulation
-	this.startConditions = {
-		// Number of people infected at the beginning of the simulation
-		infectedPeople: 1
-	};
-
-	// Foreign visit configuration (from outside the country, into a district)
-	this.foreign = {
-		// Number of foreign visitors daily
-		dailyVisits: 1000,
-
-		// How many people a foreign person contacts with
-		dailyContact: 30,
-
-		// Probability of person being infected
-		infectedProbability: 0.00001,
-
-		// Probability of person being infected w/o symptoms
-		infectedNoSymptomsProbability: 0.001,
-	};
-
-	// Population movement
-	this.district = {
-		// How many people one people contacts with inside the district
-		dailyContact: 100,
-
-		// How many contact with people outside the district
-		outsideContact: 20,
-	};
-
-	// Disease configuration
-	this.disease = {
-		// Transmission configuration
-		transmissionNoSymptoms: 0.001,
-		transmission: 0.03,
-
-		// Probability of recovery
-		recoveryProbability: 0.22,
-
-		// Probability of starting showing symptoms today
-		symptomsProbability: 0.01,
-
-		// Probability of recovery today
-		treatmentProbability: 0.01,
-
-		// Probability of death today
-		deathProbability: 0.002,
-	};
-
-	// Hospital capacity
-	this.hospitalCapacity = {
-		// TODO <ADD CODE HERE>
-	};
-
-	// Measures adopted to control the disease
-	this.measures = {
-		// Infected people movement restriction
-		infectedMovementRestriction: 0.0,
-	};
+	// Configuration
+	this.config = new Configuration();
 
 	// Country of the simulation
 	this.country = null;
@@ -95,17 +30,17 @@ function Simulation() {
  * Reset simulation create structure.
  */
 Simulation.prototype.reset = function() {
-	var homes = (this.population / this.familySize) / this.districts;
+	var homes = (this.config.world.population / this.config.world.familySize) / this.config.world.districts;
 	var country = new Block("Country");
 
-	for(var i = 0; i < this.districts; i++)
+	for(var i = 0; i < this.config.world.districts; i++)
 	{
 		var districts = new Block("District " + i);
 
 		for(var j = 0; j < homes; j++)
 		{
 			var home = new Block("Home " + i + "-" + j);
-			for(var k = 0; k < this.familySize; k++)
+			for(var k = 0; k < this.config.world.familySize; k++)
 			{
 				home.addPerson(new Person());
 			}
@@ -121,10 +56,10 @@ Simulation.prototype.reset = function() {
 	});
 
 	// Infected people at beginning
-	for(var i = 0; i < this.startConditions.infectedPeople; i++)
+	for(var i = 0; i < this.config.start.infectedPeople; i++)
 	{
 		var person = RandomUtils.randomElement(country.peopleCache);
-		person.status = PersonStatus.INFECTED;
+		person.status = PersonStatus.INFECTED_NO_SYMPTOMS;
 	}
 
 	this.day = 0;
@@ -143,24 +78,24 @@ Simulation.prototype.step = function()
 		return;
 	}
 
-	// Foreigners
-	for(var i = 0; i < this.foreign.dailyVisits; i++)
+	// Foreigners visit
+	for(var i = 0; i < this.config.foreign.dailyVisits; i++)
 	{
 		let foreign = new Person();
 
 		// Check if foreign person is infected
-		if(RandomUtils.happens(this.foreign.infectedProbability)) { foreign.status = PersonStatus.INFECTED; }
-		else if(RandomUtils.happens(this.foreign.infectedNoSymptomsProbability)) { foreign.status = PersonStatus.INFECTED_NO_SYMPTOMS; }
+		if(RandomUtils.happens(this.config.foreign.infectedProbability)) { foreign.status = PersonStatus.INFECTED; }
+		else if(RandomUtils.happens(this.config.foreign.infectedNoSymptomsProbability)) { foreign.status = PersonStatus.INFECTED_NO_SYMPTOMS; }
 
 		if(foreign.isInfected())
 		{
 			// Select a random destination district
 			var district = RandomUtils.randomElement(this.country.subBlocks);
 
-			// Contact with random people from one
-			for(var j = 0; j < this.foreign.dailyContact; j++)
+			// Contact with random people from the destination district
+			for(var j = 0; j < this.config.foreign.dailyContact; j++)
 			{
-				Person.contact(foreign, RandomUtils.randomElement(district.peopleCache), this);
+				foreign.contact(RandomUtils.randomElement(district.peopleCache), this);
 			}
 		}
 	}
@@ -169,33 +104,10 @@ Simulation.prototype.step = function()
 	// Traverse all persons from the country
 	this.country.traverse((person) =>
 	{
-		// Contact with other people at home
-		var peopleHome = person.block.peopleCache;
-		for(var i = 0; i < peopleHome.length; i++)
-		{
-			Person.contact(person, peopleHome[i], this);
-		}
-
-		// Contact with people of the same district
-		var peopleDistrict = person.block.parent.peopleCache;
-		for(var i = 0; i < this.district.dailyContact; i++)
-		{
-			let stranger = RandomUtils.randomElement(peopleDistrict);
-			Person.contact(person, stranger, this);
-		}
-
-		// Contact with people outside of district
-		var peopleCountry = person.block.parent.parent.peopleCache;
-		for(var i = 0; i < this.district.outsideContact; i++)
-		{
-			let stranger = RandomUtils.randomElement(peopleCountry);
-			Person.contact(person, stranger, this);
-		}
-
-		person.step(this);
+		person.step(this.config);
 	});
 
-
+	// Collect daily data
 	this.data.push(this.getData());
 	this.nextDay();
 };

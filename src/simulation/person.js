@@ -15,7 +15,7 @@ var PersonStatus = {
  * Represents a person in the simulation.
  */
 function Person() {
-	// Block that this person belongs to
+	// Block that this person is placed in
 	this.block = null;
 
 	// Status of the person regarding its health (starts as healthy)
@@ -29,23 +29,6 @@ function Person() {
 }
 
 /**
- * Simulate contact between two persons. Check if person a with infect person b, based on simulation parameters.
- */
-Person.contact = function (a, b, simulation) {
-	if(b.status === PersonStatus.HEALTHY)
-	{
-		if(a.status === PersonStatus.INFECTED_NO_SYMPTOMS && RandomUtils.happens(simulation.disease.transmissionNoSymptoms))
-		{
-			b.status = PersonStatus.INFECTED_NO_SYMPTOMS;
-		}
-		else if(a.status === PersonStatus.INFECTED && RandomUtils.happens(simulation.disease.transmission))
-		{
-			b.status = PersonStatus.INFECTED_NO_SYMPTOMS;
-		}
-	}
-};
-
-/**
  * Check if this person is infected (w/ or w/o symptoms).
  *
  * @returns {boolean} True if the person is infeceted.
@@ -56,11 +39,67 @@ Person.prototype.isInfected = function()
 };
 
 /**
+ * Simulate contact between two persons. Check if person a with infect person b, based on simulation parameters.
+ */
+Person.prototype.contact = function(stranger, config) {
+	if(stranger.status === PersonStatus.HEALTHY)
+	{
+		if(this.status === PersonStatus.INFECTED_NO_SYMPTOMS && RandomUtils.happens(config.disease.transmissionNoSymptoms))
+		{
+			stranger.status = PersonStatus.INFECTED_NO_SYMPTOMS;
+		}
+		else if(this.status === PersonStatus.INFECTED && RandomUtils.happens(config.disease.transmission))
+		{
+			stranger.status = PersonStatus.INFECTED_NO_SYMPTOMS;
+		}
+	}
+};
+
+/**
+ * Simulate the daily contact with other people in the simulation world.
+ */
+Person.prototype.dailyRoutine = function(config)
+{
+	// Only needs to perform if the person is not healthy
+	if(this.isInfected())
+	{
+		// Contact with other people at home
+		var peopleHome = this.block.people;
+		for(var i = 0; i < peopleHome.length; i++)
+		{
+			this.contact(peopleHome[i], config);
+		}
+
+		// Contact with people of the same district
+		var contact = config.district.dailyContact;
+		if(this.status === PersonStatus.INFECTED)
+		{
+			contact -= contact * config.measures.infectedMovementRestriction;
+		}
+		for(var i = 0; i < contact; i++)
+		{
+			this.contact(RandomUtils.randomElement(this.block.parent.peopleCache), config);
+		}
+
+		// Contact with people in the country (in all districts).
+		var contact = config.district.outsideContact;
+		if(this.status === PersonStatus.INFECTED)
+		{
+			contact -= contact * config.measures.infectedMovementRestriction;
+		}
+		for(var i = 0; i < contact; i++)
+		{
+			this.contact(RandomUtils.randomElement(this.block.parent.parent.peopleCache), config);
+		}
+	}
+};
+
+/**
  * Perform a step in this person life representing a day of activity.
  *
- * @param simulation Simulation object (to extract configuration)
+ * @param config Simulation object (to extract configuration)
  */
-Person.prototype.step = function(simulation)
+Person.prototype.step = function(config)
 {
 	// If person is death just skip it
 	if(this.status === PersonStatus.DEATH)
@@ -68,27 +107,32 @@ Person.prototype.step = function(simulation)
 		return;
 	}
 
+	// Perform daily routine
+	this.dailyRoutine(config);
+
 	// Increase people time
 	this.days++;
 
 	// Increase infection time
 	if(this.status >= PersonStatus.INFECTED_NO_SYMPTOMS)
 	{
+		// Increment days since it was infected
 		this.daysInfected++;
 
 		// Person starts showing symptoms
-		if(this.status === PersonStatus.INFECTED_NO_SYMPTOMS && RandomUtils.happens(simulation.disease.symptomsProbability))
+		if(this.status === PersonStatus.INFECTED_NO_SYMPTOMS && RandomUtils.happens(config.disease.symptomsProbability))
 		{
 			this.status = PersonStatus.INFECTED;
 		}
 
+		// Probability of dying or recovering from infection
 		if(this.status === PersonStatus.INFECTED)
 		{
-			if(RandomUtils.happens(simulation.disease.treatmentProbability))
+			if(RandomUtils.happens(config.disease.recoveryProbability))
 			{
 				this.status = PersonStatus.RECOVERED;
 			}
-			else if(RandomUtils.happens(simulation.disease.deathProbability))
+			else if(RandomUtils.happens(config.disease.deathProbability))
 			{
 				this.status = PersonStatus.DEATH;
 			}

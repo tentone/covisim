@@ -5,38 +5,58 @@ import {Country} from "./country.js";
 import {CovidData} from "./covid-data.js"
 import {Simulation} from "./simulation/simulation";
 
-window.initialize = function() {
-	var countries = Country.loadList();
-	console.log(countries);
+var pt, ita;
+var chart;
+var countries;
 
-	var pt = CovidData.getDSSGPT();
-	console.log(pt);
+window.initialize = function()
+{
+	countries = Country.loadList();
 
-	var ita = CovidData.getPCMDPCITA();
-	console.log(ita);
+	pt = CovidData.getDSSGPT();
+	// console.log(pt);
 
-	var simulation = new Simulation();
-	simulation.date = new Date(pt[0].date);
-	simulation.reset();
+	ita = CovidData.getPCMDPCITA();
+	// console.log(ita);
 
-	for(var i = 0; i < 500; i++)
-	{
-		simulation.step();
-	}
+	createButton();
 
-	var ratio = countries.map.get("PRT").population / simulation.population;
-	for(var i = 0; i < simulation.data.length; i++)
-	{
-		simulation.data[i].multiplyScalar(ratio);
-	}
-
-	var chart = createChart();
-	drawCovidData(chart, pt, "PT", false);
-	drawCovidData(chart, simulation.data, "Simulation", true);
+	chart = createChart();
+	drawCovidData(chart, pt, "PT", true);
 	// drawCovidData(chart, ita, "ITA", true);
 };
 
-function createChart() {
+function createButton()
+{
+	var button = document.createElement("button");
+	button.onclick = runSimulation;
+	button.innerText = "Run Simulation";
+	document.body.appendChild(button);
+}
+
+function runSimulation()
+{
+	var simulation = new Simulation();
+	simulation.date = new Date(pt[0].date);
+	simulation.reset();
+	console.log("Simulation reset ok.");
+
+	var last = performance.now();
+	for(var i = 0; i < 30; i++)
+	{
+		simulation.step();
+
+		// Log time to console
+		var time = performance.now();
+		console.log("Simulation step " + i + " finished (" + (time - last) + "ms)");
+		last = time;
+	}
+
+	drawCovidData(chart, simulation.data, "Simulation", true);
+}
+
+function createChart()
+{
 	var canvas = document.createElement("canvas");
 	canvas.width = 1000;
 	canvas.height = 800;
@@ -105,7 +125,8 @@ function createChart() {
 	return chart;
 }
 
-function drawCovidData(chart, data, title, append) {
+function drawCovidData(chart, data, title, append)
+{
 	let datasets = [];
 
 	let infected = [];

@@ -49,7 +49,7 @@ function Country()
 	this.population = 0;
 
 	/**
-	 * Populational age distribution in percentage.
+	 * Population age distribution in percentage by age range.
 	 */
 	this.age = [];
 
