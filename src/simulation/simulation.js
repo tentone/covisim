@@ -11,10 +11,10 @@ import {MathUtils} from "../utils/math-utils";
  * @constructor
  */
 function Simulation() {
-	// Configuration
+	// Configuration of the simulation
 	this.config = new Configuration();
 
-	// Country of the simulation
+	// Country of the simulation (block instance)
 	this.country = null;
 
 	// Days of simulation
@@ -65,6 +65,7 @@ Simulation.prototype.reset = function() {
 	}
 
 	// Reset counters
+	this.date = new Date(this.config.date);
 	this.day = 0;
 	this.data = [];
 	this.country = country;
@@ -106,9 +107,9 @@ Simulation.prototype.step = function()
 	}
 
 	// Traverse all persons from the country
-	for(var i = 0; i < this.country.peopleCache.length; i++)
+	for(var k = 0; k < this.country.peopleCache.length; k++)
 	{
-		this.country.peopleCache[i].step(this.config);
+		this.country.peopleCache[k].step(this, this.config);
 	}
 
 	// Collect daily data

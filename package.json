@@ -15,6 +15,7 @@
     "csv-js": "^1.0.0"
   },
   "devDependencies": {
+    "eslint": "^6.8.0",
     "@babel/core": "^7.9.0",
     "babel-loader": "^8.1.0",
     "babel-preset-env": "^1.7.0",

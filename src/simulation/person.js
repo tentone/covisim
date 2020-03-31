@@ -27,6 +27,9 @@ function Person() {
 
 	// Days since the person was infected.
 	this.daysInfected = 0;
+
+	// In hospital
+	this.inHospital = false;
 }
 
 /**
@@ -97,9 +100,10 @@ Person.prototype.dailyMovement = function(config)
 /**
  * Perform a step in this person life representing a day of activity.
  *
- * @param config Simulation object (to extract configuration)
+ * @param simulation Simulation environment where the person is placed.
+ * @param config Configuration of the simulation.
  */
-Person.prototype.step = function(config)
+Person.prototype.step = function(simulation, config)
 {
 	// If person is death just skip it
 	if(this.status === PersonStatus.DEATH)

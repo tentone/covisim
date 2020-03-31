@@ -22,10 +22,10 @@ function Configuration() {
 	// Start conditions for the simulation
 	this.start = {
 		// Number of people infected at the beginning of the simulation
-		infectedNoSymptoms: 0, // TODO <NOT BEING USED>
+		infectedNoSymptoms: 0,
 
 		// Number of people infected at the beginning of the simulation
-		infected: 1 // TODO <NOT BEING USED>
+		infected: 1
 	};
 
 	// Foreign visit configuration (from outside the country, into a district)
@@ -94,7 +94,13 @@ function Configuration() {
 		limitForeigners: 0.0,
 
 		// Reduce transmission probability (masks, disinfection, etc)
-		reduceTransmission: 0.0 // TODO <NOT BEING USED>
+		reduceTransmission: 0.0, // TODO <NOT BEING USED>
+
+		// Increase capacity of the hospital (number of beds)
+		hospitalCapacityIncrease: 0.0, // TODO <NOT BEING USED>
+
+		// Improve treatment effectiveness of the hospital (ventilators, material etc)
+		hospitalEffectivenessImprovement: 0.0 // TODO <NOT BEING USED>
 	};
 }
 
