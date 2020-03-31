@@ -41,7 +41,7 @@ function runSimulation()
 	if(simulation === null)
 	{
 		simulation = new Simulation();
-		simulation.date = new Date(pt[0].date);
+		simulation.config.date = new Date(pt[0].date);
 		simulation.reset();
 		console.log("Simulation reset ok.");
 	}

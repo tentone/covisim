@@ -9,7 +9,7 @@
  */
 function Block(name) {
 	// Cache of all person in this level and bellow
-	this.peopleCache = [];
+	this.cache = null;
 
 	// Block level name (useful for debug purposes)
 	this.name = name ||  "";
@@ -35,7 +35,7 @@ function BlockCache()
 	this.people = [];
 
 	// All blocks bellow
-	this.blocks = [];
+	this.blocks = null;
 }
 
 /**
@@ -45,7 +45,8 @@ Block.prototype.buildCache = function()
 {
 	this.traverse(undefined, function(block)
 	{
-		block.peopleCache = block.getAllPeople();
+		block.cache = new BlockCache();
+		block.cache.people = block.getAllPeople();
 	});
 };
 

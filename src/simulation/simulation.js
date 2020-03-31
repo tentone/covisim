@@ -6,7 +6,9 @@ import {Configuration} from "./configuration";
 import {MathUtils} from "../utils/math-utils";
 
 /**
- * Structure to run the simulation.
+ * Structure to run the simulation, contains all the simulation structure and logic to process simulation by step.
+ *
+ * Each step represents a day of simulation, and after each day the
  *
  * @constructor
  */
@@ -16,6 +18,9 @@ function Simulation() {
 
 	// Country of the simulation (block instance)
 	this.country = null;
+
+	// Amount of people in hospital (counter)
+	this.hospital = 0;
 
 	// Days of simulation
 	this.day = 0;
@@ -57,11 +62,11 @@ Simulation.prototype.reset = function() {
 	// Infected people at beginning
 	for(var i = 0; i < this.config.start.infected; i++)
 	{
-		RandomUtils.randomElement(country.peopleCache).status = PersonStatus.INFECTED;
+		RandomUtils.randomElement(country.cache.people).status = PersonStatus.INFECTED;
 	}
 	for(var i = 0; i < this.config.start.infectedNoSymptoms; i++)
 	{
-		RandomUtils.randomElement(country.peopleCache).status = PersonStatus.INFECTED_NO_SYMPTOMS;
+		RandomUtils.randomElement(country.cache.people).status = PersonStatus.INFECTED_NO_SYMPTOMS;
 	}
 
 	// Reset counters
@@ -69,6 +74,7 @@ Simulation.prototype.reset = function() {
 	this.day = 0;
 	this.data = [];
 	this.country = country;
+	this.hospital = 0;
 };
 
 /**
@@ -101,15 +107,15 @@ Simulation.prototype.step = function()
 			var contact = MathUtils.reduction(this.config.foreign.dailyContact, this.config.measures.limitMovement);
 			for(var j = 0; j < contact; j++)
 			{
-				foreign.contact(RandomUtils.randomElement(district.peopleCache), this.config);
+				foreign.contact(RandomUtils.randomElement(district.cache.people), this, this.config);
 			}
 		}
 	}
 
 	// Traverse all persons from the country
-	for(var k = 0; k < this.country.peopleCache.length; k++)
+	for(var k = 0; k < this.country.cache.people.length; k++)
 	{
-		this.country.peopleCache[k].step(this, this.config);
+		this.country.cache.people[k].step(this, this.config);
 	}
 
 	// Collect daily data
@@ -137,13 +143,14 @@ Simulation.prototype.getData = function()
 	data.infected = 0;
 	data.recovered = 0;
 
-	this.country.traverse(function(person)
+	for(var k = 0; k < this.country.cache.people.length; k++)
 	{
+		var person = this.country.cache.people[k];
 		if(person.status === PersonStatus.DEATH) {data.deaths++;}
 		if(person.status === PersonStatus.INFECTED) {data.infected++;}
 		if(person.status === PersonStatus.INFECTED_NO_SYMPTOMS) {data.suspects++;}
 		if(person.status === PersonStatus.RECOVERED) {data.recovered++;}
-	});
+	}
 
 	return data;
 };

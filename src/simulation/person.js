@@ -25,9 +25,6 @@ function Person() {
 	// How many days the person if running in the simulation
 	this.days = 0;
 
-	// Days since the person was infected.
-	this.daysInfected = 0;
-
 	// In hospital
 	this.inHospital = false;
 }
@@ -45,14 +42,28 @@ Person.prototype.isInfected = function()
 /**
  * Simulate contact between two persons. Check if person a with infect person b, based on simulation parameters.
  */
-Person.prototype.contact = function(stranger, config) {
+Person.prototype.contact = function(stranger, simulation, config)
+{
+	// Healthy people can ge the virus easily
 	if(stranger.status === PersonStatus.HEALTHY)
 	{
-		if(this.status === PersonStatus.INFECTED_NO_SYMPTOMS && RandomUtils.happens(config.disease.transmissionNoSymptoms))
+		if(this.status === PersonStatus.INFECTED_NO_SYMPTOMS && RandomUtils.happens(MathUtils.reduction(config.disease.transmissionNoSymptoms, config.measures.reduceTransmission)))
 		{
 			stranger.status = PersonStatus.INFECTED_NO_SYMPTOMS;
 		}
-		else if(this.status === PersonStatus.INFECTED && RandomUtils.happens(config.disease.transmission))
+		else if(this.status === PersonStatus.INFECTED && RandomUtils.happens(MathUtils.reduction(config.disease.transmission, config.measures.reduceTransmission)))
+		{
+			stranger.status = PersonStatus.INFECTED_NO_SYMPTOMS;
+		}
+	}
+	// Recovered people have lower probability of getting the virus again (but there is some probability of happening).
+	else if(stranger.status === PersonStatus.RECOVERED)
+	{
+		if(this.status === PersonStatus.INFECTED_NO_SYMPTOMS && RandomUtils.happens(config.disease.transmissionRecovered * MathUtils.reduction(config.disease.transmissionNoSymptoms, config.measures.reduceTransmission)))
+		{
+			stranger.status = PersonStatus.INFECTED_NO_SYMPTOMS;
+		}
+		else if(this.status === PersonStatus.INFECTED && RandomUtils.happens(config.disease.transmissionRecovered * MathUtils.reduction(config.disease.transmission, config.measures.reduceTransmission)))
 		{
 			stranger.status = PersonStatus.INFECTED_NO_SYMPTOMS;
 		}
@@ -62,7 +73,7 @@ Person.prototype.contact = function(stranger, config) {
 /**
  * Simulate the daily contact with other people in the simulation world.
  */
-Person.prototype.dailyMovement = function(config)
+Person.prototype.dailyMovement = function(simulation, config)
 {
 	// Only needs to perform if the person is not healthy
 	if(this.isInfected())
@@ -71,7 +82,7 @@ Person.prototype.dailyMovement = function(config)
 		var peopleHome = this.block.people;
 		for(var i = 0; i < peopleHome.length; i++)
 		{
-			this.contact(peopleHome[i], config);
+			this.contact(peopleHome[i], simulation, config);
 		}
 
 		// Contact with people of the same district
@@ -86,13 +97,12 @@ Person.prototype.dailyMovement = function(config)
 		{
 			if(RandomUtils.happens(config.movement.outsideContact))
 			{
-				this.contact(RandomUtils.randomElement(this.block.parent.parent.peopleCache), config);
+				this.contact(RandomUtils.randomElement(this.block.parent.parent.cache.people), simulation, config);
 			}
 			else
 			{
-				this.contact(RandomUtils.randomElement(this.block.parent.peopleCache), config);
+				this.contact(RandomUtils.randomElement(this.block.parent.cache.people), simulation, config);
 			}
-		
 		}
 	}
 };
@@ -112,36 +122,67 @@ Person.prototype.step = function(simulation, config)
 	}
 
 	// Perform daily routine
-	this.dailyMovement(config);
+	this.dailyMovement(simulation, config);
 
 	// Increase people time
 	this.days++;
 
-	// Increase infection time
-	if(this.status >= PersonStatus.INFECTED_NO_SYMPTOMS)
+	// Person starts showing symptoms
+	if(this.status === PersonStatus.INFECTED_NO_SYMPTOMS)
 	{
-		// Person starts showing symptoms
-		if(this.status === PersonStatus.INFECTED_NO_SYMPTOMS && RandomUtils.happens(config.disease.symptomsProbability))
+		if(RandomUtils.happens(config.disease.symptomsProbability))
 		{
 			this.status = PersonStatus.INFECTED;
 		}
-
-		// Probability of dying or recovering from infection
-		if(this.status === PersonStatus.INFECTED)
+	}
+	// Probability of dying or recovering from infection
+	else if(this.status === PersonStatus.INFECTED)
+	{
+		// If not in hospital try to get in hospital
+		if(!this.inHospital)
 		{
-			if(RandomUtils.happens(config.disease.recoveryProbability))
-			{
-				this.status = PersonStatus.RECOVERED;
-			}
-			else if(RandomUtils.happens(config.disease.deathProbability))
-			{
-				this.status = PersonStatus.DEATH;
-			}
+			this.enterHospital(simulation, config);
 		}
 
-		// Increment days since it was infected
-		this.daysInfected++;
+		// Check if recoveries today
+		if(RandomUtils.happens(config.disease.recoveryProbability * config.hospital.effectiveness))
+		{
+			this.status = PersonStatus.RECOVERED;
+			this.leaveHospital(simulation, config);
+		}
+		// Check if dies today
+		else if(RandomUtils.happens(config.disease.deathProbability / config.hospital.effectiveness))
+		{
+			this.status = PersonStatus.DEATH;
+			this.leaveHospital(simulation, config);
+		}
 	}
+};
+
+/**
+ * Person try to enter in the hospital (check the limit of the hospital before).
+ *
+ * @param simulation
+ * @param config
+ */
+Person.prototype.enterHospital = function(simulation, config)
+{
+	if (simulation.hospital < (config.hospital.capacity + config.measures.hospitalExtraCapacity)) {
+		simulation.hospital++;
+		this.inHospital = true;
+	}
+};
+
+/**
+ * Leave the hospital (after recovery or death).
+ *
+ * @param simulation
+ * @param config
+ */
+Person.prototype.leaveHospital = function(simulation, config)
+{
+	simulation.hospital--;
+	this.inHospital = false;
 };
 
 export {Person, PersonStatus};

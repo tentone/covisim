@@ -10,7 +10,7 @@ function Configuration() {
 		startDate: new Date(),
 
 		// Population of the simulation
-		population: 10e6,
+		population: 10000, // 10e6,
 
 		// Number of districts (cities or provinces) in the simulation
 		districts: 156,
@@ -31,16 +31,16 @@ function Configuration() {
 	// Foreign visit configuration (from outside the country, into a district)
 	this.foreign = {
 		// Number of foreign visitors daily
-		dailyVisits: 1000,
+		dailyVisits: 10000,
 
 		// How many people a foreign person contacts with
 		dailyContact: 50,
 
 		// Probability of person being infected (0.01%)
-		infectedProbability: 0.00001,
+		infectedProbability: 0.0001,
 
 		// Probability of person being infected w/o symptoms (0.1%)
-		infectedNoSymptomsProbability: 0.0001,
+		infectedNoSymptomsProbability: 0.001,
 	};
 
 	// Population movement
@@ -60,23 +60,26 @@ function Configuration() {
 		// Transmission probability
 		transmission: 0.03,
 
+		// Transmission probability variation to people that have recovered
+		transmissionRecovered: 0.01,
+
 		// Probability of starting showing symptoms (applied on daily basis)
 		symptomsProbability: 0.06,
 
 		// Probability of recovery after being infected (applied on daily basis)
-		recoveryProbability: 0.015,
+		recoveryProbability: 0.03,
 
 		// Probability of death (applied on daily basis)
-		deathProbability: 0.01,
+		deathProbability: 0.02,
 	};
 
 	// Hospital configuration
 	this.hospital = {
 		// Total hospital capacity
-		capacity: 1000, // TODO <NOT BEING USED>
+		capacity: 1000,
 
-		// Hospital treatment ratio (applied to increase recovery probability and reduce death probability)
-		effectivenessRatio: 2.0 // TODO <NOT BEING USED>
+		// Hospital treatment ratio (applied to increase (multiplied) recovery probability and reduce (divides) death probability)
+		effectiveness: 2.0
 	};
 
 	// Measures adopted to control the disease
@@ -94,13 +97,10 @@ function Configuration() {
 		limitForeigners: 0.0,
 
 		// Reduce transmission probability (masks, disinfection, etc)
-		reduceTransmission: 0.0, // TODO <NOT BEING USED>
+		reduceTransmission: 0.0,
 
-		// Increase capacity of the hospital (number of beds)
-		hospitalCapacityIncrease: 0.0, // TODO <NOT BEING USED>
-
-		// Improve treatment effectiveness of the hospital (ventilators, material etc)
-		hospitalEffectivenessImprovement: 0.0 // TODO <NOT BEING USED>
+		// Increase capacity of the hospital (extra number of beds)
+		hospitalExtraCapacity: 0
 	};
 }
 
