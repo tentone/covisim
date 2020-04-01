@@ -13,12 +13,12 @@ var simulation = null;
 window.initialize = function()
 {
 	countries = Country.loadList();
-	console.log(countries);
+	// console.log(countries);
 
 	pt = CovidData.getDSSGPT();
 	// console.log(pt);
 
-	ita = CovidData.getPCMDPCITA();
+	// ita = CovidData.getPCMDPCITA();
 	// console.log(ita);
 
 	createButton();
@@ -64,10 +64,10 @@ function runSimulation()
 function createChart()
 {
 	var canvas = document.createElement("canvas");
-	canvas.width = 1000;
+	canvas.width = 1400;
 	canvas.height = 800;
-	canvas.style.width = "1000px";
-	canvas.style.height = "800px";
+	canvas.style.width = canvas.width + "px";
+	canvas.style.height = canvas.height + "px";
 	document.body.appendChild(canvas);
 
 	var context = canvas.getContext("2d");

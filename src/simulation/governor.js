@@ -34,18 +34,12 @@ Governor.prototype.step = function(simulation, config)
 		var diff = last.diff(simulation.data[simulation.data.length - (this.frequency)]);
 
 		// Emergency state
-		if(last.infected > 100) {
-			config.measures.limitMovement = 0.3;
-			config.measures.limitInfectedMovement = 0.8;
+		/*if(last.infected > 50) {
+			config.measures.limitMovement = 0.5;
+			config.measures.limitInfectedMovement = 0.5;
 			config.measures.limitCrossDistrictMovement = 0.5;
-			config.measures.limitForeigners = 0.7;
-		}
-
-		// Improve hospital capacity when diff includes to many deaths
-		if(diff.deaths > 100) {
-			config.measures.hospitalExtraCapacity = 2000;
-			config.measures.reduceTransmission = 0.4;
-		}
+			config.measures.limitForeigners = 0.5;
+		}*/
 
 		this.last = diff;
 	}
