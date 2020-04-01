@@ -10,7 +10,7 @@ function Configuration() {
 		startDate: new Date(),
 
 		// Population of the simulation
-		population: 13e6,
+		population: 10e4, //13e6,
 
 		// Number of districts (cities or provinces) in the simulation
 		districts: 156,
@@ -67,7 +67,7 @@ function Configuration() {
 		symptomsProbability: 0.06,
 
 		// Probability of recovery after being infected (applied on daily basis)
-		recoveryProbability: 0.03,
+		recoveryProbability: 0.025,
 
 		// Probability of death (applied on daily basis)
 		deathProbability: 0.02,

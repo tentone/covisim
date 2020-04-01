@@ -4,6 +4,7 @@ import {CovidData} from "../covid-data";
 import {RandomUtils} from "../utils/random-utils";
 import {Configuration} from "./configuration";
 import {MathUtils} from "../utils/math-utils";
+import {Governor} from "./governor";
 
 /**
  * Structure to run the simulation, contains all the simulation structure and logic to process simulation by step.
@@ -18,6 +19,9 @@ function Simulation() {
 
 	// Country of the simulation (block instance)
 	this.country = null;
+
+	// Governor that controls the measures applied to prevent the disease
+	this.governor = null;
 
 	// Amount of people in hospital (counter)
 	this.hospital = 0;
@@ -71,6 +75,7 @@ Simulation.prototype.reset = function() {
 
 	// Reset counters
 	this.date = new Date(this.config.date);
+	this.governor = new Governor();
 	this.day = 0;
 	this.data = [];
 	this.country = country;
@@ -120,6 +125,11 @@ Simulation.prototype.step = function()
 
 	// Collect daily data
 	this.data.push(this.getData());
+
+	// Let the governor analyse data
+	this.governor.step(this, this.config);
+
+	// Move to next day
 	this.nextDay();
 };
 

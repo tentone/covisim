@@ -37,6 +37,22 @@ function CovidData(date, day)
 	this.suspects = null;
 }
 
+
+/**
+ * Calculate the diff between two days of covid data.
+ *
+ * Assuming this to be the most recent data. Returns a new CovidData object with the diff values.
+ */
+CovidData.prototype.diff = function(last)
+{
+	var diff = new CovidData(this.date, this.day - last.day);
+	diff.infected = this.infected - last.infected;
+	diff.recovered = this.recovered - last.recovered;
+	diff.deaths = this.deaths - last.deaths;
+	diff.suspects = this.suspects - last.suspects;
+	return diff;
+};
+
 /**
  * Multiply data fields by a scalar (useful to compare data from different countries).
  *
@@ -54,10 +70,17 @@ CovidData.prototype.multiplyScalar = function(scalar)
 
 // Read covid 19 data from CSSE (Global data)
 CovidData.getCSSE = function() {
-	// https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
-	// https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv
-};
+	var infected = FileUtils.readFile("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", true);
+	infected = CSV.parse(infected);
 
+	var deaths = FileUtils.readFile("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv", true);
+	deaths = CSV.parse(deaths);
+
+	var recovered = FileUtils.readFile("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv", true);
+	recovered = CSV.parse(recovered);
+
+	console.log(infected, deaths, recovered);
+};
 
 // Read covid 19 data from DSSG-PT (official Portuguese data)
 CovidData.getDSSGPT = function() {
