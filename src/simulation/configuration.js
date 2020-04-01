@@ -49,16 +49,16 @@ function Configuration() {
 		peopleContact: 100,
 
 		// Percentage of people in contact that are outside of the district.
-		outsideContact: 0.1,
+		outsideContact: 0.2,
 	};
 
 	// Disease configuration
 	this.disease = {
 		// Transmission configuration
-		transmissionNoSymptoms: 0.001,
+		transmissionNoSymptoms: 0.01,
 
 		// Transmission probability
-		transmission: 0.03,
+		transmission: 0.05,
 
 		// Transmission probability variation to people that have recovered
 		transmissionRecovered: 0.01,
@@ -85,19 +85,19 @@ function Configuration() {
 	// Measures adopted to control the disease
 	this.measures = {
 		// Limit all kind of movement outside of home
-		limitMovement: 0.0,
+		limitMovement: 0.6,
 
 		// Infected people movement restriction (how much is reduced)
-		limitInfectedMovement: 0.0,
+		limitInfectedMovement: 0.7,
 
 		// Restrict movement between districts (how much is reduced) applied to the district percentage
-		limitCrossDistrictMovement: 0.0,
+		limitCrossDistrictMovement: 0.2,
 
 		// Limit foreign visitors
-		limitForeigners: 0.0,
+		limitForeigners: 0.5,
 
 		// Reduce transmission probability (masks, disinfection, etc)
-		reduceTransmission: 0.0,
+		reduceTransmission: 0.4,
 
 		// Increase capacity of the hospital (extra number of beds)
 		hospitalExtraCapacity: 0
