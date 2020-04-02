@@ -27,6 +27,9 @@ function Person() {
 
 	// In hospital
 	this.inHospital = false;
+
+	// Person age will affect its death probability and recovery rate
+	this.age = 0;
 }
 
 /**

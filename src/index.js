@@ -1,7 +1,7 @@
 import "chart.js";
 import "hammerjs";
 import "chartjs-plugin-zoom";
-import {Country} from "./country.js";
+import {Country} from "./country/country.js";
 import {CovidData} from "./covid-data.js"
 import {Simulation} from "./simulation/simulation";
 

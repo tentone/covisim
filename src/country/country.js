@@ -1,10 +1,11 @@
 import CSV from "csv-js";
-import Countries from './data/countries.csv';
-import Population from './data/population.csv';
-import GPS from './data/gps.csv';
-import Ages14 from './data/ages14.csv';
-import Ages1564 from './data/ages15-64.csv';
-import Ages65 from './data/ages65.csv';
+import Countries from '../data/countries.csv';
+import Population from '../data/population.csv';
+import GPS from '../data/gps.csv';
+import Ages14 from '../data/ages14.csv';
+import Ages1564 from '../data/ages15-64.csv';
+import Ages65 from '../data/ages65.csv';
+import {AgeRange} from "./age-range";
 
 /**
  * Country stores everything related to the country, name, GPS position population data etc.
@@ -62,25 +63,6 @@ function Country()
 	 * GPS longitude position of the country.
 	 */
 	this.longitude = null;
-}
-
-/**
- * Structure to store population age data.
- *
- * @param min Min age range of this entry.
- * @param max Max age range of this entry.
- * @param percentage Percentage of population in this Age range.
- */
-function PopulationAge(min, max, percentage)
-{
-	// Min age range of this entry.
-	this.min = min;
-
-	// Max age range of this entry.
-	this.max = max;
-
-	// Percentage of population in this category
-	this.percentage = percentage;
 }
 
 /**
@@ -152,9 +134,9 @@ Country.loadList = function () {
 			{
 				if(countries[j].code === country)
 				{
-					countries[j].age.push(new PopulationAge(0, 14, Number.parseFloat(rows14[i][3])));
-					countries[j].age.push(new PopulationAge(15, 64, Number.parseFloat(rows1564[i][3])));
-					countries[j].age.push(new PopulationAge(65, 110, Number.parseFloat(rows65[i][3])));
+					countries[j].age.push(new AgeRange(1, 14, Number.parseFloat(rows14[i][3])));
+					countries[j].age.push(new AgeRange(15, 64, Number.parseFloat(rows1564[i][3])));
+					countries[j].age.push(new AgeRange(65, 90, Number.parseFloat(rows65[i][3])));
 				}
 			}
 		}

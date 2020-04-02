@@ -54,11 +54,11 @@ function Configuration() {
 
 	// Disease configuration
 	this.disease = {
-		// Transmission configuration
-		transmissionNoSymptoms: 0.01,
+		// Transmission probability while showing no symptoms (according to statista show be around 1.5%)
+		transmissionNoSymptoms: 0.015,
 
-		// Transmission probability
-		transmission: 0.05,
+		// Transmission probability while showing symptoms (according to statista show be around 3.5%)
+		transmission: 0.035,
 
 		// Transmission probability variation to people that have recovered
 		transmissionRecovered: 0.01,
@@ -76,7 +76,7 @@ function Configuration() {
 	// Hospital configuration
 	this.hospital = {
 		// Total hospital capacity
-		capacity: 1000,
+		capacity: 10000,
 
 		// Hospital treatment ratio (applied to increase (multiplied) recovery probability and reduce (divides) death probability)
 		effectiveness: 2.0
@@ -85,22 +85,22 @@ function Configuration() {
 	// Measures adopted to control the disease
 	this.measures = {
 		// Limit all kind of movement outside of home
-		limitMovement: 0.6,
+		limitMovement: 0.0, //0.6,
 
 		// Infected people movement restriction (how much is reduced)
-		limitInfectedMovement: 0.7,
+		limitInfectedMovement: 0.0, //0.7,
 
 		// Restrict movement between districts (how much is reduced) applied to the district percentage
-		limitCrossDistrictMovement: 0.2,
+		limitCrossDistrictMovement: 0.0, //0.2,
 
 		// Limit foreign visitors
-		limitForeigners: 0.5,
+		limitForeigners: 0.0, //0.5,
 
 		// Reduce transmission probability (masks, disinfection, etc)
-		reduceTransmission: 0.4,
+		reduceTransmission: 0.0, //0.4,
 
 		// Increase capacity of the hospital (extra number of beds)
-		hospitalExtraCapacity: 0
+		hospitalExtraCapacity: 0.0, //0
 	};
 }
 
