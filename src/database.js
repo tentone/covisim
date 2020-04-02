@@ -24,7 +24,6 @@ Database.prototype.setData = function(code)
 	this.countries.set(country.code, country);
 };
 
-
 /**
  * Store country data on database.
  */

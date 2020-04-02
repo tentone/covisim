@@ -30,11 +30,11 @@ Governor.prototype.step = function(simulation, config)
 	}
 	else if(this.days % this.frequency === 0)
 	{
-		var last = simulation.data[simulation.data.length - 1];
-		var diff = last.diff(simulation.data[simulation.data.length - (this.frequency)]);
+		var raw = simulation.data[simulation.data.length - 1];
+		var diff = raw.diff(simulation.data[simulation.data.length - (this.frequency)]);
 
 		// Emergency state
-		/*if(last.infected > 50) {
+		/*if(raw.infected > 50) {
 			config.measures.limitMovement = 0.5;
 			config.measures.limitInfectedMovement = 0.5;
 			config.measures.limitCrossDistrictMovement = 0.5;
