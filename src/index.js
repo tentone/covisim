@@ -32,7 +32,7 @@ function createButton()
 {
 	var button = document.createElement("button");
 	button.onclick = runSimulation;
-	button.innerText = "Run Simulation (10 steps)";
+	button.innerText = "Run Simulation (Year)";
 	document.body.appendChild(button);
 }
 
@@ -47,7 +47,7 @@ function runSimulation()
 	}
 
 	var last = performance.now();
-	for(var i = 0; i < 10; i++)
+	for(var i = 0; i < 365; i++)
 	{
 		simulation.step();
 

@@ -67,7 +67,10 @@ function Configuration() {
 		symptomsProbability: 0.07,
 
 		// Probability of death (applied when the person gets infected)
-		deathProbability: 0.05, // TODO <ADJUST TO AGE>
+		deathProbability: 0.1,
+
+		// Minimum time to recovery
+		recoveryMinimumTime: 8,
 
 		// Probability of recovery today after being infected (applied on daily basis)
 		recoveryDailyProbability: 0.01,

@@ -23,7 +23,10 @@ function Person() {
 	this.status = PersonStatus.HEALTHY;
 
 	// How many days the person if running in the simulation
-	this.days = 0;
+	this.day = 0;
+
+	// Day when the person was infected
+	this.dayInfection = -1;
 
 	// Indicates if the person is in the hospital.
 	this.inHospital = false;
@@ -131,7 +134,7 @@ Person.prototype.step = function(simulation, config)
 	this.dailyMovement(simulation, config);
 
 	// Increase people time
-	this.days++;
+	this.day++;
 
 	// Person starts showing symptoms
 	if(this.status === PersonStatus.INFECTED_NO_SYMPTOMS)
@@ -139,8 +142,9 @@ Person.prototype.step = function(simulation, config)
 		if(RandomUtils.happens(config.disease.symptomsProbability))
 		{
 			this.status = PersonStatus.INFECTED;
+			this.dayInfection = this.day;
 
-			// If not in hospital try to get in hospital
+			// Try to get in the hospital (if there is space available)
 			this.tryHospital(simulation, config);
 
 			// Determine if the person is going to die
@@ -163,7 +167,7 @@ Person.prototype.step = function(simulation, config)
 		// Check if recoveries today
 		else
 		{
-			if(RandomUtils.happens(config.disease.recoveryDailyProbability ))
+			if(((this.day - this.dayInfection) > config.disease.recoveryMinimumTime) && RandomUtils.happens(config.disease.recoveryDailyProbability))
 			{
 				this.status = PersonStatus.RECOVERED;
 				this.leaveHospital(simulation, config);
