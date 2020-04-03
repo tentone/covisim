@@ -8,13 +8,16 @@
 function Governor()
 {
 	// Actuation frequency of the governor in days. It takes action each n days.
-	this.frequency = 5;
+	this.frequency = 3;
 
 	// Number of days of the governor in the simulation.
 	this.days = 0;
 
 	// Last values for reference
 	this.last = null;
+
+	// Lockdown stage
+	this.stage = 0;
 }
 
 /**
@@ -33,13 +36,23 @@ Governor.prototype.step = function(simulation, config)
 		var raw = simulation.data[simulation.data.length - 1];
 		var diff = raw.diff(simulation.data[simulation.data.length - (this.frequency)]);
 
-		// Emergency state
-		/*if(raw.infected > 50) {
+		// Emergency First Stage (PT)
+		if(this.stage === 0 && raw.infected > 10) {
 			config.measures.limitMovement = 0.5;
-			config.measures.limitInfectedMovement = 0.5;
+			config.measures.limitInfectedMovement = 0.8;
 			config.measures.limitCrossDistrictMovement = 0.5;
-			config.measures.limitForeigners = 0.5;
-		}*/
+			config.measures.limitForeigners = 0.6;
+			this.stage++;
+		}
+
+		// Emergency Second Stage (PT)
+		if(this.stage === 1 && raw.deaths > 100) {
+			config.measures.limitMovement = 0.6;
+			config.measures.limitInfectedMovement = 0.9;
+			config.measures.limitCrossDistrictMovement = 0.8;
+			config.measures.limitForeigners = 0.9;
+			this.stage++;
+		}
 
 		this.last = diff;
 	}

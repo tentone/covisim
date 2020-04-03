@@ -31,46 +31,49 @@ function Configuration() {
 	// Foreign visit configuration (from outside the country, into a district)
 	this.foreign = {
 		// Number of foreign visitors daily
-		dailyVisits: 10000,
+		dailyVisits: 0, // 1e4,
 
 		// How many people a foreign person contacts with
-		dailyContact: 50,
+		dailyContact: 25,
 
 		// Probability of person being infected (0.01%)
-		infectedProbability: 0.0001,
+		infectedProbability: 0.001,
 
 		// Probability of person being infected w/o symptoms (0.1%)
-		infectedNoSymptomsProbability: 0.001,
+		infectedNoSymptomsProbability: 0.01,
 	};
 
 	// Population movement
 	this.movement = {
 		// How many people one people contacts with per day
-		peopleContact: 100,
+		peopleContact: 25,
 
 		// Percentage of people in contact that are outside of the district.
-		outsideContact: 0.2,
+		outsideContact: 0.1,
 	};
 
 	// Disease configuration
 	this.disease = {
-		// Transmission probability while showing no symptoms (according to statista show be around 1.5%)
+		// Transmission probability while showing no symptoms (according to "statista" show be around 1.5%)
 		transmissionNoSymptoms: 0.015,
 
-		// Transmission probability while showing symptoms (according to statista show be around 3.5%)
+		// Transmission probability while showing symptoms (according to "statista" show be around 3.5%)
 		transmission: 0.035,
 
 		// Transmission probability variation to people that have recovered
-		transmissionRecovered: 0.01,
+		transmissionRecovered: 0.0,
 
-		// Probability of starting showing symptoms (applied on daily basis)
-		symptomsProbability: 0.06,
+		// Probability of starting showing symptoms (applied on daily basis).
+		symptomsProbability: 0.07,
 
-		// Probability of recovery after being infected (applied on daily basis)
-		recoveryProbability: 0.025,
+		// Probability of death (applied when the person gets infected)
+		deathProbability: 0.05, // TODO <ADJUST TO AGE>
 
-		// Probability of death (applied on daily basis)
-		deathProbability: 0.02,
+		// Probability of recovery today after being infected (applied on daily basis)
+		recoveryDailyProbability: 0.01,
+
+		// Probability of death today after being infected (applied on daily basis)
+		deathDailyProbability: 0.08,
 	};
 
 	// Hospital configuration
@@ -78,29 +81,29 @@ function Configuration() {
 		// Total hospital capacity
 		capacity: 10000,
 
-		// Hospital treatment ratio (applied to increase (multiplied) recovery probability and reduce (divides) death probability)
-		effectiveness: 2.0
+		// Hospital treatment ratio (death probability divided by this value if beds are available)
+		effectiveness: 1.5
 	};
 
 	// Measures adopted to control the disease
 	this.measures = {
 		// Limit all kind of movement outside of home
-		limitMovement: 0.0, //0.6,
+		limitMovement: 0.0,
 
 		// Infected people movement restriction (how much is reduced)
-		limitInfectedMovement: 0.0, //0.7,
+		limitInfectedMovement: 0.0,
 
 		// Restrict movement between districts (how much is reduced) applied to the district percentage
-		limitCrossDistrictMovement: 0.0, //0.2,
+		limitCrossDistrictMovement: 0.0,
 
-		// Limit foreign visitors
-		limitForeigners: 0.0, //0.5,
+		// Limit foreign visitors (close airports, etc)
+		limitForeigners: 0.0,
 
 		// Reduce transmission probability (masks, disinfection, etc)
-		reduceTransmission: 0.0, //0.4,
+		reduceTransmission: 0.0,
 
 		// Increase capacity of the hospital (extra number of beds)
-		hospitalExtraCapacity: 0.0, //0
+		hospitalExtraCapacity: 0,
 	};
 }
 

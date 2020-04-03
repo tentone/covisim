@@ -25,8 +25,11 @@ function Person() {
 	// How many days the person if running in the simulation
 	this.days = 0;
 
-	// In hospital
+	// Indicates if the person is in the hospital.
 	this.inHospital = false;
+
+	// Indicates if the person is going to die because of the infection.
+	this.goingToDie = false;
 
 	// Person age will affect its death probability and recovery rate
 	this.age = 0;
@@ -60,7 +63,7 @@ Person.prototype.contact = function(stranger, simulation, config)
 		}
 	}
 	// Recovered people have lower probability of getting the virus again (but there is some probability of happening).
-	else if(stranger.status === PersonStatus.RECOVERED)
+	else if(config.disease.transmissionRecovered > 0.0 && stranger.status === PersonStatus.RECOVERED)
 	{
 		if(this.status === PersonStatus.INFECTED_NO_SYMPTOMS && RandomUtils.happens(config.disease.transmissionRecovered * MathUtils.reduction(config.disease.transmissionNoSymptoms, config.measures.reduceTransmission)))
 		{
@@ -136,28 +139,35 @@ Person.prototype.step = function(simulation, config)
 		if(RandomUtils.happens(config.disease.symptomsProbability))
 		{
 			this.status = PersonStatus.INFECTED;
+
+			// If not in hospital try to get in hospital
+			this.tryHospital(simulation, config);
+
+			// Determine if the person is going to die
+			var deathProbability = this.inHospital ? (config.disease.deathProbability / config.hospital.effectiveness) : config.disease.deathProbability;
+			this.goingToDie = RandomUtils.happens(deathProbability);
 		}
 	}
 	// Probability of dying or recovering from infection
 	else if(this.status === PersonStatus.INFECTED)
 	{
-		// If not in hospital try to get in hospital
-		if(!this.inHospital)
-		{
-			this.enterHospital(simulation, config);
-		}
-
-		// Check if recoveries today
-		if(RandomUtils.happens(config.disease.recoveryProbability * config.hospital.effectiveness))
-		{
-			this.status = PersonStatus.RECOVERED;
-			this.leaveHospital(simulation, config);
-		}
 		// Check if dies today
-		else if(RandomUtils.happens(config.disease.deathProbability / config.hospital.effectiveness))
+		if(this.goingToDie)
 		{
-			this.status = PersonStatus.DEATH;
-			this.leaveHospital(simulation, config);
+			if(RandomUtils.happens(config.disease.deathDailyProbability))
+			{
+				this.status = PersonStatus.DEATH;
+				this.leaveHospital(simulation, config);
+			}
+		}
+		// Check if recoveries today
+		else
+		{
+			if(RandomUtils.happens(config.disease.recoveryDailyProbability ))
+			{
+				this.status = PersonStatus.RECOVERED;
+				this.leaveHospital(simulation, config);
+			}
 		}
 	}
 };
@@ -168,9 +178,10 @@ Person.prototype.step = function(simulation, config)
  * @param simulation
  * @param config
  */
-Person.prototype.enterHospital = function(simulation, config)
+Person.prototype.tryHospital = function(simulation, config)
 {
-	if (simulation.hospital < (config.hospital.capacity + config.measures.hospitalExtraCapacity)) {
+	if(!this.inHospital && (simulation.hospital < (config.hospital.capacity + config.measures.hospitalExtraCapacity)))
+	{
 		simulation.hospital++;
 		this.inHospital = true;
 	}
@@ -184,8 +195,11 @@ Person.prototype.enterHospital = function(simulation, config)
  */
 Person.prototype.leaveHospital = function(simulation, config)
 {
-	simulation.hospital--;
-	this.inHospital = false;
+	if(this.inHospital)
+	{
+		simulation.hospital--;
+		this.inHospital = false;
+	}
 };
 
 export {Person, PersonStatus};
