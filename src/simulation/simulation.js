@@ -1,6 +1,6 @@
 import {Block} from "./block";
 import {Person, PersonStatus} from "./person";
-import {CovidData} from "../covid-data";
+import {CovidData} from "../database/covid-data";
 import {RandomUtils} from "../utils/random-utils";
 import {Configuration} from "./configuration";
 import {MathUtils} from "../utils/math-utils";

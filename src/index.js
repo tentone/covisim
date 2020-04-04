@@ -1,38 +1,36 @@
 import "chart.js";
 import "hammerjs";
 import "chartjs-plugin-zoom";
-import {Country} from "./country/country.js";
-import {CovidData} from "./covid-data.js"
+import {Country} from "./database/country.js";
+import {CovidData} from "./database/covid-data.js"
 import {Simulation} from "./simulation/simulation";
+import {Database} from "./database/database";
+import {Sources} from "./sources";
 
-var pt, ita;
 var chart;
-var countries;
 var simulation = null;
+var database = new Database();
 
 window.initialize = function()
 {
-	countries = Country.loadList();
-	// console.log(countries);
+	Country.loadList(database);
+	Sources.fetchDSSGPT(database);
+	Sources.fetchPCMDPCITA(database);
 
-	pt = CovidData.getDSSGPT();
-	// console.log(pt);
-
-	// ita = CovidData.getPCMDPCITA();
-	// console.log(ita);
+	console.log(database);
 
 	createButton();
 
 	chart = createChart();
-	drawCovidData(chart, pt, "PT", true);
-	// drawCovidData(chart, ita, "ITA", true);
+	drawCovidData(chart, database.getCovidCases("PRT"), "PRT", true);
+	drawCovidData(chart, database.getCovidCases("ITA"), "ITA", true);
 };
 
 function createButton()
 {
 	var button = document.createElement("button");
 	button.onclick = runSimulation;
-	button.innerText = "Run Simulation (Year)";
+	button.innerText = "Run";
 	document.body.appendChild(button);
 }
 
@@ -41,13 +39,13 @@ function runSimulation()
 	if(simulation === null)
 	{
 		simulation = new Simulation();
-		simulation.config.date = new Date(pt[0].date);
+		simulation.config.date = new Date(2020, 1, 25);
 		simulation.reset();
 		console.log("Simulation reset ok.");
 	}
 
 	var last = performance.now();
-	for(var i = 0; i < 365; i++)
+	for(var i = 0; i < 10; i++)
 	{
 		simulation.step();
 
@@ -57,7 +55,7 @@ function runSimulation()
 		last = time;
 	}
 
-	drawCovidData(chart, pt, "PT", false);
+	drawCovidData(chart, database.getCovidCases("PRT"), "PRT", false);
 	drawCovidData(chart, simulation.data, "Simulation", true);
 }
 
@@ -135,52 +133,38 @@ function createChart()
 
 function drawCovidData(chart, data, title, append)
 {
-	let datasets = [];
+	var timeseries = CovidData.generateTimeseries(data);
 
-	let infected = [];
-	let recovered = [];
-	let deaths = [];
-	let suspects = [];
-
-	for (let i = 0; i < data.length; i++) {
-		infected.push({t: data[i].date, y: data[i].infected});
-		recovered.push({t: data[i].date, y: data[i].recovered});
-		deaths.push({t: data[i].date, y: data[i].deaths});
-		suspects.push({t: data[i].date, y: data[i].suspects});
-	}
-
-	datasets.push({
-		label: title + " - Suspects",
-		backgroundColor: "rgba(47,180,254, 0.3)",
-		borderColor: "rgb(47,180,254)",
-		fill: true,
-		data: suspects
-	});
-
-	datasets.push({
-		label: title + " - Infected",
-		backgroundColor: "rgba(254, 123, 5, 0.3)",
-		borderColor: "rgba(254, 123, 5, 1)",
-		fill: true,
-		data: infected
-	});
-
-	datasets.push({
-		label: title + " - Deaths",
-		backgroundColor: "rgba(254,0,34, 0.3)",
-		borderColor: "rgb(254,0,34)",
-		fill: true,
-		data: deaths
-	});
-
-
-	datasets.push({
-		label: title + " - Recovered",
-		backgroundColor: "rgba(50,254,0, 0.3)",
-		borderColor: "rgb(50,254,0)",
-		fill: true,
-		data: recovered
-	});
+	let datasets = [
+		{
+			label: title + " - Suspects",
+			backgroundColor: "rgba(47,180,254, 0.3)",
+			borderColor: "rgb(47,180,254)",
+			fill: true,
+			data: timeseries.suspects
+		},
+		{
+			label: title + " - Infected",
+			backgroundColor: "rgba(254, 123, 5, 0.3)",
+			borderColor: "rgba(254, 123, 5, 1)",
+			fill: true,
+			data: timeseries.infected
+		},
+		{
+			label: title + " - Deaths",
+			backgroundColor: "rgba(254,0,34, 0.3)",
+			borderColor: "rgb(254,0,34)",
+			fill: true,
+			data: timeseries.deaths
+		},
+		{
+			label: title + " - Recovered",
+			backgroundColor: "rgba(50,254,0, 0.3)",
+			borderColor: "rgb(50,254,0)",
+			fill: true,
+			data: timeseries.recovered
+		}
+	];
 
 	chart.data.datasets = append ? chart.data.datasets.concat(datasets) : datasets;
 	chart.update();

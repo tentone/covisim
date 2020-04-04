@@ -70,10 +70,7 @@ function Country()
  *
  * Returns a array and a map of countries indexed by their 3 char code.
  */
-Country.loadList = function () {
-	var countries = [];
-	var map = new Map();
-
+Country.loadList = function(database) {
 	// List of all countries
 	var rows = CSV.parse(Countries);
 	for(var i = 1; i < rows.length; i++)
@@ -86,21 +83,17 @@ Country.loadList = function () {
 		country.continent = rows[i][29];
 		country.capital = rows[i][28];
 
-		countries.push(country);
-		map.set(country.code, country);
+		database.storeCountry(country);
 	}
 
 	// Population figure by country as of 2016
 	var rows = CSV.parse(Population);
 	for(var i = 1; i < rows.length; i++)
 	{
-		var country = rows[i][1];
-		for(var j = 0; j < countries.length; j++)
+		var country = database.getCountry(rows[i][1]);
+		if(country !== null)
 		{
-			if(countries[j].code === country)
-			{
-				countries[j].population = Number.parseInt(rows[i][2], 10);
-			}
+			country.population = Number.parseInt(rows[i][2], 10);
 		}
 	}
 
@@ -108,15 +101,11 @@ Country.loadList = function () {
 	var rows = CSV.parse(GPS);
 	for(var i = 1; i < rows.length; i++)
 	{
-		var country = rows[i][0];
-
-		for(var j = 0; j < countries.length; j++)
+		var country = database.getCountry(rows[i][0]);
+		if(country !== null)
 		{
-			if(countries[j].codeAlt === country)
-			{
-				countries[j].latitude = Number.parseFloat(rows[i][1]);
-				countries[j].longitude = Number.parseFloat(rows[i][2]);
-			}
+			country.latitude = Number.parseFloat(rows[i][1]);
+			country.longitude = Number.parseFloat(rows[i][2]);
 		}
 	}
 
@@ -126,23 +115,18 @@ Country.loadList = function () {
 	var rows65 = CSV.parse(Ages65);
 	for(var i = 1; i < rows14.length; i++)
 	{
-		var country = rows14[i][1];
 		var year = Number.parseInt(rows14[i][2]);
 		if(year === 2016)
 		{
-			for(var j = 0; j < countries.length; j++)
+			var country = database.getCountry(rows14[i][1]);
+			if(country !== null)
 			{
-				if(countries[j].code === country)
-				{
-					countries[j].age.push(new AgeRange(1, 14, Number.parseFloat(rows14[i][3])));
-					countries[j].age.push(new AgeRange(15, 64, Number.parseFloat(rows1564[i][3])));
-					countries[j].age.push(new AgeRange(65, 90, Number.parseFloat(rows65[i][3])));
-				}
+				country.age.push(new AgeRange(1, 14, Number.parseFloat(rows14[i][3])));
+				country.age.push(new AgeRange(15, 64, Number.parseFloat(rows1564[i][3])));
+				country.age.push(new AgeRange(65, 90, Number.parseFloat(rows65[i][3])));
 			}
 		}
 	}
-
-	return {list: countries, map: map};
 };
 
 export {Country};
