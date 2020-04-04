@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --open --config config/browser/webpack.dev.js",
-    "node": "webpack --config config/node/webpack.node.js",
+    "node": "webpack --config config/node/webpack.node.js & node dist/bundle.js",
     "build": "webpack --config config/browser/webpack.prod.js"
   },
   "author": "",

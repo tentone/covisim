@@ -2,7 +2,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const webpack = require('webpack');
 
-const context = path.resolve(__dirname, "..");
+const context = path.resolve(__dirname, "../..");
 const src = context + "/src";
 const dist = context + "/dist";
 
