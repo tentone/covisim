@@ -1,8 +1,9 @@
-const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
+const webpack = require('webpack');
+
 const context = path.resolve(__dirname, "..");
 const src = context + "/src";
-const assets = context + "/assets";
 const dist = context + "/dist";
 
 module.exports = {
@@ -38,7 +39,7 @@ module.exports = {
 			},
 			{
 				test: /\.csv$/,
-				use: 'raw-loader',
+				use: "raw-loader",
 			},
 			{
 				test: /\.(png|svg|jpg|gif|jpeg|xlsx)$/,
@@ -55,12 +56,10 @@ module.exports = {
 		],
 	},
 	resolve: {
-		modules: [src, assets, "node_modules"]
+		modules: [src, "node_modules"]
 	},
 	plugins: [
-		new HtmlWebpackPlugin({
-			title: "Covid19",
-			template: "index.html"
-		})
+		new webpack.ProgressPlugin(),
+		new HtmlWebpackPlugin({title: "Covid19", template: "index.html"})
 	]
 };
