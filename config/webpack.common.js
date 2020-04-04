@@ -1,6 +1,5 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-
 const context = path.resolve(__dirname, "..");
 const src = context + "/src";
 const assets = context + "/assets";

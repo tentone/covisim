@@ -1,9 +1,13 @@
-import {ArraybufferUtils} from "./arraybuffer-utils.js";
-
 /**
  * File utils contains file manipulation utils.
  */
 function FileUtils() {}
+
+try {
+	FileUtils.fs = require("fs");
+}
+catch(e){}
+
 
 /**
  * Read file data from URL, using XHR.
@@ -16,30 +20,73 @@ function FileUtils() {}
  * @return Data read if in sync mode.
  */
 FileUtils.readFile = function(fname, sync, onLoad, onProgress, onError) {
-	if (sync === undefined) {
+	if(sync === undefined)
+	{
 		sync = true;
 	}
 
-	const file = new XMLHttpRequest();
-	file.overrideMimeType("text/plain");
-	file.open("GET", fname, !sync);
+	// NodeJS
+	if(FileUtils.fs !== undefined && !FileUtils.isRemote(fname))
+	{
+		if(sync === true)
+		{
+			var data = FileUtils.fs.readFileSync(fname, "utf8");
 
-	if (onLoad !== undefined) {
-		file.onload = function () {
-			onLoad(file.response);
-		};
+			if(onLoad !== undefined)
+			{
+				onLoad(data);
+			}
+
+			return data;
+		}
+		else
+		{
+			FileUtils.fs.readFile(fname, "utf8", function(error, data)
+			{
+				if(error !== null)
+				{
+					if(onError !== undefined)
+					{
+						onError(error);
+					}
+				}
+				else if(onLoad !== undefined)
+				{
+					onLoad(data);
+				}
+			});
+
+			return null;
+		}
 	}
+	// Browser
+	else
+	{
+		var file = new XMLHttpRequest();
+		file.overrideMimeType("text/plain");
+		file.open("GET", fname, !sync);
 
-	if (onProgress !== undefined) {
-		file.onprogress = onProgress;
+		if(onLoad !== undefined)
+		{
+			file.onload = function()
+			{
+				onLoad(file.response);
+			};
+		}
+
+		if(onProgress !== undefined)
+		{
+			file.onprogress = onProgress;
+		}
+		if(onError !== undefined)
+		{
+			file.onerror = onError;
+		}
+
+		file.send(null);
+
+		return sync === true ? file.response : null;
 	}
-	if (onError !== undefined) {
-		file.onerror = onError;
-	}
-
-	file.send(null);
-
-	return sync === true ? file.response : null;
 };
 
 /**
@@ -47,72 +94,54 @@ FileUtils.readFile = function(fname, sync, onLoad, onProgress, onError) {
  *
  * @param fname File name.
  * @param data CovidData to be written into the file.
+ * @param sync
+ * @param onFinish
  */
-FileUtils.writeFile = function(fname, data) {
-	if (typeof data === "object") {
-		data = JSON.stringify(data, null, "\t");
+FileUtils.writeFile = function(fname, data, sync, onFinish) {
+	if(FileUtils.fs !== undefined)
+	{
+		if(FileUtils.fs.writeFileSync !== undefined)
+		{
+			if(sync !== false)
+			{
+				FileUtils.fs.writeFileSync(fname, data, "utf8");
+				if(onFinish !== undefined)
+				{
+					onFinish();
+				}
+			}
+			else
+			{
+				FileUtils.fs.writeFile(fname, data, "utf8", onFinish);
+			}
+		}
+		else
+		{
+			var stream = FileUtils.fs.createWriteStream(fname, "utf8");
+			stream.write(data);
+			stream.end();
+		}
 	}
+	else
+	{
+		var blob = new Blob([data], {type:"octet/stream"});
 
-	const blob = new Blob([data], {type: "octet/stream"});
+		var download = document.createElement("a");
+		download.download = fname;
+		download.href = window.URL.createObjectURL(blob);
+		download.style.display = "none";
+		download.onclick = function()
+		{
+			document.body.removeChild(this);
+		};
+		document.body.appendChild(download);
+		download.click();
 
-	const download = document.createElement("a");
-	download.download = fname;
-	download.href = window.URL.createObjectURL(blob);
-	download.style.display = "none";
-	download.onclick = function () {
-		// @ts-ignore
-		document.body.removeChild(this);
-	};
-	document.body.appendChild(download);
-
-	download.click();
-};
-
-/**
- * Write a base64 encoded file to a blob and download it to the client.
- *
- * @param fname File name.
- * @param data CovidData to be written into the file.
- */
-FileUtils.writeFileBase64 = function(fname, data) {
-	if (typeof data === "object") {
-		data = JSON.stringify(data, null, "\t");
+		if(onFinish !== undefined)
+		{
+			onFinish();
+		}
 	}
-
-	var array = ArraybufferUtils.fromBase64(data);
-	var blob = new Blob([array]);
-
-	var download = document.createElement("a");
-	download.download = fname;
-	download.href = window.URL.createObjectURL(blob);
-	download.onclick = function() {
-		// @ts-ignore
-		document.body.removeChild(this);
-	};
-	download.style.display = "none";
-	document.body.appendChild(download);
-	download.click();
-};
-
-/**
- * Write binary file using array buffer data.
- *
- * @param fname File name
- * @param data CovidData to be written
- */
-FileUtils.writeFileArrayBuffer = function(fname, data) {
-	const blob = new Blob([data]);
-
-	const download = document.createElement("a");
-	download.download = fname;
-	download.href = window.URL.createObjectURL(blob);
-	download.style.display = "none";
-	download.onclick = function () {
-		// @ts-ignore
-		document.body.removeChild(this);
-	};
-	document.body.appendChild(download);
-	download.click();
 };
 
 /**
@@ -157,7 +186,7 @@ FileUtils.chooseFile = function(onLoad, filter, multiple) {
  * If input is a/b/c/abc.d output is abc.
  *
  * @param file File path
- * @return File name without path and extension
+ * @return string name without path and extension
  */
 FileUtils.getFileName = function(file) {
 	if (file !== undefined) {
