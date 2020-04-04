@@ -47,8 +47,8 @@ Database.prototype.getCovidCases = function(code)
  */
 Database.prototype.storeCountry = function(country)
 {
-	this.countries.push(country);
 	this.countriesMap.set(country.code, country);
+	this.countries.push(country);
 };
 
 /**
@@ -85,7 +85,7 @@ Database.prototype.getCountry = function(code)
 
 	for(var i = 0; i < this.countries.length; i++)
 	{
-		if(this.countries[i].codeAlt === code || this.countries[i].name === code)
+		if(this.countries[i].code === code || this.countries[i].codeAlt === code || this.countries[i].name === code)
 		{
 			return this.countries[i];
 		}

@@ -84,27 +84,27 @@ Person.prototype.contact = function(stranger, simulation, config)
  */
 Person.prototype.dailyMovement = function(simulation, config)
 {
-	// Only needs to perform if the person is not healthy
+	// Only needs to perform if the person is infected
 	if(this.isInfected())
 	{
-		// Contact with other people at home
+		// Contact with family (this is not reduced by any measures)
 		var peopleHome = this.block.people;
 		for(var i = 0; i < peopleHome.length; i++)
 		{
 			this.contact(peopleHome[i], simulation, config);
 		}
 
-		// Contact with people of the same district
+		// Contact with other people
 		var contact = MathUtils.reduction(config.movement.peopleContact, config.measures.limitMovement);
-
 		if(this.status === PersonStatus.INFECTED)
 		{
 			contact = MathUtils.reduction(contact, config.measures.limitInfectedMovement);
 		}
 
-		for(var i = 0; i < contact; i++)
+		let crossDistrictContact = MathUtils.reduction(config.movement.outsideContact, config.measures.limitCrossDistrictMovement);
+		for(var i = 0; i <= contact; i++)
 		{
-			if(RandomUtils.happens(config.movement.outsideContact))
+			if(RandomUtils.happens(crossDistrictContact))
 			{
 				this.contact(RandomUtils.randomElement(this.block.parent.parent.cache.people), simulation, config);
 			}
@@ -148,8 +148,7 @@ Person.prototype.step = function(simulation, config)
 			this.tryHospital(simulation, config);
 
 			// Determine if the person is going to die
-			var deathProbability = this.inHospital ? (config.disease.deathProbability / config.hospital.effectiveness) : config.disease.deathProbability;
-			this.goingToDie = RandomUtils.happens(deathProbability);
+			this.goingToDie = this.checkGoingToDie(config);
 		}
 	}
 	// Probability of dying or recovering from infection
@@ -158,7 +157,7 @@ Person.prototype.step = function(simulation, config)
 		// Check if dies today
 		if(this.goingToDie)
 		{
-			if(RandomUtils.happens(config.disease.deathDailyProbability))
+			if(((this.day - this.dayInfection) > config.disease.deathTime.min) && RandomUtils.happens(config.disease.deathTime.dailyProbability))
 			{
 				this.status = PersonStatus.DEATH;
 				this.leaveHospital(simulation, config);
@@ -167,7 +166,7 @@ Person.prototype.step = function(simulation, config)
 		// Check if recoveries today
 		else
 		{
-			if(((this.day - this.dayInfection) > config.disease.recoveryMinimumTime) && RandomUtils.happens(config.disease.recoveryDailyProbability))
+			if(((this.day - this.dayInfection) > config.disease.recoveryTime.min) && RandomUtils.happens(config.disease.recoveryTime.dailyProbability))
 			{
 				this.status = PersonStatus.RECOVERED;
 				this.leaveHospital(simulation, config);
@@ -175,6 +174,28 @@ Person.prototype.step = function(simulation, config)
 		}
 	}
 };
+
+/**
+ * Determine if a person is going to die from the disease based on age and hospital treatment.
+ *
+ * @param config
+ */
+Person.prototype.checkGoingToDie = function(config)
+{
+	var deathProbability = config.disease.deathProbability;
+	var probability = 0.0;
+	for(var i = 0; i < deathProbability.length; i++)
+	{
+		if(this.age >= deathProbability[i].min && this.age <= deathProbability[i].max)
+		{
+			probability = deathProbability[i].rate;
+			break;
+		}
+	}
+
+	return RandomUtils.happens(this.inHospital ? (probability / config.hospital.effectiveness) : probability);
+};
+
 
 /**
  * Person try to enter in the hospital (check the limit of the hospital before).

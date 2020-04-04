@@ -8,7 +8,7 @@
 function Governor()
 {
 	// Actuation frequency of the governor in days. It takes action each n days.
-	this.frequency = 5;
+	this.frequency = 2;
 
 	// Number of days of the governor in the simulation.
 	this.days = 0;
@@ -29,6 +29,7 @@ function Governor()
  */
 Governor.prototype.act = function(raw, diff, config)
 {
+	/*
 	// Emergency First Stage
 	if(this.lockdownStage === 0) {
 		config.measures.limitMovement = 0.5;
@@ -56,7 +57,7 @@ Governor.prototype.act = function(raw, diff, config)
 		{
 			config.measures.reduceTransmission += 0.05;
 		}
-	}
+	}*/
 };
 
 /**

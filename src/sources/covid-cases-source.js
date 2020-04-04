@@ -1,16 +1,16 @@
-import {FileUtils} from "./utils/file-utils";
-import {CovidData} from "./database/covid-data";
+import {FileUtils} from "../utils/file-utils";
+import {CovidData} from "../database/covid-data";
 import CSV from "csv-js";
 
 /**
  * Method to fetch data from different data sources associated with the covid 19 disease.
  */
-function Sources() {}
+function CovidCasesSource() {}
 
 /**
  * Update covid 19 data from CSSE (Global data)
  */
-Sources.fetchCSSE = function() {
+CovidCasesSource.fetchCSSE = function() {
 	var infected = FileUtils.readFile("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", true);
 	infected = CSV.parse(infected);
 
@@ -26,7 +26,7 @@ Sources.fetchCSSE = function() {
 /**
  * Update covid 19 data from DSSG-PT (official Portuguese data)
  */
-Sources.fetchDSSGPT = function(database)
+CovidCasesSource.fetchDSSGPT = function(database)
 {
 	var data = FileUtils.readFile("https://raw.githubusercontent.com/dssg-pt/covid19pt-data/master/data.csv", true);
 	var rows = CSV.parse(data);
@@ -50,7 +50,7 @@ Sources.fetchDSSGPT = function(database)
 /**
  * Italia Covid 19 data (official Italian data)
  */
-Sources.fetchPCMDPCITA = function(database)
+CovidCasesSource.fetchPCMDPCITA = function(database)
 {
 	var data = FileUtils.readFile("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento-nazionale.csv", true);
 	var rows = CSV.parse(data);
@@ -70,4 +70,4 @@ Sources.fetchPCMDPCITA = function(database)
 	database.storeCovidCases("ITA", cases);
 };
 
-export {Sources};
+export {CovidCasesSource};

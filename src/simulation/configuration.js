@@ -31,7 +31,7 @@ function Configuration() {
 	// Foreign visit configuration (from outside the country, into a district)
 	this.foreign = {
 		// Number of foreign visitors daily
-		dailyVisits: 0, // 1e4,
+		dailyVisits: 0, //1e4,
 
 		// How many people a foreign person contacts with
 		dailyContact: 25,
@@ -49,7 +49,7 @@ function Configuration() {
 		peopleContact: 25,
 
 		// Percentage of people in contact that are outside of the district.
-		outsideContact: 0.1,
+		outsideContact: 0.2,
 	};
 
 	// Disease configuration
@@ -64,19 +64,38 @@ function Configuration() {
 		transmissionRecovered: 0.0,
 
 		// Probability of starting showing symptoms (applied on daily basis).
-		symptomsProbability: 0.07,
+		symptomsProbability: 0.06,
 
-		// Probability of death (applied when the person gets infected)
-		deathProbability: 0.1,
+		// Probability of death based on age (applied when the person gets infected)
+		deathProbability: [
+			{min: 0, max: 9, rate: 0.002},
+			{min: 10, max: 19, rate: 0.003},
+			{min: 20, max: 29, rate: 0.002},
+			{min: 30, max: 39, rate: 0.004},
+			{min: 40, max: 49, rate: 0.006},
+			{min: 50, max: 59, rate: 0.02},
+			{min: 60, max: 69, rate: 0.05},
+			{min: 70, max: 79, rate: 0.1},
+			{min: 80, max: 200, rate: 0.2},
+		],
 
-		// Minimum time to recovery
-		recoveryMinimumTime: 8,
+		// Time until the person recovers
+		recoveryTime: {
+			// Minimum time to recovery
+			min: 8,
 
-		// Probability of recovery today after being infected (applied on daily basis)
-		recoveryDailyProbability: 0.01,
+			// Probability of recovery today after being infected
+			dailyProbability:  0.01,
+		},
 
-		// Probability of death today after being infected (applied on daily basis)
-		deathDailyProbability: 0.08,
+		// Time until the person dies
+		deathTime: {
+			// Minimum time to die
+			min: 1,
+
+			// Probability of dying today after being infected
+			dailyProbability:  0.08,
+		},
 	};
 
 	// Hospital configuration
@@ -93,7 +112,7 @@ function Configuration() {
 		// Limit all kind of movement outside of home
 		limitMovement: 0.0,
 
-		// Infected people movement restriction (how much is reduced)
+		// Infected people movement restriction (how much is reduced relative to regular people)
 		limitInfectedMovement: 0.0,
 
 		// Restrict movement between districts (how much is reduced) applied to the district percentage

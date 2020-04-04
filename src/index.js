@@ -5,7 +5,8 @@ import {Country} from "./database/country.js";
 import {CovidData} from "./database/covid-data.js"
 import {Simulation} from "./simulation/simulation";
 import {Database} from "./database/database";
-import {Sources} from "./sources";
+import {CovidCasesSource} from "./sources/covid-cases-source";
+import {CountrySource} from "./sources/country-source";
 
 var chart;
 var simulation = null;
@@ -13,10 +14,11 @@ var database = new Database();
 
 window.initialize = function()
 {
-	Country.loadList(database);
-	Sources.fetchDSSGPT(database);
-	Sources.fetchPCMDPCITA(database);
+	CountrySource.loadList(database);
+	CovidCasesSource.fetchDSSGPT(database);
+	CovidCasesSource.fetchPCMDPCITA(database);
 
+	// Log database to window
 	console.log(database);
 
 	createButton();
