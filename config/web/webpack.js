@@ -9,6 +9,12 @@ const dist = context + "/dist";
 module.exports = {
 	context: src,
 	entry: ["./index.js"],
+	target: "web",
+	node: {
+		fs: "empty",
+		net: "empty",
+		tls: "empty"
+	},
 	output: {
 		filename: "bundle.js",
 		path: dist

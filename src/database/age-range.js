@@ -51,5 +51,4 @@ AgeRange.randomAge = function(ranges)
 	return null;
 };
 
-window.AgeRange = AgeRange;
 export {AgeRange};

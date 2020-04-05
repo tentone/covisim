@@ -1,4 +1,3 @@
-import CSV from "csv-js";
 import Countries from '../data/countries.csv';
 import Population from '../data/population.csv';
 import GPS from '../data/gps.csv';
@@ -7,6 +6,7 @@ import Ages1564 from '../data/ages15-64.csv';
 import Ages65 from '../data/ages65.csv';
 import {Country} from "../database/country";
 import {AgeRange} from "../database/age-range";
+import CSV from "csv-js";
 
 /**
  * Country data source loads data from different countries.

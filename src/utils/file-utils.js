@@ -1,19 +1,15 @@
 /**
  * File utils contains file manipulation utils.
  */
+import {EnvUtils} from "./env-utils";
+
 function FileUtils() {}
-
-try {
-	FileUtils.fs = require("fs");
-}
-catch(e){}
-
 
 /**
  * Read file data from URL, using XHR.
  *
  * @param fname File URL.
- * @param sync If set to true or undefined the file is read syncronosly.
+ * @param sync If set to true or undefined the file is read synchronously.
  * @param onLoad On load callback.
  * @param onProgress On progress callback.
  * @param onError On error callback.
@@ -24,39 +20,54 @@ FileUtils.readFile = function(fname, sync, onLoad, onProgress, onError) {
 	{
 		sync = true;
 	}
-
+	
 	// NodeJS
-	if(FileUtils.fs !== undefined && !FileUtils.isRemote(fname))
+	if(!EnvUtils.browser())
 	{
-		if(sync === true)
+		var fs = require("fs");
+		var remote = FileUtils.isRemote(fname);
+
+		if(remote)
 		{
-			var data = FileUtils.fs.readFileSync(fname, "utf8");
-
-			if(onLoad !== undefined)
-			{
-				onLoad(data);
-			}
-
-			return data;
+			var request = require('request');
+			request.get(fname, function (error, response, body) {
+				if (onLoad !== undefined) {
+					onLoad(body);
+				}
+			});
 		}
 		else
 		{
-			FileUtils.fs.readFile(fname, "utf8", function(error, data)
+			if(sync === true)
 			{
-				if(error !== null)
-				{
-					if(onError !== undefined)
-					{
-						onError(error);
-					}
-				}
-				else if(onLoad !== undefined)
+				var data = fs.readFileSync(fname, "utf8");
+
+				if(onLoad !== undefined)
 				{
 					onLoad(data);
 				}
-			});
 
-			return null;
+				return data;
+			}
+			else
+			{
+				fs.readFile(fname, "utf8", function(error, data)
+				{
+					if(error !== null)
+					{
+						if(onError !== undefined)
+						{
+							onError(error);
+						}
+					}
+					else if(onLoad !== undefined)
+					{
+						onLoad(data);
+					}
+				});
+
+				return null;
+			}
 		}
 	}
 	// Browser
@@ -98,13 +109,15 @@ FileUtils.readFile = function(fname, sync, onLoad, onProgress, onError) {
  * @param onFinish
  */
 FileUtils.writeFile = function(fname, data, sync, onFinish) {
-	if(FileUtils.fs !== undefined)
+	if(!EnvUtils.browser())
 	{
-		if(FileUtils.fs.writeFileSync !== undefined)
+		var fs = require("fs");
+
+		if(fs.writeFileSync !== undefined)
 		{
 			if(sync !== false)
 			{
-				FileUtils.fs.writeFileSync(fname, data, "utf8");
+				fs.writeFileSync(fname, data, "utf8");
 				if(onFinish !== undefined)
 				{
 					onFinish();
@@ -112,12 +125,12 @@ FileUtils.writeFile = function(fname, data, sync, onFinish) {
 			}
 			else
 			{
-				FileUtils.fs.writeFile(fname, data, "utf8", onFinish);
+				fs.writeFile(fname, data, "utf8", onFinish);
 			}
 		}
 		else
 		{
-			var stream = FileUtils.fs.createWriteStream(fname, "utf8");
+			var stream = fs.createWriteStream(fname, "utf8");
 			stream.write(data);
 			stream.end();
 		}
@@ -142,6 +155,17 @@ FileUtils.writeFile = function(fname, data, sync, onFinish) {
 			onFinish();
 		}
 	}
+};
+
+/**
+ * Check if a file corresponds to a remote location.
+ *
+ * @method isRemote
+ * @return {boolean} If the file is remote returns true, false otherwise.
+ */
+FileUtils.isRemote = function(fname)
+{
+	return fname.startsWith("http");
 };
 
 /**
