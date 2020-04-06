@@ -6,24 +6,30 @@ import {CovidData} from "./database/covid-data";
 import "chart.js";
 import "hammerjs";
 import "chartjs-plugin-zoom";
+import ReactDOM from "react-dom";
+import React from "react";
+import {Test} from "./gui/test";
 
 window.onload = function ()
 {
-	var chart;
 	var simulation = null;
+	var chart = createChart();
 	var database = new Database();
 
-	CountrySource.loadList(database);
-	CovidCasesSource.fetchDSSGPT(database);
-	CovidCasesSource.fetchPCMDPCITA(database);
+	ReactDOM.render(React.createElement(Test), document.getElementById("container"));
 
 	// Log database to window
 	console.log(database);
 	createButton();
 
-	chart = createChart();
-	drawCovidData(chart, database.getCovidCases("PRT"), "PRT", true);
-	drawCovidData(chart, database.getCovidCases("ITA"), "ITA", true);
+	CountrySource.loadList(database);
+
+	CovidCasesSource.fetchDSSGPT(database, function() {
+		drawCovidData(chart, database.getCovidCases("PRT"), "PRT", true);
+	});
+	CovidCasesSource.fetchPCMDPCITA(database, function() {
+		drawCovidData(chart, database.getCovidCases("ITA"), "ITA", true);
+	});
 
 	function createButton() {
 		var button = document.createElement("button");

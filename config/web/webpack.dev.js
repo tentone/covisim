@@ -1,15 +1,16 @@
-const path = require("path");
+const Path = require("path");
+const Webpack = require("webpack");
 const merge = require("webpack-merge");
-const webpack = require("webpack");
-const common = require("./webpack.js");
+const common = require("./webpack.web.js");
 
 module.exports = merge(common, {
     devtool: "inline-source-map",
+    mode: "development",
     optimization: {
         minimize: false
     },
     devServer: {
-        contentBase: path.join(__dirname, "dist"),
+        contentBase: Path.join(__dirname, "dist"),
         compress: false,
         historyApiFallback: true,
         hot: true,
@@ -17,7 +18,7 @@ module.exports = merge(common, {
         noInfo: false
     },
     plugins: [
-        new webpack.NamedModulesPlugin(),
-        new webpack.HotModuleReplacementPlugin()
+        new Webpack.NamedModulesPlugin(),
+        new Webpack.HotModuleReplacementPlugin()
     ]
-})
+});
