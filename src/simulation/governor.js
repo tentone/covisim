@@ -8,7 +8,7 @@
 function Governor()
 {
 	// Actuation frequency of the governor in days. It takes action each n days.
-	this.frequency = 2;
+	this.frequency = 3;
 
 	// Number of days of the governor in the simulation.
 	this.days = 0;
@@ -29,35 +29,26 @@ function Governor()
  */
 Governor.prototype.act = function(raw, diff, config)
 {
-	/*
 	// Emergency First Stage
 	if(this.lockdownStage === 0) {
-		config.measures.limitMovement = 0.5;
+		config.measures.limitMovement = 0.7;
 		config.measures.limitInfectedMovement = 0.8;
-		config.measures.limitCrossDistrictMovement = 0.6;
-		config.measures.limitForeigners = 0.5;
+		config.measures.limitCrossDistrictMovement = 0.5;
+		config.measures.limitForeigners = 0.7;
 		config.measures.hospitalExtraCapacity += 5000;
 		this.lockdownStage++;
 	}
 
 	// Emergency First Stage
 	if(this.lockdownStage === 1 && raw.deaths > 100) {
-		config.measures.limitMovement = 0.7;
+		config.measures.limitMovement = 0.8;
 		config.measures.limitInfectedMovement = 0.9;
-		config.measures.limitCrossDistrictMovement = 0.8;
-		config.measures.limitForeigners = 0.8;
+		config.measures.limitCrossDistrictMovement = 0.7;
+		config.measures.limitForeigners = 0.9;
 		config.measures.reduceTransmission = 0.3;
 		config.measures.hospitalExtraCapacity += 5000;
 		this.lockdownStage++;
 	}
-
-	// Increase population awareness
-	if(this.lockdownStage === 2 && diff.deaths > 100) {
-		if(config.measures.reduceTransmission < 0.6)
-		{
-			config.measures.reduceTransmission += 0.05;
-		}
-	}*/
 };
 
 /**

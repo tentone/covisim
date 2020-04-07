@@ -16,6 +16,7 @@ window.onload = function ()
 	var chart = createChart();
 	var database = new Database();
 
+
 	ReactDOM.render(React.createElement(Test), document.getElementById("container"));
 
 	// Log database to window
@@ -23,6 +24,8 @@ window.onload = function ()
 	createButton();
 
 	CountrySource.loadList(database);
+
+	CovidCasesSource.fetchCSSE(database, function() {});
 
 	CovidCasesSource.fetchDSSGPT(database, function() {
 		drawCovidData(chart, database.getCovidCases("PRT"), "PRT", true);

@@ -31,16 +31,16 @@ function Configuration() {
 	// Foreign visit configuration (from outside the country, into a district)
 	this.foreign = {
 		// Number of foreign visitors daily
-		dailyVisits: 0, //1e4,
+		dailyVisits: 0, // 1e5,
 
 		// How many people a foreign person contacts with
-		dailyContact: 25,
+		dailyContact: 20,
 
 		// Probability of person being infected (0.01%)
-		infectedProbability: 0.001,
+		infectedProbability: 0.0001,
 
 		// Probability of person being infected w/o symptoms (0.1%)
-		infectedNoSymptomsProbability: 0.01,
+		infectedNoSymptomsProbability: 0.001,
 	};
 
 	// Population movement
@@ -101,7 +101,7 @@ function Configuration() {
 	// Hospital configuration
 	this.hospital = {
 		// Total hospital capacity
-		capacity: 10000,
+		capacity: 5000,
 
 		// Hospital treatment ratio (death probability divided by this value if beds are available)
 		effectiveness: 1.5

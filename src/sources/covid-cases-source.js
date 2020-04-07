@@ -11,19 +11,43 @@ function CovidCasesSource() {}
  * Update covid 19 data from CSSE (Global data)
  */
 CovidCasesSource.fetchCSSE = function(database, onLoad) {
-	/*
-	var infected = FileUtils.readFile("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", true);
-	infected = CSV.parse(infected);
 
-	var deaths = FileUtils.readFile("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv", true);
-	deaths = CSV.parse(deaths);
+	FileUtils.readFile("https://raw.githubusercontent.com/pomber/covid19/master/docs/timeseries.json", false, function(data)
+	{
+		var timeseries = JSON.parse(data);
 
-	var recovered = FileUtils.readFile("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv", true);
-	recovered = CSV.parse(recovered);
+		// Iterate all country names in the timeseries
+		for(var countryName in timeseries)
+		{
+			// Search for country by its name
+			var country = database.getCountry(countryName);
+			if(country !== null)
+			{
+				var cases = [];
+				var day = 0;
+				var timedata = timeseries[countryName];
 
-	console.log(infected, deaths, recovered);
-	*/
+				// Read covid cases data
+				for(var i = 0; i < timedata.length; i++)
+				{
+					// Skip entries without data
+					if(timedata[i].confirmed === 0 && timedata[i].recovered === 0 && timedata[i].recovered === 0)
+					{
+						continue;
+					}
 
+					var entry = new CovidData(new Date(timedata[i].date), day++);
+					entry.infected = timedata[i].confirmed;
+					entry.recovered = timedata[i].recovered;
+					entry.deaths = timedata[i].deaths;
+					cases.push(entry);
+				}
+
+				database.storeCovidCases(country.code, cases);
+			}
+
+		}
+	});
 };
 
 /**
@@ -71,10 +95,10 @@ CovidCasesSource.fetchPCMDPCITA = function(database, onLoad)
 		{
 			var date = new Date(rows[i][0]);
 			var data = new CovidData(date, i - 1);
-			data.infected = Number.parseInt(rows[i][10]);
-			data.recovered = Number.parseInt(rows[i][8]);
-			data.deaths = Number.parseInt(rows[i][9]);
-			data.suspects = Number.parseInt(rows[i][11]);
+			data.infected = Number.parseInt(rows[i][11]);
+			data.recovered = Number.parseInt(rows[i][9]);
+			data.deaths = Number.parseInt(rows[i][10]);
+			data.suspects = Number.parseInt(rows[i][12]);
 			cases.push(data);
 		}
 
