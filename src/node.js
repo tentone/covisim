@@ -1,14 +1,6 @@
-import {Database} from "./database/database";
-import {CountrySource} from "./sources/country-source";
-import {CovidCasesSource} from "./sources/covid-cases-source";
+import {Global} from "./global";
 
-console.log("Hello modafoca!");
+Global.loadData(function()
+{
 
-var database = new Database();
-
-CountrySource.loadList(database);
-CovidCasesSource.fetchDSSGPT(database);
-CovidCasesSource.fetchPCMDPCITA(database);
-
-// Log database to window
-console.log(database);
+});
