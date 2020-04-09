@@ -1,6 +1,5 @@
 import {CovidData} from "../../database/covid-data";
 import React from "react";
-import Card from "@material-ui/core/Card";
 
 class Chart extends React.Component
 {
@@ -13,7 +12,7 @@ class Chart extends React.Component
 	}
 
 	componentDidMount() {
-		// this.createChart();
+		this.createChart();
 	}
 
 	/**

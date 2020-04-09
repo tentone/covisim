@@ -11,15 +11,16 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "chart.js": "^2.9.3",
-    "chartjs-plugin-zoom": "^0.7.5",
-    "request": "^2.88.2",
-    "csv-js": "^1.0.0",
     "@material-ui/core": "^4.9.9",
     "@material-ui/icons": "^4.9.1",
-    "svg-country-flags": "^1.2.7",
+    "chart.js": "^2.9.3",
+    "chartjs-plugin-zoom": "^0.7.5",
+    "csv-js": "^1.0.0",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "request": "^2.88.2",
+    "svg-country-flags": "^1.2.7",
+    "typeface-roboto": "0.0.75"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -27,10 +28,11 @@
     "@babel/preset-react": "^7.9.4",
     "babel-loader": "^8.1.0",
     "babel-preset-env": "^1.7.0",
-    "css-loader": "^3.4.2",
+    "css-loader": "^3.5.1",
     "eslint": "^6.8.0",
     "file-loader": "^6.0.0",
     "html-loader": "^1.1.0",
+    "html-webpack-plugin": "latest",
     "raw-loader": "^4.0.0",
     "style-loader": "^0.23.1",
     "uglifyjs-webpack-plugin": "^2.2.0",
@@ -39,7 +41,6 @@
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3",
     "webpack-merge": "^4.2.2",
-    "webpack-node-externals": "^1.7.2",
-    "html-webpack-plugin": "latest"
+    "webpack-node-externals": "^1.7.2"
   }
 }
