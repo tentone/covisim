@@ -19,7 +19,6 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "request": "^2.88.2",
-    "svg-country-flags": "^1.2.7",
     "typeface-roboto": "0.0.75"
   },
   "devDependencies": {
