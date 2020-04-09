@@ -47,6 +47,11 @@ CovidCasesSource.fetchCSSE = function(database, onLoad) {
 			}
 
 		}
+
+		if(onLoad !== undefined)
+		{
+			onLoad(cases);
+		}
 	});
 };
 

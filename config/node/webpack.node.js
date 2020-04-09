@@ -1,9 +1,9 @@
-const WebpackCleanupPlugin  = require("webpack-cleanup-plugin");
 const WebpackNodeExternals = require("webpack-node-externals");
-const merge = require("webpack-merge");
-const common = require("../webpack.base.js");
+const Merge = require("webpack-merge");
+const common = require("../../webpack.config.js");
 
-module.exports = merge(common, {
+module.exports = Merge(common, {
+	devtool: "source-map",
 	entry: ["./node.js"],
 	target: "node",
 	mode: "development",
@@ -11,7 +11,4 @@ module.exports = merge(common, {
 		minimize: false
 	},
 	externals: [WebpackNodeExternals()],
-	plugins: [
-		new WebpackCleanupPlugin(),
-	]
 });

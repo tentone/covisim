@@ -19,12 +19,22 @@ Global.database = new Database();
 /**
  * Load data from files and from remote servers.
  */
-Global.loadData = function()
+Global.loadData = function(onLoad)
 {
+	var count = 3;
+	var afterLoad = function()
+	{
+		count--;
+		if(count === 0 && onLoad !== undefined)
+		{
+			onLoad();
+		}
+	};
+
 	CountrySource.loadList(Global.database);
-	CovidCasesSource.fetchCSSE(Global.database);
-	CovidCasesSource.fetchDSSGPT(Global.database);
-	CovidCasesSource.fetchPCMDPCITA(Global.database);
+	CovidCasesSource.fetchCSSE(Global.database, afterLoad);
+	CovidCasesSource.fetchDSSGPT(Global.database, afterLoad);
+	CovidCasesSource.fetchPCMDPCITA(Global.database, afterLoad);
 };
 
 export {Global};

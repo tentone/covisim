@@ -1,9 +1,9 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const Webpack = require('webpack');
-const merge = require("webpack-merge");
-const common = require("../webpack.base.js");
+const Merge = require("webpack-merge");
+const Path = require("path");
+const common = require("../../webpack.config.js");
 
-module.exports = merge(common, {
+module.exports = Merge(common, {
 	entry: ["./index.js"],
 	target: "web",
 	node: {
@@ -12,7 +12,6 @@ module.exports = merge(common, {
 		tls: "empty"
 	},
 	plugins: [
-		new Webpack.ProgressPlugin(),
-		new HtmlWebpackPlugin({template: "index.html"})
+		new HtmlWebpackPlugin({template: Path.resolve(__dirname, '../../src', 'index.html'), filename: "index.html"})
 	]
 });

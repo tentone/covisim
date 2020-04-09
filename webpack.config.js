@@ -1,8 +1,7 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const Path = require("path");
 const Webpack = require('webpack');
 
-const context = Path.resolve(__dirname, "..");
+const context = Path.resolve(__dirname, ".");
 const src = context + "/src";
 const dist = context + "/dist";
 
@@ -17,17 +16,16 @@ module.exports = {
 	},
 	plugins: [
 		new Webpack.ProgressPlugin(),
-		new HtmlWebpackPlugin({template: "index.html"})
 	],
 	module: {
 		rules: [
 			{
-				test: /\.(js|jsx)$/,
+				test: /\.(jsx|js)$/,
 				exclude: /(node_modules)/,
 				use: {loader: "babel-loader"}
 			},
 			{
-				test: /\.csv$/,
+				test: /\.(csv|txt)$/,
 				use: {loader: "raw-loader"},
 			},
 			{
