@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --open --config config/web/webpack.dev.js",
     "build": "webpack --config config/web/webpack.prod.js",
-    "node": "webpack --config config/node/webpack.node.js & node dist/bundle.js"
+    "node": "webpack --config config/node/webpack.node.js & node --max-old-space-size=16384 dist/bundle.js"
   },
   "author": "",
   "license": "MIT",

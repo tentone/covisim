@@ -9,7 +9,7 @@ class Screen extends React.Component
 		super(props);
 		this.sidebarSize = "300px";
 		this.titlebarSize = "70px";
-		this.resizeSize = "20px";
+		this.resizeSize = "10px";
 
 		this.resizing = false;
 	}
@@ -46,14 +46,13 @@ class Screen extends React.Component
 				<div style={{overflow: "auto", position: "absolute", height: "100%", width: this.sidebarSize, left: "0px", top: "0px"}}>
 					<Sidebar/>
 				</div>
-
 				<div style={{ position: "absolute", height: this.titlebarSize, width: "calc(100% - " + this.sidebarSize + ")", right: "0px", top: "0px"}}>
 					<Titlebar/>
 				</div>
 				<div style={{ position: "absolute", height: "calc(100% - " + this.titlebarSize + ")", width: "calc(100% - " + this.sidebarSize + ")", right: "0px", bottom: "0px"}}>
 					<Content/>
 				</div>
-				<div style={{backgroundColor: "#FF0000", overflow: "auto", position: "absolute", height: "100%", width: this.resizeSize, left: this.sidebarSize, top: "0px"}} onMouseDown={(event) => {this.startResize(event);}}/>
+				<div style={{backgroundColor: "#BBBBBB", overflow: "auto", position: "absolute", height: "100%", width: this.resizeSize, left: this.sidebarSize, top: "0px"}} onMouseDown={(event) => {this.startResize(event);}}/>
 			</div>
 		);
 	}
