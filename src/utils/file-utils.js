@@ -202,7 +202,7 @@ FileUtils.chooseFile = function(onLoad, filter, multiple) {
 	};
 
 	chooser.click();
-}
+};
 
 /**
  * Get file name without extension from file path string.
@@ -247,6 +247,27 @@ FileUtils.getFileExtension = function(file) {
 	}
 
 	return "";
+};
+
+/**
+ * Check if a file exists.
+ *
+ * Only works inside of node. When running inside the browser always returns false.
+ *
+ * @method fileExists
+ * @param {string} file File path
+ * @return {boolean} True is file exists
+ */
+FileUtils.fileExists = function(file)
+{
+	if(!EnvUtils.browser())
+	{
+		var fs = require("fs");
+		file.replace(new RegExp("/", 'g'), "\\");
+		return fs.existsSync(file);
+	}
+
+	return false;
 };
 
 export {FileUtils};
