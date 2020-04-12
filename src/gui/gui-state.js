@@ -1,15 +1,35 @@
 import {Global} from "../global";
 import React from "react";
+import {Simulation} from "../simulation/simulation";
+import {FileUtils} from "../utils/file-utils";
 
+/**
+ * Stored the state of the GUI component.
+ *
+ * Other components call methods from this class to control the GUI.
+ */
 function GuiState(){}
+
+/**
+ * Simulation object used in the GUI.
+ */
+GuiState.simulation = new Simulation();
 
 /**
  * Country selected to draw info about.
  */
 GuiState.country = null;
 
+/**
+ * Reference to the chart element in the GUI.
+ */
 GuiState.chart = React.createRef();
 
+/**
+ * Select country to be displayed on the GUI.
+ *
+ * @param code
+ */
 GuiState.selectCountry = function(code)
 {
 	GuiState.country = Global.database.getCountry(code);
@@ -26,7 +46,23 @@ GuiState.selectCountry = function(code)
 		return;
 	}
 
-	GuiState.chart.current.drawCovidCases(data, GuiState.country.name, true);
+	GuiState.chart.current.drawCovidCases(data, GuiState.country.name, false);
 };
+
+/**
+ * Export data of the currently selected country.
+ */
+GuiState.exportCountryData = function()
+{
+	if(GuiState.country === null)
+	{
+		alert("No country selected");
+		return
+	}
+
+	var data = Global.database.getCovidCases(GuiState.country.code);
+	FileUtils.writeFile("data.json", data);
+};
+
 
 export {GuiState};

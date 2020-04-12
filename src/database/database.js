@@ -11,7 +11,7 @@ function Database()
 	this.countriesMap = new Map();
 
 	/**
-	 * Country data availabble stored in array form.
+	 * Country data available stored in array form.
 	 */
 	this.countries = [];
 
@@ -22,7 +22,7 @@ function Database()
 }
 
 /**
- * Store covid cases data and associate to a country by its 3 char code.
+ * Store COVID-19 cases data and associate to a country by its 3 char code.
  */
 Database.prototype.storeCovidCases = function(code, data)
 {
@@ -52,6 +52,22 @@ Database.prototype.storeCovidCases = function(code, data)
 	{
 		this.covidCases.set(code, data);
 	}
+};
+
+/**
+ * Get the more recent covid data available for a contry by its code.
+ *
+ * @param code
+ */
+Database.prototype.getLastCovidData = function(code)
+{
+	var cases = this.getCovidCases(code);
+	if(cases === null || cases.length === 0)
+	{
+		return null;
+	}
+
+	return cases[cases.length -1];
 };
 
 /**

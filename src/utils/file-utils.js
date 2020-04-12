@@ -109,6 +109,11 @@ FileUtils.readFile = function(fname, sync, onLoad, onProgress, onError) {
  * @param onFinish
  */
 FileUtils.writeFile = function(fname, data, sync, onFinish) {
+	if(data instanceof Object)
+	{
+		data = JSON.stringify(data, null, "\t");
+	}
+
 	if(!EnvUtils.browser())
 	{
 		var fs = require("fs");

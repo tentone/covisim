@@ -1,12 +1,6 @@
 import ReactDOM from "react-dom";
 import React from "react";
-import {Screen} from "./gui/screen.jsx";
-import {Global} from "./global";
-
-Global.loadData(function ()
-{
-	console.log(Global.database);
-});
+import {Gui} from "./gui/gui.jsx";
 
 var div = document.createElement("div");
 div.style.position = "absolute";
@@ -16,4 +10,4 @@ div.style.width = "100%";
 div.style.height = "100%";
 document.body.append(div);
 
-ReactDOM.render(React.createElement(Screen), div);
+ReactDOM.render(React.createElement(Gui), div);

@@ -75,7 +75,7 @@ class ChartComponent extends React.Component
 						},
 						scaleLabel: {
 							display: true,
-							labelString: "Time"
+							labelString: "Date"
 						}
 					}],
 					yAxes:
@@ -99,7 +99,20 @@ class ChartComponent extends React.Component
 	 */
 	drawCovidCases(data, title, append)
 	{
-		var timeseries = CovidData.generateTimeseries(data);
+		var timeseries = {
+			infected: [],
+			recovered: [],
+			deaths: [],
+			suspects: []
+		};
+
+		for (var i = 0; i < data.length; i++) {
+			timeseries.infected.push({t: data[i].date, y: data[i].infected});
+			timeseries.recovered.push({t: data[i].date, y: data[i].recovered});
+			timeseries.deaths.push({t: data[i].date, y: data[i].deaths});
+			timeseries.suspects.push({t: data[i].date, y: data[i].suspects});
+		}
+
 		let datasets = [
 			{
 				label: title + " - Suspects",
@@ -133,30 +146,6 @@ class ChartComponent extends React.Component
 
 		this.chart.data.datasets = append ? this.chart.data.datasets.concat(datasets) : datasets;
 		this.chart.update();
-	}
-
-	/**
-	 * Generate arrays of time series data {t: Date, y: value} to be drawn into chart.
-	 *
-	 * @param data Array of covid data.
-	 */
-	generateTimeseries(data)
-	{
-		var output = {
-			infected: [],
-			recovered: [],
-			deaths: [],
-			suspects: []
-		};
-
-		for (var i = 0; i < data.length; i++) {
-			output.infected.push({t: data[i].date, y: data[i].infected});
-			output.recovered.push({t: data[i].date, y: data[i].recovered});
-			output.deaths.push({t: data[i].date, y: data[i].deaths});
-			output.suspects.push({t: data[i].date, y: data[i].suspects});
-		}
-
-		return output;
 	}
 
 	render()

@@ -10,8 +10,8 @@ class Titlebar extends React.Component
 	render()
 	{
 		return (
-			<div style={{margin: "6px"}}>
-				<Typography variant="h4">Title</Typography>
+			<div style={this.props.style}>
+				<Typography style={{margin: "10px"}} variant="h5">COVID-19 Simulation</Typography>
 			</div>
 		);
 	}
