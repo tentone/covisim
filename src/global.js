@@ -33,8 +33,8 @@ Global.loadData = function(onLoad)
 
 	CountrySource.loadList(Global.database);
 	CovidCasesSource.fetchCSSE(Global.database, afterLoad);
-	CovidCasesSource.fetchDSSGPT(Global.database, afterLoad);
 	CovidCasesSource.fetchPCMDPCITA(Global.database, afterLoad);
+	CovidCasesSource.fetchDSSGPT(Global.database, afterLoad);
 };
 
 export {Global};

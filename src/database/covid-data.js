@@ -64,28 +64,4 @@ CovidData.prototype.multiplyScalar = function(scalar)
 	this.suspects = Math.round(this.suspects * scalar);
 };
 
-/**
- * Generate arrays of time series data {t: Date, y: value} to be drawn into chart.
- *
- * @param data Array of covid data.
- */
-CovidData.generateTimeseries = function(data)
-{
-	var output = {
-		infected: [],
-		recovered: [],
-		deaths: [],
-		suspects: []
-	};
-
-	for (var i = 0; i < data.length; i++) {
-		output.infected.push({t: data[i].date, y: data[i].infected});
-		output.recovered.push({t: data[i].date, y: data[i].recovered});
-		output.deaths.push({t: data[i].date, y: data[i].deaths});
-		output.suspects.push({t: data[i].date, y: data[i].suspects});
-	}
-
-	return output;
-};
-
 export {CovidData};

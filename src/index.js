@@ -1,7 +1,3 @@
-import "chart.js";
-import "hammerjs";
-import "chartjs-plugin-zoom";
-import "typeface-roboto";
 import ReactDOM from "react-dom";
 import React from "react";
 import {Screen} from "./gui/screen.jsx";

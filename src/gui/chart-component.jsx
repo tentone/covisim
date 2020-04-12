@@ -1,24 +1,34 @@
 import {CovidData} from "../database/covid-data";
 import React from "react";
+import "chart.js";
+import "hammerjs";
+import "chartjs-plugin-zoom";
 
-class Chart extends React.Component
+/**
+ * Chart to draw graphs into the GUI.
+ */
+class ChartComponent extends React.Component
 {
-	constructor(props) {
+	constructor(props)
+	{
 		super(props);
-
 		this.canvas = React.createRef();
-
 		this.chart = null;
 	}
 
-	componentDidMount() {
+	/**
+	 * Called when the component is mounted to the interface.
+	 */
+	componentDidMount()
+	{
 		this.createChart();
 	}
 
 	/**
 	 * Create chart.js object and attach to the canvas element.
 	 */
-	createChart() {
+	createChart()
+	{
 		var context = this.canvas.current.getContext("2d");
 
 		this.chart = new Chart(context, {
@@ -27,7 +37,7 @@ class Chart extends React.Component
 				datasets: []
 			},
 			options: {
-				responsive: false,
+				responsive: true,
 				maintainAspectRatio: false,
 				pan: {
 					enabled: true,
@@ -81,13 +91,14 @@ class Chart extends React.Component
 	}
 
 	/**
-	 * Draw data into the chart component.
+	 * Draw data into the chart component by its date.
 	 *
 	 * @param data
 	 * @param title
 	 * @param append
 	 */
-	drawData(data, title, append) {
+	drawCovidCases(data, title, append)
+	{
 		var timeseries = CovidData.generateTimeseries(data);
 		let datasets = [
 			{
@@ -124,12 +135,38 @@ class Chart extends React.Component
 		this.chart.update();
 	}
 
+	/**
+	 * Generate arrays of time series data {t: Date, y: value} to be drawn into chart.
+	 *
+	 * @param data Array of covid data.
+	 */
+	generateTimeseries(data)
+	{
+		var output = {
+			infected: [],
+			recovered: [],
+			deaths: [],
+			suspects: []
+		};
+
+		for (var i = 0; i < data.length; i++) {
+			output.infected.push({t: data[i].date, y: data[i].infected});
+			output.recovered.push({t: data[i].date, y: data[i].recovered});
+			output.deaths.push({t: data[i].date, y: data[i].deaths});
+			output.suspects.push({t: data[i].date, y: data[i].suspects});
+		}
+
+		return output;
+	}
+
 	render()
 	{
 		return (
-			<canvas width="300" height="300" ref={this.canvas}/>
+			<div style={this.props.style}>
+				<canvas ref={this.canvas}/>
+			</div>
 		);
 	}
 }
 
-export {Chart};
+export {ChartComponent};

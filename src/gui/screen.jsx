@@ -9,8 +9,9 @@ class Screen extends React.Component
 		super(props);
 		this.sidebarSize = "300px";
 		this.titlebarSize = "50px";
-		this.resizeSize = "5px";
 
+		// Resize controls
+		this.resizeSize = "5px";
 		this.resizing = false;
 	}
 

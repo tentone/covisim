@@ -26,11 +26,36 @@ function Database()
  */
 Database.prototype.storeCovidCases = function(code, data)
 {
-	this.covidCases.set(code, data);
+	var cases = this.getCovidCases(code);
+	if(cases !== null)
+	{
+		for(var i = 0; i < data.length; i++)
+		{
+			var exists = false;
+			for(var j = 0; j < cases.length; j++)
+			{
+				if(data[i].day === cases[j].day)
+				{
+					exists = true;
+				}
+			}
+
+			if(!exists)
+			{
+				cases.push(data[i]);
+			}
+		}
+
+		this.covidCases.set(code, cases);
+	}
+	else
+	{
+		this.covidCases.set(code, data);
+	}
 };
 
 /**
- * Get covid cases for contry.
+ * Get covid cases for country.
  */
 Database.prototype.getCovidCases = function(code)
 {
@@ -40,6 +65,14 @@ Database.prototype.getCovidCases = function(code)
 	}
 
 	return null;
+};
+
+/**
+ * Get covid cases for country.
+ */
+Database.prototype.hasCovidCases = function(code)
+{
+	return this.covidCases.has(code);
 };
 
 /**
@@ -93,7 +126,6 @@ Database.prototype.getCountry = function(code)
 
 	return null;
 };
-
 
 /**
  * Load data base from JSON file.

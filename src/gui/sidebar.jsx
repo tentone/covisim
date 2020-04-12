@@ -4,6 +4,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItem from "@material-ui/core/ListItem";
 import List from "@material-ui/core/List";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
+import {GuiState} from "./gui-state";
 require.context('assets/flags', true, /\.png$/);
 
 /**
@@ -20,10 +21,10 @@ class Sidebar extends React.Component
 	render()
 	{
 		var listItems = [];
-		for(var i = 0; i < Global.database.countries.length; i++)
+		for(let i = 0; i < Global.database.countries.length; i++)
 		{
-			var country = Global.database.countries[i];
-			listItems.push((<ListItem key={country.code} button={true}>
+			let country = Global.database.countries[i];
+			listItems.push((<ListItem key={country.code} button={true} onClick={function(event){GuiState.selectCountry(country.code);}}>
 				<ListItemIcon>
 					<img width="40" src={country.codeAlt.toLowerCase() + ".png"}/>
 				</ListItemIcon>
