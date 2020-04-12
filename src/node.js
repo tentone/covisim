@@ -13,9 +13,8 @@ Global.loadData(function()
 	runSimulation();
 
 	console.log(" - Saving results into file");
-	FileUtils.writeFile("database.json", JSON.stringify(Global.database.toJSON(), null, '\t'));
-	FileUtils.writeFile("config.json", JSON.stringify(simulation.config, null, '\t'));
-	FileUtils.writeFile("data.json", JSON.stringify(simulation.data, null, '\t'));
+	FileUtils.writeFile("database.json", Global.database.toJSON());
+	FileUtils.writeFile("simulation.json", simulation.toJSON());
 
 	console.log(" - Finished");
 });

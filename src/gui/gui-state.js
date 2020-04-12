@@ -49,20 +49,4 @@ GuiState.selectCountry = function(code)
 	GuiState.chart.current.drawCovidCases(data, GuiState.country.name, false);
 };
 
-/**
- * Export data of the currently selected country.
- */
-GuiState.exportCountryData = function()
-{
-	if(GuiState.country === null)
-	{
-		alert("No country selected");
-		return
-	}
-
-	var data = Global.database.getCovidCases(GuiState.country.code);
-	FileUtils.writeFile("data.json", data);
-};
-
-
 export {GuiState};

@@ -111,4 +111,23 @@ Block.prototype.traverse = function(onPeople, onBlock)
 	}
 };
 
+/**
+ * Serialize block and all sub-blocks data into a JSON object.
+ */
+Block.prototype.toJSON = function()
+{
+	var data = {
+		name: this.name,
+		subBlocks: [],
+		people: this.people
+	}
+
+	for(var i = 0; i < this.subBlocks.length; i++)
+	{
+		data.subBlocks.push(this.subBlocks[i].toJSON());
+	}
+
+	return data;
+};
+
 export {Block};

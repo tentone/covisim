@@ -5,6 +5,7 @@ import {RandomUtils} from "../utils/random-utils";
 import {Configuration} from "./configuration";
 import {MathUtils} from "../utils/math-utils";
 import {Governor} from "./governor";
+import {Database} from "../database/database";
 
 /**
  * Structure to run the simulation, contains all the simulation structure and logic to process simulation by step.
@@ -163,6 +164,39 @@ Simulation.prototype.getData = function()
 	}
 
 	return data;
+};
+
+/**
+ * Load simulation state data from JSON file.
+ */
+Simulation.prototype.fromJSON = function(data)
+{
+	this.config = data.config;
+	this.hospital = data.hospital;
+	this.day = data.day;
+	this.date = new Date(data.date);
+
+	this.country = new Block();
+	this.country.fromJSON(data.country);
+	this.country.buildCache();
+
+	this.governor = new Governor();
+	this.governor.fromJSON(data.governor);
+};
+
+/**
+ * Store simulation state and results into a JSON object.
+ */
+Simulation.prototype.toJSON = function()
+{
+	return {
+		config: this.config,
+		hospital: this.hospital,
+		day: this.day,
+		date: this.date,
+		country: this.country.toJSON(),
+		governor: this.governor.toJSON()
+	};
 };
 
 export {Simulation};

@@ -3,7 +3,7 @@
  *
  * @constructor
  */
-function Country()
+function CountryData()
 {
 	/**
 	 * 3 Digit letters country code.
@@ -56,4 +56,4 @@ function Country()
 	this.longitude = null;
 }
 
-export {Country};
+export {CountryData};

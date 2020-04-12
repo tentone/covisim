@@ -4,7 +4,7 @@ import GPS from '../assets/data/gps.csv';
 import Ages14 from '../assets/data/ages14.csv';
 import Ages1564 from '../assets/data/ages15-64.csv';
 import Ages65 from '../assets/data/ages65.csv';
-import {Country} from "../database/country";
+import {CountryData} from "../database/country-data";
 import {AgeRange} from "../database/age-range";
 import CSV from "csv-js";
 
@@ -23,7 +23,7 @@ CountrySource.loadList = function(database) {
 	var rows = CSV.parse(Countries);
 	for(var i = 1; i < rows.length; i++)
 	{
-		var country = new Country();
+		var country = new CountryData();
 		country.code = rows[i][7];
 		country.name = rows[i][2];
 		country.codeAlt = rows[i][6];

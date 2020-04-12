@@ -1,8 +1,8 @@
 import React from "react";
 import {ContryList} from "./contry-list.jsx";
-import {Content} from "./content.jsx";
-import {Titlebar} from "./titlebar.jsx";
+import {Content} from "./content/content.jsx";
 import {Global} from "../global";
+import Typography from "@material-ui/core/Typography";
 
 class Gui extends React.Component
 {
@@ -12,6 +12,11 @@ class Gui extends React.Component
 		this.sidebarSize = "300px";
 		this.titlebarSize = "50px";
 		this.resizeSize = "5px";
+
+		this.titlebarRef = React.createRef();
+		this.sidebarRef = React.createRef();
+		this.contentRef = React.createRef();
+
 		this.resizing = false;
 
 		var self = this;
@@ -45,8 +50,13 @@ class Gui extends React.Component
 		if(this.resizing)
 		{
 			this.sidebarSize = Number.parseInt(this.sidebarSize, 10) + event.movementX + "px";
-			this.forceUpdate();
+			this.updateSizes();
 		}
+	}
+
+	updateSizes()
+	{
+
 	}
 
 	render()
@@ -60,7 +70,7 @@ class Gui extends React.Component
 					<Content/>
 				</div>
 				<div style={{position: "absolute", height: this.titlebarSize, width: "calc(100% - " + this.sidebarSize + " - " + this.resizeSize + ")", right: "0px", top: "0px", boxShadow: "0px 3px 8px 0px rgba(0,0,0,0.3)"}}>
-					<Titlebar/>
+					<Typography style={{margin: "10px"}} variant="h5">COVID-19 Simulation</Typography>
 				</div>
 				<div style={{position: "absolute", height: "100%", width: this.resizeSize, left: this.sidebarSize, top: "0px", cursor: "ew-resize", backgroundColor: "#EEEEEE"}} onMouseDown={(event) => {this.startResize(event);}}/>
 			</div>

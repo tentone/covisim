@@ -8,6 +8,7 @@ import {GuiState} from "./gui-state";
 import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from '@material-ui/icons/Search';
+import {StringUtils} from "../utils/string-utils";
 require.context('assets/flags', true, /\.png$/);
 
 /**
@@ -30,24 +31,41 @@ class ContryList extends React.Component
 
 	getItems()
 	{
+		// Filter countries based on search text
 		var countries = [];
 		for(let i = 0; i < Global.database.countries.length; i++)
 		{
-
+			if(StringUtils.searchObject(this.search, Global.database.countries[i], ["name", "code"]))
+			{
+				countries.push(Global.database.countries[i]);
+			}
 		}
 
-
-		var listItems = [];
-		for(let i = 0; i < Global.database.countries.length; i++)
+		// Sort based on number of cases.
+		countries.sort(function (a, b)
 		{
-			let country = Global.database.countries[i];
+			var casesB = Global.database.getLastCovidData(b.code);
+			if(casesB === null) {return -1;}
+
+			var casesA = Global.database.getLastCovidData(a.code);
+			if(casesA === null) {return 1;}
+
+			return casesB.infected - casesA.infected;
+		});
+
+
+		// Build items list
+		var listItems = [];
+		for(let i = 0; i < countries.length; i++)
+		{
+			let country = countries[i];
 			let cases = Global.database.getLastCovidData(country.code);
 
 			listItems.push((<ListItem key={country.code} button={true} onClick={function(event){GuiState.selectCountry(country.code);}}>
 				<ListItemIcon>
 					<img width="40" src={country.codeAlt.toLowerCase() + ".png"}/>
 				</ListItemIcon>
-				<ListItemText primary={country.name} secondary={country.code + " | " + (cases !== null ? cases.infected : "N/d")}/>
+				<ListItemText primary={country.name} secondary={country.code + " | " + (cases !== null ? cases.infected + " cases" : "N/d")}/>
 			</ListItem>));
 		}
 
@@ -59,9 +77,13 @@ class ContryList extends React.Component
 		var listItems = this.getItems();
 
 		return (
-			<div>
-				<Input style={{margin: "10px", width: "calc(100% - 20px)"}} startAdornment={<InputAdornment position="start"><SearchIcon/></InputAdornment>}/>
-				<div style={{width: "100%", overflow: "auto"}}>
+			<div style={{position:"absolute", width: "100%", height:"100%"}}>
+				<Input style={{width: "calc(100% - 20px)", height: "40px", margin: "10px"}} onChange={(event) =>
+				{
+					this.search = event.target.value;
+					this.forceUpdate();
+				}} startAdornment={<InputAdornment position="start"><SearchIcon/></InputAdornment>}/>
+				<div style={{width: "100%", height: "calc(100% - 50px)", overflow: "auto"}}>
 					<List dense={false}>
 						{listItems}
 					</List>

@@ -1,3 +1,5 @@
+import {Simulation} from "./simulation";
+
 /**
  * Governor applies measures to increase hospital capacity, increase transmission protection, etc.
  *
@@ -71,6 +73,24 @@ Governor.prototype.step = function(simulation, config)
 	}
 
 	this.days++;
+};
+
+/**
+ * Load governor state data from JSON file.
+ */
+Governor.prototype.fromJSON = function(data)
+{
+	// TODO <ADD CODE HERE>
+};
+
+/**
+ * Store governor state and results into a JSON object.
+ */
+Governor.prototype.toJSON = function()
+{
+	// TODO <ADD CODE HERE>
+
+	return {};
 };
 
 export {Governor};

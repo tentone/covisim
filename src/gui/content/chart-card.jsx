@@ -1,13 +1,19 @@
-import {CovidData} from "../database/covid-data";
 import React from "react";
 import "chart.js";
 import "hammerjs";
 import "chartjs-plugin-zoom";
+import Card from "@material-ui/core/Card";
+import Typography from "@material-ui/core/Typography";
+import {GuiState} from "../gui-state";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Button from "@material-ui/core/Button";
+import {Global} from "../../global";
+import {FileUtils} from "../../utils/file-utils";
 
 /**
  * Chart to draw graphs into the GUI.
  */
-class ChartComponent extends React.Component
+class ChartCard extends React.Component
 {
 	constructor(props)
 	{
@@ -148,14 +154,39 @@ class ChartComponent extends React.Component
 		this.chart.update();
 	}
 
+	/**
+	 * Export data of the currently selected country.
+	 */
+	exportData()
+	{
+		if(GuiState.country === null)
+		{
+			alert("No country selected");
+			return;
+		}
+
+		var data = Global.database.getCovidCases(GuiState.country.code);
+		FileUtils.writeFile("data.json", data);
+	};
+
+
 	render()
 	{
 		return (
-			<div style={this.props.style}>
-				<canvas ref={this.canvas}/>
-			</div>
+			<Card style={{margin:"20px"}}>
+				<div style={{margin:"20px"}}>
+					<Typography variant="h6">Chart</Typography>
+					<div style={{width: "calc(100% - 20px)", height: "500px"}}>
+						<canvas ref={this.canvas}/>
+					</div>
+					<ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
+						<Button onClick={() => {this.exportData();}}>Export</Button>
+					</ButtonGroup>
+				</div>
+			</Card>
+
 		);
 	}
 }
 
-export {ChartComponent};
+export {ChartCard};
