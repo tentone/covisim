@@ -26,6 +26,11 @@ GuiState.country = null;
 GuiState.chart = React.createRef();
 
 /**
+ * Reference to the country card element in the GUI.
+ */
+GuiState.countryCard = React.createRef();
+
+/**
  * Select country to be displayed on the GUI.
  *
  * @param code
@@ -46,6 +51,7 @@ GuiState.selectCountry = function(code)
 		return;
 	}
 
+	GuiState.countryCard.current.forceUpdate();
 	GuiState.chart.current.drawCovidCases(data, GuiState.country.name, false);
 };
 

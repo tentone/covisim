@@ -89,8 +89,7 @@ Governor.prototype.fromJSON = function(data)
 Governor.prototype.toJSON = function()
 {
 	// TODO <ADD CODE HERE>
-
-	return {};
+	return null;
 };
 
 export {Governor};

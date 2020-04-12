@@ -120,7 +120,7 @@ Block.prototype.toJSON = function()
 		name: this.name,
 		subBlocks: [],
 		people: this.people
-	}
+	};
 
 	for(var i = 0; i < this.subBlocks.length; i++)
 	{

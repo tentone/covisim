@@ -5,7 +5,6 @@ import {RandomUtils} from "../utils/random-utils";
 import {Configuration} from "./configuration";
 import {MathUtils} from "../utils/math-utils";
 import {Governor} from "./governor";
-import {Database} from "../database/database";
 
 /**
  * Structure to run the simulation, contains all the simulation structure and logic to process simulation by step.
@@ -194,6 +193,7 @@ Simulation.prototype.toJSON = function()
 		hospital: this.hospital,
 		day: this.day,
 		date: this.date,
+		data: this.data,
 		country: this.country.toJSON(),
 		governor: this.governor.toJSON()
 	};
