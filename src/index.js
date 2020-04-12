@@ -7,7 +7,10 @@ import React from "react";
 import {Screen} from "./gui/screen.jsx";
 import {Global} from "./global";
 
-Global.loadData();
+Global.loadData(function ()
+{
+	console.log(Global.database);
+});
 
 var div = document.createElement("div");
 div.style.position = "absolute";

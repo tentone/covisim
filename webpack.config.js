@@ -22,39 +22,32 @@ module.exports = {
 			{
 				test: /\.(jsx|js)$/,
 				exclude: /(node_modules)/,
-				use: {loader: "babel-loader"}
+				loader: "babel-loader"
 			},
 			// Text Files
 			{
 				test: /\.(csv|txt)$/,
-				use: {loader: "raw-loader"},
+				loader: "raw-loader",
 			},
 			// HTML Files
 			{
 				test: /\.html$/,
-				use: [
-					{loader: "html-loader"}
-				]
+				loader: "html-loader"
 			},
-			/*{
-				test: /\.css/,
-				use: [
-					{loader: "css-loader"}
-				]
-			},*/
 			// Images
 			{
 				test: /\.(png|svg|jpg|gif|jpeg|css)$/,
-				use: [
-					{loader: "file-loader"}
-				]
+				loader: "file-loader",
+				options: {
+					emitFile: true,
+					esModule: false,
+					name: '[name].[ext]',
+				},
 			},
 			// Fonts
 			{
 				test: /\.(woff|woff2|eot|ttf|otf)$/,
-				use: [
-					{loader: "file-loader"}
-				]
+				loader: "file-loader"
 			},
 		],
 	}

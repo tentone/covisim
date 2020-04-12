@@ -1,4 +1,4 @@
-import {CovidData} from "../../database/covid-data";
+import {CovidData} from "../database/covid-data";
 import React from "react";
 
 class Chart extends React.Component
