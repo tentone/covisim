@@ -9,6 +9,7 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import {FileUtils} from "../../utils/file-utils";
 import {Simulation} from "../../simulation/simulation";
+import TextField from "@material-ui/core/TextField";
 
 class SimulationCard extends React.Component
 {
@@ -20,7 +21,6 @@ class SimulationCard extends React.Component
 	render()
 	{
 		return (
-
 			<Card style={{margin:"20px"}}>
 				<div style={{margin:"20px"}}>
 					<Typography variant="h6">Simulation</Typography>

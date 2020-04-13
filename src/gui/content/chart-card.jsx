@@ -105,50 +105,71 @@ class ChartCard extends React.Component
 	 */
 	drawCovidCases(data, title, append)
 	{
-		var timeseries = {
-			infected: [],
-			recovered: [],
-			deaths: [],
-			suspects: []
-		};
-
-		for (var i = 0; i < data.length; i++) {
-			timeseries.infected.push({t: data[i].date, y: data[i].infected});
-			timeseries.recovered.push({t: data[i].date, y: data[i].recovered});
-			timeseries.deaths.push({t: data[i].date, y: data[i].deaths});
-			timeseries.suspects.push({t: data[i].date, y: data[i].suspects});
-		}
-
-		let datasets = [
-			{
-				label: title + " - Suspects",
+		// Colors and title of the individual graphs
+		var fields = {
+			suspects: {
+				title: "Suspects",
+				backgroundColor: "rgba(254,238,0, 0.3)",
+				borderColor: "rgb(254,238,0)",
+			},
+			cases: {
+				title: "Cases",
 				backgroundColor: "rgba(47,180,254, 0.3)",
 				borderColor: "rgb(47,180,254)",
-				fill: true,
-				data: timeseries.suspects
 			},
-			{
-				label: title + " - Infected",
+			infected: {
+				title: "Infected",
 				backgroundColor: "rgba(254, 123, 5, 0.3)",
 				borderColor: "rgba(254, 123, 5, 1)",
-				fill: true,
-				data: timeseries.infected
 			},
-			{
-				label: title + " - Deaths",
+			deaths: {
+				title: "Deaths",
 				backgroundColor: "rgba(254,0,34, 0.3)",
 				borderColor: "rgb(254,0,34)",
-				fill: true,
-				data: timeseries.deaths
 			},
-			{
-				label: title + " - Recovered",
+			recovered: {
+				title: "Recovered",
 				backgroundColor: "rgba(50,254,0, 0.3)",
 				borderColor: "rgb(50,254,0)",
-				fill: true,
-				data: timeseries.recovered
+			},
+		};
+
+		// Create timeseries object based on the available fields (not null)
+		var timeseries = {};
+		if(data.length > 0)
+		{
+			for(var i in fields)
+			{
+				if(data[0] !== null)
+				{
+					timeseries[i] = [];
+				}
 			}
-		];
+		}
+
+		// Fill timeseries data from covid data
+		for (var i = 0; i < data.length; i++)
+		{
+			for(var j in timeseries)
+			{
+				timeseries[j].push({t: data[i].date, y: data[i][j]});
+			}
+		}
+
+		// Create ChartJS datasets object to display on chart
+		let datasets = [];
+		for(var j in timeseries)
+		{
+			console.log(j);
+
+			datasets.push({
+				label: title + " - " + fields[j].title,
+				backgroundColor: fields[j].backgroundColor,
+				borderColor: fields[j].borderColor,
+				fill: true,
+				data: timeseries[j]
+			});
+		}
 
 		this.chart.data.datasets = append ? this.chart.data.datasets.concat(datasets) : datasets;
 		this.chart.update();

@@ -14,7 +14,12 @@ function CovidData(date, day)
 	this.date = date;
 
 	/**
-	 * Total number of currently infected people.
+	 * Total number of covid cases in the country.
+	 */
+	this.cases = null;
+
+	/**
+	 * Number of currently infected people.
 	 */
 	this.infected = null;
 

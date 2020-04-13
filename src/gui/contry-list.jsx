@@ -50,7 +50,7 @@ class ContryList extends React.Component
 			var casesA = Global.database.getLastCovidData(a.code);
 			if(casesA === null) {return 1;}
 
-			return casesB.infected - casesA.infected;
+			return casesB.cases - casesA.cases;
 		});
 
 
@@ -65,7 +65,7 @@ class ContryList extends React.Component
 				<ListItemIcon>
 					<img width="40" src={country.codeAlt.toLowerCase() + ".png"}/>
 				</ListItemIcon>
-				<ListItemText primary={country.name} secondary={country.code + " | " + (cases !== null ? cases.infected + " cases" : "N/d")}/>
+				<ListItemText primary={country.name} secondary={country.code + " | " + (cases !== null ? cases.cases + " Cases" : "No Cases")}/>
 			</ListItem>));
 		}
 

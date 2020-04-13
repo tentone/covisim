@@ -37,7 +37,7 @@ CovidCasesSource.fetchCSSE = function(database, onLoad) {
 					}
 
 					var entry = new CovidData(new Date(timedata[i].date), day++);
-					entry.infected = timedata[i].confirmed;
+					entry.cases = timedata[i].confirmed;
 					entry.recovered = timedata[i].recovered;
 					entry.deaths = timedata[i].deaths;
 					cases.push(entry);
@@ -70,7 +70,7 @@ CovidCasesSource.fetchDSSGPT = function(database, onLoad)
 			var values = rows[i][0].split("-");
 			var date = new Date(Number.parseInt(values[2]), Number.parseInt(values[1]) - 1, Number.parseInt(values[0]));
 			var data = new CovidData(date, i - 1);
-			data.infected = Number.parseInt(rows[i][2]);
+			data.cases = Number.parseInt(rows[i][2]);
 			data.recovered = Number.parseInt(rows[i][12]);
 			data.deaths = Number.parseInt(rows[i][13]);
 			data.suspects = Number.parseInt(rows[i][17]);
@@ -100,7 +100,7 @@ CovidCasesSource.fetchPCMDPCITA = function(database, onLoad)
 		{
 			var date = new Date(rows[i][0]);
 			var data = new CovidData(date, i - 1);
-			data.infected = Number.parseInt(rows[i][11]);
+			data.cases = Number.parseInt(rows[i][11]);
 			data.recovered = Number.parseInt(rows[i][9]);
 			data.deaths = Number.parseInt(rows[i][10]);
 			data.suspects = Number.parseInt(rows[i][12]);
