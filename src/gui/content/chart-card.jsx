@@ -160,8 +160,6 @@ class ChartCard extends React.Component
 		let datasets = [];
 		for(var j in timeseries)
 		{
-			console.log(j);
-
 			datasets.push({
 				label: title + " - " + fields[j].title,
 				backgroundColor: fields[j].backgroundColor,

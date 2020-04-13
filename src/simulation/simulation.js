@@ -89,8 +89,8 @@ Simulation.prototype.step = function()
 {
 	if(this.country === null)
 	{
-		console.log("Simulation needs to be reset before start.");
-		return;
+		console.warn("COVID-19: Simulation state reset automatically.");
+		this.reset();
 	}
 
 	// Foreigners visit
@@ -106,7 +106,7 @@ Simulation.prototype.step = function()
 		if(foreign.isInfected())
 		{
 			// Select a random destination district
-			var district = RandomUtils.randomElement(this.country.subBlocks);
+			var district = RandomUtils.randomElement(this.country.children);
 
 			// Contact with random people from the destination district
 			var contact = MathUtils.reduction(this.config.foreign.dailyContact, this.config.measures.limitMovement);
@@ -176,11 +176,17 @@ Simulation.prototype.fromJSON = function(data)
 	this.date = new Date(data.date);
 
 	this.country = new Block();
-	this.country.fromJSON(data.country);
-	this.country.buildCache();
+	if(data.country !== null)
+	{
+		this.country.fromJSON(data.country);
+		this.country.buildCache();
+	}
 
 	this.governor = new Governor();
-	this.governor.fromJSON(data.governor);
+	if(data.governor !== null)
+	{
+		this.governor.fromJSON(data.governor);
+	}
 };
 
 /**
@@ -194,8 +200,8 @@ Simulation.prototype.toJSON = function()
 		day: this.day,
 		date: this.date,
 		data: this.data,
-		country: this.country.toJSON(),
-		governor: this.governor.toJSON()
+		country: this.country !== null ? this.country.toJSON() : null,
+		governor: this.governor !== null ? this.governor.toJSON(): null
 	};
 };
 

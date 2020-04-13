@@ -1,3 +1,5 @@
+import {Person} from "./person";
+
 /**
  * Simulation block is a level of organization. Can be a country, district, city etc.
  *
@@ -18,7 +20,7 @@ function Block(name) {
 	this.parent = null;
 
 	// Child blocks are the lower organizational levels of the block
-	this.subBlocks = [];
+	this.children = [];
 
 	// People inside of this simulation block.
 	this.people = [];
@@ -31,10 +33,10 @@ function Block(name) {
  */
 function BlockCache()
 {
-	// People from all levels bellow (including from actual level)
+	// People from all levels bellow (including from this block level)
 	this.people = [];
 
-	// All blocks bellow
+	// All blocks bellow this level.
 	this.blocks = null;
 }
 
@@ -56,7 +58,7 @@ Block.prototype.buildCache = function()
 Block.prototype.addSubBlock = function(block)
 {
 	block.parent = this;
-	this.subBlocks.push(block);
+	this.children.push(block);
 };
 
 /**
@@ -105,29 +107,59 @@ Block.prototype.traverse = function(onPeople, onBlock)
 		onBlock(this);
 	}
 
-	for(var i = 0; i < this.subBlocks.length; i++)
+	for(var i = 0; i < this.children.length; i++)
 	{
-		this.subBlocks[i].traverse(onPeople, onBlock);
+		this.children[i].traverse(onPeople, onBlock);
 	}
 };
 
 /**
  * Serialize block and all sub-blocks data into a JSON object.
+ *
+ * Method is called recursively for each one of the children.
  */
 Block.prototype.toJSON = function()
 {
 	var data = {
 		name: this.name,
-		subBlocks: [],
-		people: this.people
+		people: [],
+		children: [],
 	};
 
-	for(var i = 0; i < this.subBlocks.length; i++)
+	for(var i = 0; i < this.children.length; i++)
 	{
-		data.subBlocks.push(this.subBlocks[i].toJSON());
+		data.children.push(this.children[i].toJSON());
+	}
+
+
+	for(var i = 0; i < this.people.length; i++)
+	{
+		data.people.push(this.people[i].toJSON());
 	}
 
 	return data;
+};
+
+/**
+ * Load state data from JSON file.
+ */
+Block.prototype.fromJSON = function(data)
+{
+	this.name = data.name;
+
+	for(var i = 0; i < data.children.length; i++)
+	{
+		var block = new Block();
+		block.fromJSON(data.children[i]);
+		this.addSubBlock(block);
+	}
+
+	for(var i = 0; i < data.people.length; i++)
+	{
+		var person = new Person();
+		person.fromJSON(data.people[i]);
+		this.addPerson(person);
+	}
 };
 
 export {Block};

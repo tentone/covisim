@@ -1,5 +1,3 @@
-import {Simulation} from "./simulation";
-
 /**
  * Governor applies measures to increase hospital capacity, increase transmission protection, etc.
  *
@@ -19,7 +17,7 @@ function Governor()
 	this.last = null;
 
 	// Lockdown lockdownStage
-	this.lockdownStage = 0;
+	// this.lockdownStage = 0;
 }
 
 /**
@@ -31,6 +29,7 @@ function Governor()
  */
 Governor.prototype.act = function(raw, diff, config)
 {
+	/*
 	// Emergency First Stage
 	if(this.lockdownStage === 0) {
 		config.measures.limitMovement = 0.7;
@@ -51,6 +50,7 @@ Governor.prototype.act = function(raw, diff, config)
 		config.measures.hospitalExtraCapacity += 5000;
 		this.lockdownStage++;
 	}
+	*/
 };
 
 /**

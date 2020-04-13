@@ -1,5 +1,7 @@
 import {RandomUtils} from "../utils/random-utils";
 import {MathUtils} from "../utils/math-utils";
+import {Block} from "./block";
+import {Governor} from "./governor";
 
 /**
  * List of possible person status.
@@ -225,6 +227,34 @@ Person.prototype.leaveHospital = function(simulation, config)
 		simulation.hospital--;
 		this.inHospital = false;
 	}
+};
+
+/**
+ * Load state data from JSON file.
+ */
+Person.prototype.fromJSON = function(data)
+{
+	this.status = data.status;
+	this.day = data.day;
+	this.dayInfection = data.dayInfection;
+	this.inHospital = data.inHospital;
+	this.goingToDie = data.goingToDie;
+	this.age = data.age;
+};
+
+/**
+ * Store state and results into a JSON object.
+ */
+Person.prototype.toJSON = function()
+{
+	return {
+		status: this.status,
+		day: this.day,
+		dayInfection: this.dayInfection,
+		inHospital: this.inHospital,
+		goingToDie: this.age,
+		age: this.age
+	};
 };
 
 export {Person, PersonStatus};

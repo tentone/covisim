@@ -22,7 +22,7 @@ class ContryList extends React.Component
 		super(props);
 
 		/**
-		 * Search text applied to filter the contries.
+		 * Search text applied to filter the countries.
 		 *
 		 * @type {string}
 		 */
