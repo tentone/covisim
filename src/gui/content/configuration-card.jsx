@@ -16,34 +16,30 @@ class ConfigurationCard extends React.Component
 	constructor(props)
 	{
 		super(props);
+
+		this.timeAxis = ChartTimeAxis.DAY;
 	}
 
 	chartTimeChange(event)
 	{
-		GuiState.chartCard.current.setTimeAxisMode(event.target.value);
+		this.timeAxis = event.target.value;
+		GuiState.chartCard.current.setTimeAxisMode(this.timeAxis);
 	}
 
 	render()
 	{
-		var elements = [];
-		if(GuiState.chartCard.current !== null)
-		{
-			elements.push(<FormControl key={0} fullWidth>
-				<InputLabel>Chart Time</InputLabel>
-				<Select value={GuiState.chartCard.current.timeAxis} onChange={(event) => {this.chartTimeChange(event);}}>
-					<MenuItem value={ChartTimeAxis.DATE}>Date</MenuItem>
-					<MenuItem value={ChartTimeAxis.DAY}>Day</MenuItem>
-				</Select>
-			</FormControl>);
-		}
-
-
 		return (
 			<Card style={{margin:"20px"}}>
 				<div style={{margin:"20px"}}>
 					<Typography variant="h6">Configuration</Typography>
 					<br/>
-					{elements}
+					<FormControl fullWidth>
+						<InputLabel>Chart Time</InputLabel>
+						<Select value={this.timeAxis} onChange={(event) => {this.chartTimeChange(event);}}>
+							<MenuItem value={ChartTimeAxis.DATE}>Date</MenuItem>
+							<MenuItem value={ChartTimeAxis.DAY}>Day</MenuItem>
+						</Select>
+					</FormControl>
 				</div>
 			</Card>
 		);
