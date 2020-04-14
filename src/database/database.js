@@ -26,15 +26,15 @@ function Database()
  */
 Database.prototype.storeCovidCases = function(code, data)
 {
-	var cases = this.getCovidCases(code);
+	let cases = this.getCovidCases(code);
 	if(cases !== null)
 	{
-		for(var i = 0; i < data.length; i++)
+		for(let i = 0; i < data.length; i++)
 		{
-			var exists = false;
-			for(var j = 0; j < cases.length; j++)
+			let exists = false;
+			for(let j = 0; j < cases.length; j++)
 			{
-				if(data[i].day === cases[j].day)
+				if(data[i].date.getDate() === cases[j].date.getDate())
 				{
 					exists = true;
 				}
@@ -61,7 +61,7 @@ Database.prototype.storeCovidCases = function(code, data)
  */
 Database.prototype.getLastCovidData = function(code)
 {
-	var cases = this.getCovidCases(code);
+	let cases = this.getCovidCases(code);
 	if(cases === null || cases.length === 0)
 	{
 		return null;
@@ -105,7 +105,7 @@ Database.prototype.storeCountry = function(country)
  */
 Database.prototype.removeCountry = function(country)
 {
-	var index = this.countries.indexOf(country);
+	const index = this.countries.indexOf(country);
 	if(index !== -1)
 	{
 		this.countries.slice(index, 0);
@@ -132,7 +132,7 @@ Database.prototype.getCountry = function(code)
 		this.countriesMap.get(code);
 	}
 
-	for(var i = 0; i < this.countries.length; i++)
+	for(let i = 0; i < this.countries.length; i++)
 	{
 		if(this.countries[i].code === code || this.countries[i].codeAlt === code || this.countries[i].name === code)
 		{
@@ -148,12 +148,12 @@ Database.prototype.getCountry = function(code)
  */
 Database.prototype.fromJSON = function(data)
 {
-	for(var i = 0; i < data.countries; i++)
+	for(let i = 0; i < data.countries; i++)
 	{
 		this.storeCountry(data.countries[i]);
 	}
 
-	for(var i in data.covidCases)
+	for(let i in data.covidCases)
 	{
 		this.storeCovidCases(i, data.covidCases[i]);
 	}
@@ -166,7 +166,7 @@ Database.prototype.fromJSON = function(data)
  */
 Database.prototype.toJSON = function()
 {
-	var data = {
+	const data = {
 		countries: this.countries,
 		covidCases: {}
 	};

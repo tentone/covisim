@@ -138,6 +138,15 @@ class ChartCard extends React.Component
 	}
 
 	/**
+	 * Clear all data from the chart card.
+	 */
+	clear()
+	{
+		this.chart.data.datasets = [];
+		this.chart.update();
+	}
+
+	/**
 	 * Draw data into the chart component by its date.
 	 *
 	 * @param data
@@ -208,10 +217,8 @@ class ChartCard extends React.Component
 		let datasets = [];
 		for(var j in timeseries)
 		{
-			console.log(timeseries[j]);
-
 			datasets.push({
-				label: title + " - " + fields[j].title,
+				label: title + " [" + fields[j].title + "]",
 				backgroundColor: fields[j].backgroundColor,
 				borderColor: fields[j].borderColor,
 				fill: true,
@@ -224,17 +231,29 @@ class ChartCard extends React.Component
 	}
 
 	/**
-	 * Export data of the currently selected country.
+	 * Export data of the currently selected countries into a JSON file.
 	 */
 	exportData()
 	{
-		if(GuiState.country === null)
+		if(GuiState.countries.length === 0)
 		{
-			alert("No country selected");
+			alert("No country selected. Must select a country first.");
 			return;
 		}
 
-		var data = Global.database.getCovidCases(GuiState.country.code);
+		let data = [];
+		for(let i = 0; i < GuiState.countries.length; i++)
+		{
+			let cases = Global.database.getCovidCases(GuiState.countries[i].code);
+			if(cases !== null)
+			{
+				data.push({
+					code: GuiState.countries[i].code,
+					data: cases
+				});
+			}
+		}
+
 		FileUtils.writeFile("data.json", data);
 	};
 

@@ -9,6 +9,7 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import {FileUtils} from "../../utils/file-utils";
 import {Simulation} from "../../simulation/simulation";
+import Divider from "@material-ui/core/Divider";
 
 class SimulationCard extends React.Component
 {

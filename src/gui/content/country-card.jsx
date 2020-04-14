@@ -9,6 +9,7 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import {FileUtils} from "../../utils/file-utils";
+import Divider from "@material-ui/core/Divider";
 
 class CountryCard extends React.Component
 {
@@ -17,44 +18,39 @@ class CountryCard extends React.Component
 		super(props);
 	}
 
-	exportCountry()	{
-
-		if(GuiState.country === null)
-		{
-			alert("No country selected");
-			return;
-		}
-
-		FileUtils.writeFile("country.json", GuiState.country);
-	}
-
 	render()
 	{
-		if(GuiState.country !== null)
+		if(GuiState.countries.length > 0)
 		{
-			return (
-				<Card style={{margin:"20px"}}>
+			let elements = [];
+
+			for(let i = 0; i < GuiState.countries.length; i++)
+			{
+				elements.push(<Card key={GuiState.countries[i].code} style={{margin:"20px"}}>
 					<div style={{margin:"20px"}}>
 						<Typography variant="h6">Country</Typography>
 
 						<form style={{pointerEvents: "none"}} noValidate autoComplete="off">
-							<TextField style={{marginBottom:"5px"}} fullWidth label="Name" value={GuiState.country.name}/>
-							<TextField style={{marginBottom:"5px"}} fullWidth label="Code" value={GuiState.country.code}/>
-							<TextField style={{marginBottom:"5px"}} fullWidth label="Code Alt." value={GuiState.country.codeAlt}/>
-							<TextField style={{marginBottom:"5px"}} fullWidth label="Population" value={GuiState.country.population}/>
-							<TextField style={{marginBottom:"5px"}} fullWidth label="Capital" value={GuiState.country.capital}/>
-							<TextField style={{marginBottom:"5px"}} fullWidth label="Continent" value={GuiState.country.continent}/>
-							<TextField style={{marginBottom:"5px"}} fullWidth label="Currency" value={GuiState.country.currency}/>
+							<TextField style={{marginBottom:"5px"}} fullWidth label="Name" defaultValue={GuiState.countries[i].name}/>
+							<TextField style={{marginBottom:"5px"}} fullWidth label="Code" defaultValue={GuiState.countries[i].code}/>
+							<TextField style={{marginBottom:"5px"}} fullWidth label="Code Alt." defaultValue={GuiState.countries[i].codeAlt}/>
+							<TextField style={{marginBottom:"5px"}} fullWidth label="Population" defaultValue={GuiState.countries[i].population}/>
+							<TextField style={{marginBottom:"5px"}} fullWidth label="Capital" defaultValue={GuiState.countries[i].capital}/>
+							<TextField style={{marginBottom:"5px"}} fullWidth label="Continent" defaultValue={GuiState.countries[i].continent}/>
+							<TextField style={{marginBottom:"5px"}} fullWidth label="Currency" defaultValue={GuiState.countries[i].currency}/>
+							<TextField style={{marginBottom:"5px"}} fullWidth label="Latitude" defaultValue={GuiState.countries[i].latitude}/>
+							<TextField style={{marginBottom:"5px"}} fullWidth label="Longitude" defaultValue={GuiState.countries[i].longitude}/>
 						</form>
-
 						<br/>
-
 						<ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-							<Button onClick={() => {this.exportCountry();}}>Export</Button>
+							<Button onClick={() => {FileUtils.writeFile(GuiState.countries[i].code.toLowerCase() + ".json", GuiState.countries[i]);}}>Export</Button>
 						</ButtonGroup>
 					</div>
-				</Card>
-			);
+				</Card>);
+				elements.push(<Divider key={GuiState.countries[i].codeAlt} style={{margin:"20px"}}/>);
+			}
+
+			return elements;
 		}
 
 		return null;

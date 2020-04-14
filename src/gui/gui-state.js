@@ -17,13 +17,12 @@ GuiState.simulation = new Simulation();
 /**
  * Country selected to draw info about.
  */
-GuiState.country = null;
+GuiState.countries = [];
 
 /**
  * Set true to compare data from different countries.
  */
-// TODO <NOT IN USE>
-GuiState.compareCountries = false;
+GuiState.selectMultiple = false;
 
 /**
  * Reference to the chart element in the GUI.
@@ -42,22 +41,53 @@ GuiState.countryCard = React.createRef();
  */
 GuiState.selectCountry = function(code)
 {
-	GuiState.country = Global.database.getCountry(code);
-	if(GuiState.country === null)
+	let country = Global.database.getCountry(code);
+	if(country === null)
 	{
 		alert("Country not found in database.");
 		return;
 	}
 
-	var data = Global.database.getCovidCases(code);
-	if(data === null)
+	if(!GuiState.selectMultiple)
 	{
-		alert("No Covid 19 data available for this country.");
-		return;
+		GuiState.countries = [];
+	}
+
+	let index = GuiState.countries.indexOf(country);
+	if(index === -1)
+	{
+		GuiState.countries.push(country);
+	}
+	else
+	{
+		GuiState.countries.splice(index, 1);
 	}
 
 	GuiState.countryCard.current.forceUpdate();
-	GuiState.chartCard.current.drawCovidCases(data, GuiState.country.name, false);
+	GuiState.updateCharts();
 };
+
+/**
+ * Update the graphs drawn on chart from the current country selection.
+ */
+GuiState.updateCharts = function()
+{
+	if(GuiState.countries.length === 0)
+	{
+		GuiState.chartCard.current.clear();
+	}
+
+	for(let i = 0; i < GuiState.countries.length; i++)
+	{
+		var data = Global.database.getCovidCases(GuiState.countries[i].code);
+		if(data !== null)
+		{
+			GuiState.chartCard.current.drawCovidCases(data, GuiState.countries[i].name, i !== 0 && GuiState.selectMultiple);
+		}
+	}
+
+	GuiState.chartCard.current.resetZoom();
+};
+
 
 export {GuiState};
