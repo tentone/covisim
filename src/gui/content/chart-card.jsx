@@ -11,6 +11,14 @@ import {Global} from "../../global";
 import {FileUtils} from "../../utils/file-utils";
 
 /**
+ * Enum with possible values for the chart X axis mode.
+ */
+var ChartTimeAxis = {
+	DATE: 0,
+	DAY: 1
+};
+
+/**
  * Chart to draw graphs into the GUI.
  */
 class ChartCard extends React.Component
@@ -18,6 +26,9 @@ class ChartCard extends React.Component
 	constructor(props)
 	{
 		super(props);
+
+		this.timeAxis = ChartTimeAxis.DAY;
+
 		this.canvas = React.createRef();
 		this.chart = null;
 	}
@@ -28,6 +39,7 @@ class ChartCard extends React.Component
 	componentDidMount()
 	{
 		this.createChart();
+		this.setTimeAxisMode(this.timeAxis);
 	}
 
 	/**
@@ -72,28 +84,57 @@ class ChartCard extends React.Component
 					intersect: true
 				},
 				scales: {
-					xAxes: [{
-						type: "time",
-						time: {
-							displayFormats: {
-								quarter: "MMM YYYY"
-							}
-						},
+					xAxes: [],
+					yAxes:
+					[{
 						scaleLabel: {
 							display: true,
-							labelString: "Date"
+							labelString: "People"
 						}
-					}],
-					yAxes:
-						[{
-							scaleLabel: {
-								display: true,
-								labelString: "People"
-							}
-						}]
+					}]
 				}
 			}
 		});
+	}
+
+	/**
+	 * Set the mode of the X axis, can be date or day.
+	 */
+	setTimeAxisMode(timeAxis)
+	{
+		this.timeAxis = timeAxis;
+
+		if(this.timeAxis === ChartTimeAxis.DATE)
+		{
+			this.chart.options.scales.xAxes = [{
+				type: "time",
+				time: {
+					round: "day",
+					displayFormats: {
+						quarter: "MMM YYYY"
+					}
+				},
+				scaleLabel: {
+					display: true,
+					labelString: "Date"
+				}
+			}];
+		}
+		else if(this.timeAxis === ChartTimeAxis.DAY)
+		{
+			this.chart.options.scales.xAxes = [{
+				type: "linear",
+				scaleLabel: {
+					display: true,
+					labelString: "Day"
+				},
+				ticks: {
+					stepSize: 1.0
+				}
+			}];
+		}
+
+		this.chart.update();
 	}
 
 	/**
@@ -140,7 +181,7 @@ class ChartCard extends React.Component
 		{
 			for(var i in fields)
 			{
-				if(data[0] !== null)
+				if(data[0][i] !== null)
 				{
 					timeseries[i] = [];
 				}
@@ -152,7 +193,14 @@ class ChartCard extends React.Component
 		{
 			for(var j in timeseries)
 			{
-				timeseries[j].push({t: data[i].date, y: data[i][j]});
+				if(this.timeAxis === ChartTimeAxis.DATE)
+				{
+					timeseries[j].push({t: data[i].date, y: data[i][j]});
+				}
+				else if(this.timeAxis === ChartTimeAxis.DAY)
+				{
+					timeseries[j].push({x: data[i].day, y: data[i][j]});
+				}
 			}
 		}
 
@@ -160,6 +208,8 @@ class ChartCard extends React.Component
 		let datasets = [];
 		for(var j in timeseries)
 		{
+			console.log(timeseries[j]);
+
 			datasets.push({
 				label: title + " - " + fields[j].title,
 				backgroundColor: fields[j].backgroundColor,
@@ -189,6 +239,14 @@ class ChartCard extends React.Component
 	};
 
 
+	/**
+	 * Reset the zoom to fit the graph
+	 */
+	resetZoom()
+	{
+		this.chart.resetZoom();
+	}
+
 	render()
 	{
 		return (
@@ -200,6 +258,7 @@ class ChartCard extends React.Component
 					</div>
 					<ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
 						<Button onClick={() => {this.exportData();}}>Export</Button>
+						<Button onClick={() => {this.resetZoom();}}>Reset Zoom</Button>
 					</ButtonGroup>
 				</div>
 			</Card>
@@ -208,4 +267,4 @@ class ChartCard extends React.Component
 	}
 }
 
-export {ChartCard};
+export {ChartCard, ChartTimeAxis};

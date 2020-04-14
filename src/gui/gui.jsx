@@ -56,7 +56,7 @@ class Gui extends React.Component
 
 	updateSizes()
 	{
-
+		this.forceUpdate();
 	}
 
 	render()

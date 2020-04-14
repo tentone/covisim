@@ -9,7 +9,6 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import {FileUtils} from "../../utils/file-utils";
 import {Simulation} from "../../simulation/simulation";
-import TextField from "@material-ui/core/TextField";
 
 class SimulationCard extends React.Component
 {
@@ -31,6 +30,7 @@ class SimulationCard extends React.Component
 						var simulation = new Simulation();
 						simulation.fromJSON(JSON.parse(reader.result));
 						GuiState.simulation = simulation;
+						alert("Simulation data loaded from JSON file.");
 					}
 					catch(e)
 					{
@@ -46,7 +46,7 @@ class SimulationCard extends React.Component
 	{
 		try
 		{
-			FileUtils.writeFile("simulation.json", GuiState.simulation.toJSON());
+			FileUtils.writeFile("simulation.json", JSON.stringify(GuiState.simulation.toJSON()));
 		}
 		catch(e)
 		{

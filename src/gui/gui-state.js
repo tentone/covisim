@@ -1,7 +1,6 @@
 import {Global} from "../global";
 import React from "react";
 import {Simulation} from "../simulation/simulation";
-import {FileUtils} from "../utils/file-utils";
 
 /**
  * Stored the state of the GUI component.
@@ -21,9 +20,15 @@ GuiState.simulation = new Simulation();
 GuiState.country = null;
 
 /**
+ * Set true to compare data from different countries.
+ */
+// TODO <NOT IN USE>
+GuiState.compareCountries = false;
+
+/**
  * Reference to the chart element in the GUI.
  */
-GuiState.chart = React.createRef();
+GuiState.chartCard = React.createRef();
 
 /**
  * Reference to the country card element in the GUI.
@@ -52,7 +57,7 @@ GuiState.selectCountry = function(code)
 	}
 
 	GuiState.countryCard.current.forceUpdate();
-	GuiState.chart.current.drawCovidCases(data, GuiState.country.name, false);
+	GuiState.chartCard.current.drawCovidCases(data, GuiState.country.name, false);
 };
 
 export {GuiState};

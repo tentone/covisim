@@ -234,12 +234,12 @@ Person.prototype.leaveHospital = function(simulation, config)
  */
 Person.prototype.fromJSON = function(data)
 {
-	this.status = data.status;
-	this.day = data.day;
-	this.dayInfection = data.dayInfection;
-	this.inHospital = data.inHospital;
-	this.goingToDie = data.goingToDie;
-	this.age = data.age;
+	this.status = data[0];
+	this.day = data[1];
+	this.dayInfection = data[2];
+	this.inHospital = data[3];
+	this.goingToDie = data[4];
+	this.age = data[5];
 };
 
 /**
@@ -247,14 +247,7 @@ Person.prototype.fromJSON = function(data)
  */
 Person.prototype.toJSON = function()
 {
-	return {
-		status: this.status,
-		day: this.day,
-		dayInfection: this.dayInfection,
-		inHospital: this.inHospital,
-		goingToDie: this.age,
-		age: this.age
-	};
+	return [this.status, this.day, this.dayInfection, this.inHospital, this.goingToDie, this.age];
 };
 
 export {Person, PersonStatus};

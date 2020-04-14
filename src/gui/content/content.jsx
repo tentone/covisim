@@ -4,6 +4,7 @@ import {GuiState} from "../gui-state";
 import Divider from "@material-ui/core/Divider";
 import {CountryCard} from "./country-card.jsx";
 import {SimulationCard} from "./simulation-card.jsx";
+import {ConfigurationCard} from "./configuration-card.jsx";
 
 class Content extends React.Component
 {
@@ -15,13 +16,16 @@ class Content extends React.Component
 	{
 		return (
 			<div style={{overflow: "auto", position:"absolute", width: "100%", height:"100%"}}>
-				<ChartCard ref={GuiState.chart}/>
+				<ChartCard ref={GuiState.chartCard}/>
 				<Divider style={{margin:"20px"}}/>
 
 				<CountryCard ref={GuiState.countryCard}/>
 				<Divider style={{margin:"20px"}}/>
 
 				<SimulationCard/>
+				<Divider style={{margin:"20px"}}/>
+
+				<ConfigurationCard/>
 				<Divider style={{margin:"20px"}}/>
 			</div>
 		);

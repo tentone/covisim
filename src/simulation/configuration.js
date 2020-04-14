@@ -10,7 +10,7 @@ function Configuration() {
 		startDate: new Date(),
 
 		// Population of the simulation
-		population: 13e6,
+		population: 4000, //13e6,
 
 		// Number of districts (cities or provinces) in the simulation
 		districts: 156,

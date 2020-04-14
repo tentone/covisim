@@ -70,7 +70,7 @@ CountrySource.loadList = function(database) {
 			{
 				country.age.push(new AgeRange(1, 14, Number.parseFloat(rows14[i][3])));
 				country.age.push(new AgeRange(15, 64, Number.parseFloat(rows1564[i][3])));
-				country.age.push(new AgeRange(65, 90, Number.parseFloat(rows65[i][3])));
+				country.age.push(new AgeRange(65, 100, Number.parseFloat(rows65[i][3])));
 			}
 		}
 	}

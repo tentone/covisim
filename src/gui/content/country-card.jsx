@@ -17,8 +17,8 @@ class CountryCard extends React.Component
 		super(props);
 	}
 
-	exportCountry()
-	{
+	exportCountry()	{
+
 		if(GuiState.country === null)
 		{
 			alert("No country selected");
