@@ -9,26 +9,33 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import {FileUtils} from "../../utils/file-utils";
 import {Simulation} from "../../simulation/simulation";
-import Divider from "@material-ui/core/Divider";
 
 class SimulationCard extends React.Component
 {
 	constructor(props)
 	{
 		super(props);
+
+		/**
+		 * Number of steps on each simulation run.
+		 */
+		this.steps = 1;
 	}
 
+	/**
+	 * Import full simulation data with configuration current simulation state and governor data from JSON file.
+	 */
 	importSimulation()
 	{
 		FileUtils.chooseFile(function (files){
 			if(files.length > 0)
 			{
-				var reader = new FileReader();
+				const reader = new FileReader();
 				reader.onload = function()
 				{
 					try
 					{
-						var simulation = new Simulation();
+						let simulation = new Simulation();
 						simulation.fromJSON(JSON.parse(reader.result));
 						GuiState.simulation = simulation;
 						alert("Simulation data loaded from JSON file.");
@@ -43,6 +50,9 @@ class SimulationCard extends React.Component
 		});
 	}
 
+	/**
+	 * Export full simulation data and state into a JSON file.
+	 */
 	exportSimulation()
 	{
 		try
@@ -56,6 +66,27 @@ class SimulationCard extends React.Component
 		}
 	}
 
+	/**
+	 * Run a number of step in the simulation.
+	 */
+	step()
+	{
+		let time = performance.now();
+		GuiState.simulation.step();
+		GuiState.updateCharts();
+		let delta = performance.now() - time;
+		console.log("COVID-19: Simulation step finished. Took " + delta + " ms.");
+	}
+
+	/**
+	 * Reset the state of the simulation.
+	 */
+	reset()
+	{
+		GuiState.simulation.reset();
+		GuiState.updateCharts();
+	}
+
 	render()
 	{
 		return (
@@ -64,8 +95,8 @@ class SimulationCard extends React.Component
 					<Typography variant="h6">Simulation</Typography>
 					<br/>
 					<ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-						<Button onClick={function() {GuiState.simulation.step();}}>Step</Button>
-						<Button onClick={function() {GuiState.simulation.reset();}}>Reset</Button>
+						<Button onClick={this.step}>Step</Button>
+						<Button onClick={this.reset}>Reset</Button>
 						<Button onClick={this.importSimulation}>Import</Button>
 						<Button onClick={this.exportSimulation}>Export</Button>
 					</ButtonGroup>

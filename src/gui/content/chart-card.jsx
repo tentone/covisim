@@ -27,9 +27,21 @@ class ChartCard extends React.Component
 	{
 		super(props);
 
+		/**
+		 * How to draw the time axis. If by day it considers the day since the data beginning.
+		 *
+		 * If by date is uses the absolute date of each data entry.
+		 */
 		this.timeAxis = ChartTimeAxis.DAY;
 
+		/**
+		 * Canvas DOM element reference.
+		 */
 		this.canvas = React.createRef();
+
+		/**
+		 * ChartJS object to draw the charts into the canvas.
+		 */
 		this.chart = null;
 	}
 
@@ -47,7 +59,7 @@ class ChartCard extends React.Component
 	 */
 	createChart()
 	{
-		var context = this.canvas.current.getContext("2d");
+		let context = this.canvas.current.getContext("2d");
 
 		this.chart = new Chart(context, {
 			type: "line",
@@ -156,7 +168,7 @@ class ChartCard extends React.Component
 	drawCovidCases(data, title, append)
 	{
 		// Colors and title of the individual graphs
-		var fields = {
+		let fields = {
 			suspects: {
 				title: "Suspects",
 				backgroundColor: "rgba(254,238,0, 0.3)",
@@ -184,8 +196,8 @@ class ChartCard extends React.Component
 			},
 		};
 
-		// Create timeseries object based on the available fields (not null)
-		var timeseries = {};
+		// Create time series object based on the available fields (not null)
+		let timeseries = {};
 		if(data.length > 0)
 		{
 			for(var i in fields)
@@ -197,10 +209,10 @@ class ChartCard extends React.Component
 			}
 		}
 
-		// Fill timeseries data from covid data
-		for (var i = 0; i < data.length; i++)
+		// Fill time series data from covid data
+		for (let i = 0; i < data.length; i++)
 		{
-			for(var j in timeseries)
+			for(let j in timeseries)
 			{
 				if(this.timeAxis === ChartTimeAxis.DATE)
 				{
@@ -213,9 +225,9 @@ class ChartCard extends React.Component
 			}
 		}
 
-		// Create ChartJS datasets object to display on chart
+		// Create ChartJS data sets object to display on chart
 		let datasets = [];
-		for(var j in timeseries)
+		for(let j in timeseries)
 		{
 			datasets.push({
 				label: title + " [" + fields[j].title + "]",

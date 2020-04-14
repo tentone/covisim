@@ -32,7 +32,7 @@ class ContryList extends React.Component
 	getItems()
 	{
 		// Filter countries based on search text
-		var countries = [];
+		let countries = [];
 		for(let i = 0; i < Global.database.countries.length; i++)
 		{
 			if(StringUtils.searchObject(this.search, Global.database.countries[i], ["name", "code"]))
@@ -42,20 +42,22 @@ class ContryList extends React.Component
 		}
 
 		// Sort based on number of cases.
-		countries.sort(function (a, b)
-		{
-			var casesB = Global.database.getLastCovidData(b.code);
-			if(casesB === null) {return -1;}
+		countries.sort(function (a, b) {
+			const casesB = Global.database.getLastCovidData(b.code);
+			if (casesB === null) {
+				return -1;
+			}
 
-			var casesA = Global.database.getLastCovidData(a.code);
-			if(casesA === null) {return 1;}
+			const casesA = Global.database.getLastCovidData(a.code);
+			if (casesA === null) {
+				return 1;
+			}
 
 			return casesB.cases - casesA.cases;
 		});
 
-
 		// Build items list
-		var listItems = [];
+		let listItems = [];
 		for(let i = 0; i < countries.length; i++)
 		{
 			let country = countries[i];
@@ -74,7 +76,7 @@ class ContryList extends React.Component
 
 	render()
 	{
-		var listItems = this.getItems();
+		let listItems = this.getItems();
 
 		return (
 			<div style={{position:"absolute", width: "100%", height:"100%"}}>

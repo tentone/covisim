@@ -33,12 +33,19 @@ class ConfigurationCard extends React.Component
 			GuiState.selectMultiple = event.target.checked;
 		};
 
+		const drawSimulationChange = (event) => {
+			GuiState.drawSimulation = event.target.checked;
+		};
+
 		return (
 			<Card style={{margin:"20px"}}>
 				<div style={{margin:"20px"}}>
 					<Typography variant="h6">Configuration</Typography>
 					<br/>
 
+					<FormControlLabel control={<Checkbox defaultChecked={GuiState.drawSimulation} onChange={drawSimulationChange}/>} color="primary" label="Draw Simulation Chart">
+					</FormControlLabel>
+					<br/>
 					<FormControlLabel style={{marginBottom:"5px"}} control={<Checkbox defaultChecked={GuiState.selectMultiple} onChange={compareCountryChange}/>} color="primary" label="Compare Countries">
 					</FormControlLabel>
 

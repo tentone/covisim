@@ -20,6 +20,11 @@ GuiState.simulation = new Simulation();
 GuiState.countries = [];
 
 /**
+ * Draw simulation graph for comparison.
+ */
+GuiState.drawSimulation = true;
+
+/**
  * Set true to compare data from different countries.
  */
 GuiState.selectMultiple = false;
@@ -83,6 +88,14 @@ GuiState.updateCharts = function()
 		if(data !== null)
 		{
 			GuiState.chartCard.current.drawCovidCases(data, GuiState.countries[i].name, i !== 0 && GuiState.selectMultiple);
+		}
+	}
+
+	if(GuiState.drawSimulation)
+	{
+		if(GuiState.simulation.day > 0)
+		{
+			GuiState.chartCard.current.drawCovidCases(GuiState.simulation.data, "Simulation", true);
 		}
 	}
 
