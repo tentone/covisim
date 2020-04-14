@@ -10,7 +10,7 @@ function Configuration() {
 		startDate: new Date(),
 
 		// Population of the simulation
-		population: 4000, //13e6,
+		population: 10000, //13e6,
 
 		// Number of districts (cities or provinces) in the simulation
 		districts: 156,
@@ -31,7 +31,7 @@ function Configuration() {
 	// Foreign visit configuration (from outside the country, into a district)
 	this.foreign = {
 		// Number of foreign visitors daily
-		dailyVisits: 0, // 1e5,
+		dailyVisits: 1e5,
 
 		// How many people a foreign person contacts with
 		dailyContact: 20,
@@ -46,10 +46,10 @@ function Configuration() {
 	// Population movement
 	this.movement = {
 		// How many people one people contacts with per day
-		peopleContact: 25,
+		peopleContact: 50,
 
 		// Percentage of people in contact that are outside of the district.
-		outsideContact: 0.2,
+		outsideContact: 0.3,
 	};
 
 	// Disease configuration
