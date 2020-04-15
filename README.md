@@ -11,7 +11,7 @@
 - Its possible to use countries data to automatically setup a simulation configuration.
 - Simulation, country and Covid-19 data can be stored and loaded from JSON files allowing for offline simulation using node.
 
-<img src="https://raw.githubusercontent.com/tentone/covisim/master/readme/screenshot_1.png" width="350"><img src="https://raw.githubusercontent.com/tentone/covisim/master/readme/screenshot_2.png" width="350">
+<img src="https://raw.githubusercontent.com/tentone/covisim/master/readme/screenshot_1.png" width="380"><img src="https://raw.githubusercontent.com/tentone/covisim/master/readme/screenshot_2.png" width="380">
 
 
 
