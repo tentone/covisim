@@ -131,7 +131,6 @@ Block.prototype.toJSON = function()
 		data.children.push(this.children[i].toJSON());
 	}
 
-
 	for(var i = 0; i < this.people.length; i++)
 	{
 		data.people.push(this.people[i].toJSON());

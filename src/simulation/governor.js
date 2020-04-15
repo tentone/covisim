@@ -16,8 +16,11 @@ function Governor()
 	// Last values for reference
 	this.last = null;
 
-	// Lockdown lockdownStage
-	// this.lockdownStage = 0;
+	// Governor storage data
+	this.data = {};
+
+	// Governor JS code used control the governor behavior.
+	this.code = "";
 }
 
 /**

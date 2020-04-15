@@ -19,7 +19,7 @@ class Content extends React.Component
 				<ChartCard ref={GuiState.chartCard}/>
 				<Divider style={{margin:"20px"}}/>
 
-				<SimulationCard/>
+				<SimulationCard ref={GuiState.simulationCard}/>
 				<Divider style={{margin:"20px"}}/>
 
 				<CountryCard ref={GuiState.countryCard}/>

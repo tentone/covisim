@@ -10,13 +10,32 @@ function Configuration() {
 		startDate: new Date(),
 
 		// Population of the simulation
-		population: 10000, //13e6,
+		population: 10000,
 
 		// Number of districts (cities or provinces) in the simulation
-		districts: 156,
+		districts: 50,
 
 		// Family size
-		familySize: 5
+		familySize: 5,
+
+		// Age Distribution
+		ageDistribution: [
+			{
+				min: 1,
+				max: 14,
+				percentage: 14
+			},
+			{
+				min: 15,
+				max: 64,
+				percentage: 65
+			},
+			{
+				min: 65,
+				max: 100,
+				percentage: 21
+			}
+		]
 	};
 
 	// Start conditions for the simulation

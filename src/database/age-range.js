@@ -44,11 +44,11 @@ AgeRange.randomAge = function(ranges)
 
 			// Calculate age
 			var ageRange = ranges[i].max - ranges[i].min;
-			return (linear * ageRange) + ranges[i].min;
+			return Math.round((linear * ageRange) + ranges[i].min);
 		}
 	}
 
-	return null;
+	throw new Error("Ranges does not cover from 0 to 100%.");
 };
 
 export {AgeRange};

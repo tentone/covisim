@@ -1,7 +1,5 @@
 import {RandomUtils} from "../utils/random-utils";
 import {MathUtils} from "../utils/math-utils";
-import {Block} from "./block";
-import {Governor} from "./governor";
 
 /**
  * List of possible person status.
@@ -17,7 +15,7 @@ var PersonStatus = {
 /**
  * Represents a person in the simulation.
  */
-function Person() {
+function Person(age) {
 	// Block that this person is placed in
 	this.block = null;
 
@@ -37,7 +35,7 @@ function Person() {
 	this.goingToDie = false;
 
 	// Person age will affect its death probability and recovery rate
-	this.age = 0;
+	this.age = age !== undefined ? age : (Math.random() * 100);
 }
 
 /**

@@ -40,6 +40,11 @@ GuiState.chartCard = React.createRef();
 GuiState.countryCard = React.createRef();
 
 /**
+ * Reference to the simulation card element in the GUI.
+ */
+GuiState.simulationCard = React.createRef();
+
+/**
  * Select country to be displayed on the GUI.
  *
  * @param code

@@ -5,6 +5,7 @@ import {RandomUtils} from "../utils/random-utils";
 import {Configuration} from "./configuration";
 import {MathUtils} from "../utils/math-utils";
 import {Governor} from "./governor";
+import {AgeRange} from "../database/age-range";
 
 /**
  * Structure to run the simulation, contains all the simulation structure and logic to process simulation by step.
@@ -97,7 +98,7 @@ Simulation.prototype.step = function()
 	var foreigners = MathUtils.reduction(this.config.foreign.dailyVisits, this.config.measures.limitForeigners);
 	for(var i = 0; i < foreigners; i++)
 	{
-		let foreign = new Person();
+		let foreign = new Person(AgeRange.randomAge(this.config.world.ageDistribution));
 
 		// Check if foreign person is infected
 		if(RandomUtils.happens(this.config.foreign.infectedProbability)) { foreign.status = PersonStatus.INFECTED; }
@@ -132,6 +133,7 @@ Simulation.prototype.step = function()
 	// Move to next day
 	this.nextDay();
 };
+
 
 /**
  * Update date and day counter.
@@ -174,6 +176,13 @@ Simulation.prototype.fromJSON = function(data)
 	this.hospital = data.hospital;
 	this.day = data.day;
 	this.date = new Date(data.date);
+	this.data = data.data;
+
+	this.governor = new Governor();
+	if(data.governor !== null)
+	{
+		this.governor.fromJSON(data.governor);
+	}
 
 	this.country = new Block();
 	if(data.country !== null)
@@ -182,11 +191,6 @@ Simulation.prototype.fromJSON = function(data)
 		this.country.buildCache();
 	}
 
-	this.governor = new Governor();
-	if(data.governor !== null)
-	{
-		this.governor.fromJSON(data.governor);
-	}
 };
 
 /**

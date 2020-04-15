@@ -9,6 +9,10 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import {FileUtils} from "../../utils/file-utils";
 import {Simulation} from "../../simulation/simulation";
+import Slider from "@material-ui/core/Slider";
+import TextField from "@material-ui/core/TextField";
+import Input from "@material-ui/core/Input";
+import {AgeRange} from "../../database/age-range";
 
 class SimulationCard extends React.Component
 {
@@ -39,6 +43,7 @@ class SimulationCard extends React.Component
 						simulation.fromJSON(JSON.parse(reader.result));
 						GuiState.simulation = simulation;
 						alert("Simulation data loaded from JSON file.");
+						GuiState.updateCharts();
 					}
 					catch(e)
 					{
@@ -69,13 +74,18 @@ class SimulationCard extends React.Component
 	/**
 	 * Run a number of step in the simulation.
 	 */
-	step()
+	run()
 	{
 		let time = performance.now();
-		GuiState.simulation.step();
-		GuiState.updateCharts();
+		for(let i = 0; i < this.steps; i++)
+		{
+			GuiState.simulation.step();
+		}
+
 		let delta = performance.now() - time;
-		console.log("COVID-19: Simulation step finished. Took " + delta + " ms.");
+		console.log("COVID-19: Simulation run finished. Took " + delta + " ms, for " + this.steps + " steps.");
+
+		GuiState.updateCharts();
 	}
 
 	/**
@@ -84,21 +94,68 @@ class SimulationCard extends React.Component
 	reset()
 	{
 		GuiState.simulation.reset();
+		console.log("COVID-19: Simulation has been reset.", GuiState.simulation);
 		GuiState.updateCharts();
+	}
+
+	/**
+	 * Build a configuration editor by iterating config object.
+	 */
+	buildForm()
+	{
+		function traverseAttributes(object, callback, attribute, level)
+		{
+			if(attribute === undefined)
+			{
+				attribute = "";
+				level = 0;
+			}
+
+			for(let i in object)
+			{
+				if(object[i] instanceof Object)
+				{
+					traverseAttributes(object[i], callback, attribute.length === 0 ? i : attribute + '.' + i, level + 1)
+				}
+				else
+				{
+					callback(object, i, attribute.length === 0 ? i : attribute + '.' + i);
+				}
+			}
+		}
+
+		let elements = [];
+
+		traverseAttributes(GuiState.simulation.config, function(object, attribute, path)
+		{
+			elements.push(<TextField key={path} style={{marginBottom:"5px"}} label={path} type="number" defaultValue={object[attribute]} onChange={(event) => {object[attribute] = Number.parseFloat(event.target.value);}}/>);
+		});
+
+		return elements;
 	}
 
 	render()
 	{
+		let elements = this.buildForm();
+
 		return (
 			<Card style={{margin:"20px"}}>
 				<div style={{margin:"20px"}}>
 					<Typography variant="h6">Simulation</Typography>
 					<br/>
+					<Typography gutterBottom>Steps p/ Iteration</Typography>
+					<Slider defaultValue={1.0} step={1.0} marks min={1} max={100} valueLabelDisplay="auto" onChange={(event, value) => {this.steps = value;}}/>
+					<br/>
+					<Typography gutterBottom>Simulation Parameters</Typography>
+					<form noValidate autoComplete="off">
+						{elements}
+					</form>
+					<br/>
 					<ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-						<Button onClick={this.step}>Step</Button>
-						<Button onClick={this.reset}>Reset</Button>
-						<Button onClick={this.importSimulation}>Import</Button>
-						<Button onClick={this.exportSimulation}>Export</Button>
+						<Button onClick={() => {this.run();}}>Run</Button>
+						<Button onClick={() => {this.reset();}}>Reset</Button>
+						<Button onClick={() => {this.importSimulation();}}>Import</Button>
+						<Button onClick={() => {this.exportSimulation();}}>Export</Button>
 					</ButtonGroup>
 				</div>
 			</Card>
