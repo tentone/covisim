@@ -1,6 +1,25 @@
-# COVID 19+1
- - Visualize cases of COVID-19 virus around the world and compare them with simulation data of how the measures implemented to prevent the spread are affecting its evolution.
- - Iterative multi-level simulation meant to be run on the country scale, the behavior of each person is simulated on a daily basis using probabilistic data.
+# COVID 19 Simulation
+ - Visualize cases of COVID-19 virus around the world and compare them with simulation data.
+ - Iterative multi-level simulation meant to be run on the country scale. The behavior of each person is simulated on a daily basis using probabilistic data.
+ - Compare with real data to analyze how the measures implemented to prevent the virus spread are affecting its evolution.
+
+
+
+### GUI
+
+- GUI can be used to test simulation configurations and compare results with real-world data from all countries.
+- Its possible to use countries data to automatically setup a simulation configuration.
+- Simulation, country and Covid-19 data can be stored and loaded from JSON files allowing for offline simulation using node.
+
+<img src="https://raw.githubusercontent.com/tentone/covisim/master/readme/screenshot_1.png" width="350"><img src="https://raw.githubusercontent.com/tentone/covisim/master/readme/screenshot_2.png" width="350">
+
+
+
+### Headless Simulation
+
+- Trying to run long tasks with high memory usage its pretty much impossible. To overcome this issue its possible to run simulation using NodeJS.
+- Download the repository from GitHub, install NodeJS and  install all dependencies from NPM. Run the headless simulation using `npm run node`.
+- JSON files produced by the program can be loaded into the Web interface for inspection.
 
 
 
