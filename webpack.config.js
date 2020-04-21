@@ -2,7 +2,7 @@ const Path = require("path");
 const Webpack = require('webpack');
 const context = Path.resolve(__dirname, ".");
 const src = context + "/src";
-const dist = context + "/dist";
+const dist = context + "/docs";
 
 module.exports = {
 	context: src,
