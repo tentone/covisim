@@ -13,9 +13,17 @@ import {FileUtils} from "../../utils/file-utils";
 /**
  * Enum with possible values for the chart X axis mode.
  */
-var ChartTimeAxis = {
+const ChartTimeAxis = {
 	DATE: 0,
 	DAY: 1
+};
+
+/**
+ * Enum with possible values for the chart X axis mode.
+ */
+const ChartCasesAxis = {
+	ABSOLUTE: 0,
+	DIFF: 1
 };
 
 /**
@@ -33,6 +41,11 @@ class ChartCard extends React.Component
 		 * If by date is uses the absolute date of each data entry.
 		 */
 		this.timeAxis = ChartTimeAxis.DAY;
+
+		/**
+		 * How to draw the cases axis. Can be absolute value or daily diff.
+		 */
+		this.casesAxis = ChartCasesAxis.ABSOLUTE;
 
 		/**
 		 * Canvas DOM element reference.
@@ -107,6 +120,12 @@ class ChartCard extends React.Component
 				}
 			}
 		});
+	}
+
+	setCasesAxisMode(casesAxis)
+	{
+		this.casesAxis = casesAxis;
+		this.chart.update();
 	}
 
 	/**
@@ -210,17 +229,37 @@ class ChartCard extends React.Component
 		}
 
 		// Fill time series data from covid data
-		for (let i = 0; i < data.length; i++)
+		if(this.casesAxis === ChartCasesAxis.ABSOLUTE)
 		{
-			for(let j in timeseries)
+			for (let i = 0; i < data.length; i++)
 			{
-				if(this.timeAxis === ChartTimeAxis.DATE)
+				for(let j in timeseries)
 				{
-					timeseries[j].push({t: data[i].date, y: data[i][j]});
+					if(this.timeAxis === ChartTimeAxis.DATE)
+					{
+						timeseries[j].push({t: data[i].date, y: data[i][j]});
+					}
+					else if(this.timeAxis === ChartTimeAxis.DAY)
+					{
+						timeseries[j].push({x: data[i].day, y: data[i][j]});
+					}
 				}
-				else if(this.timeAxis === ChartTimeAxis.DAY)
+			}
+		}
+		else if(this.casesAxis === ChartCasesAxis.DIFF)
+		{
+			for (let i = 1; i < data.length; i++)
+			{
+				for(let j in timeseries)
 				{
-					timeseries[j].push({x: data[i].day, y: data[i][j]});
+					if(this.timeAxis === ChartTimeAxis.DATE)
+					{
+						timeseries[j].push({t: data[i].date, y: data[i][j] - data[i-1][j]});
+					}
+					else if(this.timeAxis === ChartTimeAxis.DAY)
+					{
+						timeseries[j].push({x: data[i].day, y: data[i][j] - data[i-1][j]});
+					}
 				}
 			}
 		}
@@ -298,4 +337,4 @@ class ChartCard extends React.Component
 	}
 }
 
-export {ChartCard, ChartTimeAxis};
+export {ChartCard, ChartTimeAxis, ChartCasesAxis};

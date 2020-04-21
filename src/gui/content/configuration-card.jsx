@@ -12,6 +12,7 @@ import {ChartTimeAxis} from "./chart-card.jsx";
 import {GuiState} from "../gui-state";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import {ChartCasesAxis} from "./chart-card.jsx";
 
 class ConfigurationCard extends React.Component
 {
@@ -26,6 +27,13 @@ class ConfigurationCard extends React.Component
 			if(GuiState.chartCard.current !== null)
 			{
 				GuiState.chartCard.current.setTimeAxisMode(event.target.value);
+			}
+		};
+
+		const casesAxisChange = (event) => {
+			if(GuiState.chartCard.current !== null)
+			{
+				GuiState.chartCard.current.setCasesAxisMode(event.target.value);
 			}
 		};
 
@@ -50,8 +58,16 @@ class ConfigurationCard extends React.Component
 					</FormControlLabel>
 
 					<FormControl fullWidth style={{marginBottom:"5px"}} >
+						<InputLabel>Chart Cases Mode</InputLabel>
+						<Select defaultValue={ChartCasesAxis.ABSOLUTE} onChange={timeAxisChange}>
+							<MenuItem value={ChartCasesAxis.ABSOLUTE}>Total Cases</MenuItem>
+							<MenuItem value={ChartCasesAxis.DIFF}>Daily Diff.</MenuItem>
+						</Select>
+					</FormControl>
+
+					<FormControl fullWidth style={{marginBottom:"5px"}} >
 						<InputLabel>Chart Time Mode</InputLabel>
-						<Select defaultValue={ChartTimeAxis.DAY} onChange={timeAxisChange}>
+						<Select defaultValue={ChartTimeAxis.DAY} onChange={casesAxisChange}>
 							<MenuItem value={ChartTimeAxis.DATE}>Date</MenuItem>
 							<MenuItem value={ChartTimeAxis.DAY}>Day</MenuItem>
 						</Select>
