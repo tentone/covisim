@@ -1,4 +1,4 @@
-# COVID 19 Simulation
+# COVID 19 Dashboard/Simulation
  - Visualize cases of COVID-19 virus around the world and compare them with simulation data.
  - Iterative multi-level simulation meant to be run on the country scale. The behavior of each person is simulated on a daily basis using probabilistic data.
  - Compare with real data to analyze how the measures implemented to prevent the virus spread are affecting its evolution.
