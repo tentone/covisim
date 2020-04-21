@@ -59,7 +59,7 @@ class ConfigurationCard extends React.Component
 
 					<FormControl fullWidth style={{marginBottom:"5px"}} >
 						<InputLabel>Chart Cases Mode</InputLabel>
-						<Select defaultValue={ChartCasesAxis.ABSOLUTE} onChange={timeAxisChange}>
+						<Select defaultValue={ChartCasesAxis.ABSOLUTE} onChange={casesAxisChange}>
 							<MenuItem value={ChartCasesAxis.ABSOLUTE}>Total Cases</MenuItem>
 							<MenuItem value={ChartCasesAxis.DIFF}>Daily Diff.</MenuItem>
 						</Select>
@@ -67,7 +67,7 @@ class ConfigurationCard extends React.Component
 
 					<FormControl fullWidth style={{marginBottom:"5px"}} >
 						<InputLabel>Chart Time Mode</InputLabel>
-						<Select defaultValue={ChartTimeAxis.DAY} onChange={casesAxisChange}>
+						<Select defaultValue={ChartTimeAxis.DAY} onChange={timeAxisChange}>
 							<MenuItem value={ChartTimeAxis.DATE}>Date</MenuItem>
 							<MenuItem value={ChartTimeAxis.DAY}>Day</MenuItem>
 						</Select>
