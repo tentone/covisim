@@ -144,7 +144,7 @@ class SimulationCard extends React.Component
 					<Typography variant="h6">Simulation</Typography>
 					<br/>
 					<Typography gutterBottom>Steps p/ Iteration</Typography>
-					<Slider defaultValue={1.0} step={1.0} marks min={1} max={100} valueLabelDisplay="auto" onChange={(event, value) => {this.steps = value;}}/>
+					<Slider defaultValue={1.0} step={1.0} marks min={1} max={500} valueLabelDisplay="auto" onChange={(event, value) => {this.steps = value;}}/>
 					<br/>
 					<Typography gutterBottom>Simulation Parameters</Typography>
 					<form noValidate autoComplete="off">
